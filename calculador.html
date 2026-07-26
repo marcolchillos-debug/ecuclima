@@ -3,7 +3,20 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Cálculo de carga térmica — Cámaras de refrigeración</title>
+<title>Calculadora de carga térmica para cuartos fríos | Ecuclima</title>
+<meta name="description" content="Calcula gratis la carga térmica de una cámara de refrigeración con el método Emerson y ASHRAE: transmisión, infiltración, respiración del producto y desescarche. Resultados en sistema métrico e imperial, exportables a PDF.">
+<meta name="keywords" content="calculadora carga térmica, cálculo cámara frigorífica, carga térmica cuarto frío, método Emerson AE-103, dimensionar cámara de refrigeración, BTU cámara frigorífica">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://marcolchillos-debug.github.io/ecuclima/calculador.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_EC">
+<meta property="og:site_name" content="Ecuclima">
+<meta property="og:title" content="Calculadora de carga térmica para cuartos fríos | Ecuclima">
+<meta property="og:description" content="Herramienta gratuita para calcular la carga térmica de cámaras de refrigeración con el método Emerson y ASHRAE.">
+<meta property="og:url" content="https://marcolchillos-debug.github.io/ecuclima/calculador.html">
+<meta property="og:image" content="https://marcolchillos-debug.github.io/ecuclima/img/trabajo-1.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Calculadora de carga térmica Ecuclima","url":"https://marcolchillos-debug.github.io/ecuclima/calculador.html","applicationCategory":"EngineeringApplication","operatingSystem":"Navegador web","inLanguage":"es","description":"Calcula la carga térmica de cámaras de refrigeración según el método Emerson y ASHRAE, con resultados en sistema métrico e imperial.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"provider":{"@type":"Organization","name":"Ecuclima","url":"https://marcolchillos-debug.github.io/ecuclima/"}}</script>
 <style>
 :root{
   --bg:#0f1419; --panel:#171d26; --panel2:#1e2733; --line:#2b3644;
@@ -196,7 +209,7 @@ mark{background:var(--wa);color:#04121e;border-radius:2px}
   #report .rh{display:flex;align-items:center;gap:14px}
   #report img{height:62px;width:auto}
   #report .rt{flex:1}
-  #report .rt h1{margin:0;font-size:16px;color:#004080;font-weight:700}
+  #report .rt h2{margin:0;font-size:16px;color:#004080;font-weight:700}
   #report .rt .rsub{font-size:10.5px;color:#555;margin-top:2px}
   #report .rc{font-size:9.5px;color:#555;text-align:right;line-height:1.45}
   #report .rmeta{margin-top:9px;font-size:10px;color:#333;display:flex;gap:22px;flex-wrap:wrap}
@@ -218,8 +231,29 @@ mark{background:var(--wa);color:#04121e;border-radius:2px}
   <a href="partes.html" style="color:#fff;text-decoration:none;font-size:.82rem;font-weight:500;opacity:.95">Buscar partes</a>
   <a class="sec" href="index.html#quienes" style="color:#fff;text-decoration:none;font-size:.82rem;font-weight:500;opacity:.95">Quiénes somos</a>
   <a class="sec" href="index.html#marcas" style="color:#fff;text-decoration:none;font-size:.82rem;font-weight:500;opacity:.95">Marcas</a>
-  <a href="https://wa.me/593980420996" target="_blank" rel="noopener" style="color:#FF8000;text-decoration:none;font-size:.82rem;font-weight:600">💬 WhatsApp</a>
+  <a href="javascript:void(0)" onclick="abrirChat()" style="color:#FF8000;text-decoration:none;font-size:.82rem;font-weight:600">💬 Contacto</a>
 </div>
+
+<div id="chatModal" style="display:none;position:fixed;bottom:0;right:0;width:100%;max-width:400px;height:500px;background:#fff;border-radius:12px 12px 0 0;box-shadow:0 -4px 20px rgba(0,0,0,0.2);z-index:10000;flex-direction:column;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif">
+  <div style="background:#004080;color:#fff;padding:1rem;font-weight:600;display:flex;justify-content:space-between;align-items:center">💬 Escribe tu mensaje<button onclick="cerrarChat()" style="background:0;border:0;color:#fff;font-size:1.5rem;cursor:pointer">×</button></div>
+  <div style="display:flex;border-bottom:1px solid #e8ecf1">
+    <a href="tel:+593980420996" onclick="copiarContacto('+593 98 042 0996')" style="flex:1;padding:0.7rem 0.5rem;text-align:center;text-decoration:none;color:#004080;font-size:0.78rem;font-weight:600;border-right:1px solid #e8ecf1"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:0 auto 3px"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>098 042 0996</a>
+    <a href="mailto:info@ecuclima.com" onclick="copiarContacto('info@ecuclima.com')" style="flex:1;padding:0.7rem 0.5rem;text-align:center;text-decoration:none;color:#004080;font-size:0.78rem;font-weight:600"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:0 auto 3px"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Correo</a>
+  </div>
+  <div style="flex:1;overflow-y:auto;padding:1rem"><p style="color:#666;font-size:0.9rem">Hola! ¿En qué podemos ayudarte?</p></div>
+  <div style="padding:1rem;border-top:1px solid #eee">
+    <textarea id="msgInput" placeholder="Escribe tu mensaje aquí..." style="width:100%;padding:0.8rem;border:1.5px solid #8b97a6;border-radius:6px;font-family:inherit;font-size:0.9rem;resize:none;height:80px;outline:none"></textarea>
+    <button onclick="enviarWhatsApp()" style="width:100%;margin-top:0.8rem;padding:0.8rem;background:#FF8000;color:#fff;border:0;border-radius:6px;font-weight:600;cursor:pointer">Enviar por WhatsApp</button>
+  </div>
+</div>
+<script>
+function esTactil(){return window.matchMedia('(pointer:coarse)').matches}
+function avisoContacto(txt){var a=document.getElementById('avisoCopia');if(!a){a=document.createElement('div');a.id='avisoCopia';a.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a2b42;color:#fff;padding:0.7rem 1.2rem;border-radius:8px;font-size:0.85rem;font-weight:500;z-index:10001;opacity:0;transition:opacity .25s;pointer-events:none;box-shadow:0 4px 16px rgba(0,0,0,.25)';document.body.appendChild(a)}a.textContent=txt;a.style.opacity='1';clearTimeout(a._t);a._t=setTimeout(function(){a.style.opacity='0'},2800)}
+function copiarContacto(valor){if(esTactil())return;if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(valor).then(function(){avisoContacto('Copiado: '+valor)},function(){avisoContacto(valor)})}else{avisoContacto(valor)}}
+function abrirChat(msg){var m=document.getElementById('chatModal');m.style.display='flex';var t=document.getElementById('msgInput');if(msg)t.value=msg;t.focus()}
+function cerrarChat(){document.getElementById('chatModal').style.display='none'}
+function enviarWhatsApp(){var m=document.getElementById('msgInput').value;if(!m.trim()){alert('Por favor escribe un mensaje');return}window.open('https://wa.me/593980420996?text='+encodeURIComponent(m),'_blank');cerrarChat();document.getElementById('msgInput').value=''}
+</script>
 
 <header>
   <div class="brand">
@@ -264,7 +298,7 @@ mark{background:var(--wa);color:#04121e;border-radius:2px}
   <div class="rh">
     <img id="rpLogo" alt="">
     <div class="rt">
-      <h1>Cálculo de carga térmica</h1>
+      <h2>Cálculo de carga térmica</h2>
       <div class="rsub">Cámara de refrigeración · Método Emerson AE-103 / ASHRAE</div>
     </div>
     <div class="rc" id="rpContacto"></div>
@@ -829,7 +863,7 @@ if(typeof CF==='undefined' || !CF || !Object.keys(CF).length){
     '<div style="max-width:620px;margin:60px auto;padding:26px 28px;border:1px solid #d4dbe4;'
    +'border-left:4px solid #FF8000;border-radius:0 10px 10px 0;background:#fff;color:#16202c;'
    +'font:15px/1.65 system-ui,\'Segoe UI\',sans-serif">'
-   +'<h1 style="margin:0 0 14px;font-size:19px;color:#004080">Falta la base de datos</h1>'
+   +'<h2 style="margin:0 0 14px;font-size:19px;color:#004080">Falta la base de datos</h2>'
    +'<p style="margin:0 0 14px">Este archivo es <b>app.html</b>, que no funciona solo: necesita '
    +'<b>datos.js</b> y la carpeta <b>data/</b> junto a él.</p>'
    +'<p style="margin:0 0 14px">Si te lo enviaron por correo o WhatsApp, pide el archivo '

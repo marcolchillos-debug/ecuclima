@@ -3,7 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Buscar partes — ECUCLIMA</title>
+<title>Catálogo de repuestos de refrigeración con stock | Ecuclima</title>
+<meta name="description" content="Busca repuestos de refrigeración industrial con stock y precio en Ecuador: compresores Bitzer, válvulas Carel, intercambiadores Swep, sensores y controladores. Envíos desde Quito a todo el país.">
+<meta name="keywords" content="repuestos refrigeración Ecuador, comprar compresor Bitzer, válvula expansión Carel precio, intercambiador Swep, repuestos frío industrial Quito">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://marcolchillos-debug.github.io/ecuclima/partes.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_EC">
+<meta property="og:site_name" content="Ecuclima">
+<meta property="og:title" content="Catálogo de repuestos de refrigeración con stock | Ecuclima">
+<meta property="og:description" content="Compresores Bitzer, válvulas Carel, intercambiadores Swep y más, con stock y precio actualizado.">
+<meta property="og:url" content="https://marcolchillos-debug.github.io/ecuclima/partes.html">
+<meta property="og:image" content="https://marcolchillos-debug.github.io/ecuclima/img/productos/e2v35-carel.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://marcolchillos-debug.github.io/ecuclima/"},{"@type":"ListItem","position":2,"name":"Repuestos con stock","item":"https://marcolchillos-debug.github.io/ecuclima/partes.html"}]}</script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -116,9 +129,13 @@ footer a{color:#FF8000;text-decoration:none;font-weight:600}
 
 <div id="chatModal" style="display:none;position:fixed;bottom:0;right:0;width:100%;max-width:400px;height:500px;background:#fff;border-radius:12px 12px 0 0;box-shadow:0 -4px 20px rgba(0,0,0,0.2);z-index:1000;flex-direction:column;overflow:hidden">
   <div style="background:#004080;color:#fff;padding:1rem;font-weight:600;display:flex;justify-content:space-between;align-items:center">💬 Escribe tu mensaje<button onclick="cerrarChat()" style="background:0;border:0;color:#fff;font-size:1.5rem;cursor:pointer">×</button></div>
+  <div style="display:flex;border-bottom:1px solid #e8ecf1">
+    <a href="tel:+593980420996" onclick="copiarContacto('+593 98 042 0996')" style="flex:1;padding:0.7rem 0.5rem;text-align:center;text-decoration:none;color:#004080;font-size:0.78rem;font-weight:600;border-right:1px solid #e8ecf1"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:0 auto 3px"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>098 042 0996</a>
+    <a href="mailto:info@ecuclima.com" onclick="copiarContacto('info@ecuclima.com')" style="flex:1;padding:0.7rem 0.5rem;text-align:center;text-decoration:none;color:#004080;font-size:0.78rem;font-weight:600"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:0 auto 3px"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Correo</a>
+  </div>
   <div style="flex:1;overflow-y:auto;padding:1rem"><p style="color:#666;font-size:0.9rem">Hola! ¿En qué podemos ayudarte?</p></div>
   <div style="padding:1rem;border-top:1px solid #eee">
-    <textarea id="msgInput" placeholder="Escribe tu mensaje aquí..." style="width:100%;padding:0.8rem;border:1px solid #ddd;border-radius:6px;font-family:inherit;resize:none;height:80px"></textarea>
+    <textarea id="msgInput" placeholder="Escribe tu mensaje aquí..." style="width:100%;padding:0.8rem;border:1.5px solid #8b97a6;border-radius:6px;font-family:inherit;font-size:0.9rem;resize:none;height:80px;outline:none"></textarea>
     <button onclick="enviarWhatsApp()" style="width:100%;margin-top:0.8rem;padding:0.8rem;background:#FF8000;color:#fff;border:0;border-radius:6px;font-weight:600;cursor:pointer">Enviar por WhatsApp</button>
   </div>
 </div>
@@ -161,6 +178,10 @@ function normalizar(s){
   return s.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase();
 }
 
+function escAttr(s){
+  return s.replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");
+}
+
 function pintarFiltros(){
   const cats = ["Todas", ...new Set(PRODUCTOS.map(p => p.c))];
   document.getElementById("filtros").innerHTML = cats.map(c =>
@@ -188,10 +209,14 @@ function pintar(){
     lista.length === 1 ? "1 parte encontrada" : lista.length + " partes encontradas";
 
   if (lista.length === 0){
+    const buscado = document.getElementById("q").value.trim();
     document.getElementById("rejilla").innerHTML =
-      '<div class="vacio"><strong>Sin resultados para “' + document.getElementById("q").value.trim() + '”</strong>' +
-      'Escribinos y te conseguimos la parte que necesitás.<br><br>' +
-      '<button class="btn-consulta" style="max-width:260px" onclick="abrirChat()">Consultar por WhatsApp</button></div>';
+      '<div class="vacio"><strong>No tenemos “' + buscado + '” publicado en este momento</strong>' +
+      'Trabajamos con más marcas y referencias de las que alcanzamos a listar. Escribinos y te lo conseguimos.<br><br>' +
+      '<button class="btn-consulta" style="max-width:280px" data-vacio="' + escAttr(buscado) + '">Consultar disponibilidad</button></div>';
+    document.querySelector(".btn-consulta[data-vacio]").addEventListener("click", function(){
+      abrirChat("Hola Ecuclima, ¿tienen disponibilidad de: " + this.dataset.vacio + "?");
+    });
     return;
   }
 
@@ -203,20 +228,56 @@ function pintar(){
     const stock = bajoPedido
       ? '<span class="stock pedido">Bajo pedido</span>'
       : '<span class="stock hay">' + p.s + ' en stock</span>';
-    const msg = encodeURIComponent("Hola Ecuclima, me interesa: " + p.n);
     return '<article class="parte">' +
-      '<div class="parte-foto"><img src="img/productos/' + p.f + '" alt="' + p.n + '" loading="lazy" onerror="this.style.display=\'none\'"></div>' +
+      '<div class="parte-foto"><img src="img/productos/' + p.f + '" alt="' + escAttr(p.n) + '" loading="lazy" onerror="this.style.display=\'none\'"></div>' +
       '<div class="parte-cuerpo">' +
         '<p class="parte-cat">' + p.c + '</p>' +
         '<h3>' + p.n + '</h3>' +
         '<div class="parte-pie">' + precio + stock + '</div>' +
-        '<a class="btn-consulta" style="display:block;text-align:center;text-decoration:none" href="https://wa.me/' + WHATSAPP + '?text=' + msg + '" target="_blank" rel="noopener">Consultar</a>' +
+        '<button class="btn-consulta" data-n="' + escAttr(p.n) + '">Consultar</button>' +
       '</div></article>';
   }).join("");
+
+  document.querySelectorAll(".btn-consulta[data-n]").forEach(b => {
+    b.addEventListener("click", () => abrirChat("Hola Ecuclima, quiero consultar por: " + b.dataset.n));
+  });
 }
 
 function toggleMenu(){ document.getElementById("navMenu").classList.toggle("active"); }
-function abrirChat(){ document.getElementById("chatModal").style.display = "flex"; }
+function esTactil(){ return window.matchMedia("(pointer:coarse)").matches; }
+
+function avisoContacto(txt){
+  let a = document.getElementById("avisoCopia");
+  if (!a){
+    a = document.createElement("div");
+    a.id = "avisoCopia";
+    a.style.cssText = "position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a2b42;color:#fff;padding:0.7rem 1.2rem;border-radius:8px;font-size:0.85rem;font-weight:500;z-index:10001;opacity:0;transition:opacity .25s;pointer-events:none;box-shadow:0 4px 16px rgba(0,0,0,.25)";
+    document.body.appendChild(a);
+  }
+  a.textContent = txt;
+  a.style.opacity = "1";
+  clearTimeout(a._t);
+  a._t = setTimeout(() => { a.style.opacity = "0"; }, 2800);
+}
+
+function copiarContacto(valor){
+  if (esTactil()) return;
+  if (navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(valor).then(
+      () => avisoContacto("Copiado: " + valor),
+      () => avisoContacto(valor)
+    );
+  } else {
+    avisoContacto(valor);
+  }
+}
+
+function abrirChat(msg){
+  document.getElementById("chatModal").style.display = "flex";
+  const t = document.getElementById("msgInput");
+  if (msg) t.value = msg;
+  t.focus();
+}
 function cerrarChat(){ document.getElementById("chatModal").style.display = "none"; }
 function enviarWhatsApp(){
   const msg = document.getElementById("msgInput").value;
@@ -227,6 +288,10 @@ function enviarWhatsApp(){
 }
 
 document.getElementById("q").addEventListener("input", pintar);
+
+const qUrl = new URLSearchParams(location.search).get("q");
+if (qUrl) document.getElementById("q").value = qUrl;
+
 pintarFiltros();
 pintar();
 </script>
