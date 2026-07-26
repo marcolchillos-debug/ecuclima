@@ -276,16 +276,42 @@ function abrirChat(msg){
   document.getElementById("chatModal").style.display = "flex";
   const t = document.getElementById("msgInput");
   if (msg) t.value = msg;
+  else if (!t.value.trim()) t.value = "Deseo información de ";
+  limpiarError();
   t.focus();
+  t.setSelectionRange(t.value.length, t.value.length);
 }
 function cerrarChat(){ document.getElementById("chatModal").style.display = "none"; }
+function errorMsg(txt){
+  const t = document.getElementById("msgInput");
+  let e = document.getElementById("msgError");
+  if (!e){
+    e = document.createElement("p");
+    e.id = "msgError";
+    e.style.cssText = "color:#d93025;font-size:0.78rem;font-weight:500;margin:0.45rem 0 0";
+    t.parentNode.insertBefore(e, t.nextSibling);
+  }
+  e.textContent = txt;
+  t.style.borderColor = "#d93025";
+  t.focus();
+}
+
+function limpiarError(){
+  document.getElementById("msgInput").style.borderColor = "#8b97a6";
+  const e = document.getElementById("msgError");
+  if (e) e.remove();
+}
+
 function enviarWhatsApp(){
   const msg = document.getElementById("msgInput").value;
-  if (!msg.trim()){ alert("Por favor escribe un mensaje"); return; }
+  if (!msg.trim()){ errorMsg("Escribe tu consulta antes de enviar"); return; }
+  limpiarError();
   window.open("https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(msg), "_blank");
   cerrarChat();
   document.getElementById("msgInput").value = "";
 }
+
+document.getElementById("msgInput").addEventListener("input", limpiarError);
 
 document.getElementById("q").addEventListener("input", pintar);
 
