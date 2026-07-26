@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Buscar partes — ECUCLIMA</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#fff;color:#1a1a1a}
+header{background:#004080;color:#fff;padding:1.2rem 2rem;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;box-shadow:0 4px 16px rgba(0,0,0,0.3);border-bottom:3px solid #FF8000}
+header h1{font-size:1.2rem;font-weight:700;display:flex;align-items:center;gap:8px;letter-spacing:-0.3px}
+header h1 a{color:#fff;text-decoration:none;display:flex;align-items:center;gap:8px;transition:0.3s}
+header h1 a:hover{color:#FF8000}
+header img{height:38px}
+nav{display:flex;gap:1.8rem;align-items:center}
+nav a{color:#fff;text-decoration:none;font-size:0.85rem;opacity:0.95;transition:0.3s;font-weight:500}
+nav a:hover{opacity:1;color:#FF8000}
+#menuBtn{display:none;background:0;border:0;color:#fff;font-size:1.5rem;cursor:pointer}
+@media(max-width:768px){
+  #menuBtn{display:block}
+  nav{position:absolute;top:60px;left:0;right:0;background:#003060;flex-direction:column;gap:0;padding:1rem 0;max-height:0;overflow:hidden;transition:max-height 0.3s}
+  nav.active{max-height:300px}
+  nav a{padding:0.8rem 2rem;border-bottom:1px solid rgba(255,255,255,0.1)}
+  header{padding:1rem 1.5rem}
+  header h1{font-size:1rem}
+  header h1 img{height:32px}
+}
+
+.buscador{background:linear-gradient(135deg,#004080 0%,#003050 100%);color:#fff;padding:3rem 2rem 2.5rem;text-align:center}
+.buscador .kicker{font-size:0.75rem;font-weight:600;text-transform:uppercase;letter-spacing:5px;color:#FFA24D;margin-bottom:0.75rem}
+.buscador h2{font-size:2.1rem;font-weight:700;letter-spacing:-1px;margin-bottom:0.4rem}
+.buscador p{font-size:0.9rem;opacity:0.85;margin-bottom:1.8rem}
+.search-box{max-width:620px;margin:0 auto;position:relative}
+.search-box input{width:100%;padding:1rem 1.2rem 1rem 3rem;font-size:1rem;border:2px solid transparent;border-radius:10px;font-family:inherit;outline:none;transition:border-color 0.25s}
+.search-box input:focus{border-color:#FF8000}
+.search-box .ico{position:absolute;left:1.1rem;top:50%;transform:translateY(-50%);font-size:1.1rem;opacity:0.45}
+
+.filtros{max-width:1200px;margin:2rem auto 0;padding:0 2rem;display:flex;gap:0.6rem;flex-wrap:wrap;justify-content:center}
+.chip{padding:0.5rem 1.1rem;border:1.5px solid #d8dee6;background:#fff;border-radius:20px;font-size:0.82rem;font-weight:500;color:#4a5568;cursor:pointer;transition:all 0.25s;font-family:inherit}
+.chip:hover{border-color:#FF8000;color:#004080}
+.chip.on{background:#004080;border-color:#004080;color:#fff}
+
+.conteo{max-width:1200px;margin:1.6rem auto 0;padding:0 2rem;font-size:0.85rem;color:#8a94a3}
+
+.rejilla{max-width:1200px;margin:1rem auto 4rem;padding:0 2rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1.6rem}
+.parte{background:#fff;border:1px solid #e4e8ee;border-radius:12px;overflow:hidden;display:flex;flex-direction:column;transition:all 0.3s}
+.parte:hover{transform:translateY(-5px);box-shadow:0 12px 32px rgba(0,64,128,0.13);border-color:#FF8000}
+.parte-foto{height:180px;background:#f4f7fa;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.parte-foto img{width:100%;height:100%;object-fit:contain;padding:0.8rem}
+.parte-cuerpo{padding:1.1rem 1.2rem 1.2rem;display:flex;flex-direction:column;flex:1}
+.parte-cat{font-size:0.68rem;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:#FF8000;margin-bottom:0.5rem}
+.parte h3{font-size:0.92rem;font-weight:600;color:#1a2b42;line-height:1.4;margin-bottom:0.9rem;flex:1}
+.parte-pie{display:flex;justify-content:space-between;align-items:flex-end;gap:0.8rem;margin-bottom:0.9rem}
+.precio{font-size:1.25rem;font-weight:700;color:#004080;line-height:1.2}
+.precio small{display:block;font-size:0.68rem;font-weight:500;color:#8a94a3;letter-spacing:0.2px}
+.precio.pedido{font-size:0.95rem;color:#5a6b80}
+.stock{font-size:0.72rem;font-weight:600;padding:0.28rem 0.6rem;border-radius:5px;white-space:nowrap}
+.stock.hay{background:#e6f4ea;color:#1b6b34}
+.stock.pedido{background:#fdf0e3;color:#8a4b0b}
+.btn-consulta{width:100%;padding:0.7rem;background:#FF8000;color:#fff;border:0;border-radius:7px;font-weight:600;font-size:0.85rem;cursor:pointer;font-family:inherit;transition:background 0.25s}
+.btn-consulta:hover{background:#E67000}
+
+.vacio{grid-column:1/-1;text-align:center;padding:4rem 1rem;color:#8a94a3}
+.vacio strong{display:block;font-size:1.1rem;color:#4a5568;margin-bottom:0.5rem;font-weight:600}
+
+footer{background:#004080;color:#fff;padding:3rem 2rem;text-align:center}
+footer p{margin:0.5rem 0;opacity:0.9}
+footer a{color:#FF8000;text-decoration:none;font-weight:600}
+
+@media(max-width:768px){
+  .buscador{padding:2.2rem 1.5rem 2rem}
+  .buscador h2{font-size:1.5rem}
+  .buscador .kicker{font-size:0.65rem;letter-spacing:3px}
+  .filtros,.rejilla,.conteo{padding:0 1.2rem}
+  .rejilla{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:1rem}
+  .parte-foto{height:140px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1><a href="index.html"><img src="logo-ecuclima.png" alt="ECUCLIMA logo"> ECUCLIMA</a></h1>
+  <button id="menuBtn" onclick="toggleMenu()">☰</button>
+  <nav id="navMenu">
+    <a href="index.html">Inicio</a>
+    <a href="index.html#quienes">Quiénes somos</a>
+    <a href="index.html#marcas">Marcas</a>
+    <a href="calculador.html">Calculador</a>
+    <a href="javascript:void(0)" onclick="abrirChat()">💬 WhatsApp</a>
+    <a href="javascript:void(0)" onclick="abrirChat()" style="color:#FF8000;font-weight:600">📞 Contacto</a>
+  </nav>
+</header>
+
+<section class="buscador">
+  <p class="kicker">Inventario Ecuclima</p>
+  <h2>Buscar partes</h2>
+  <p>Repuestos originales con stock verificado y envío nacional</p>
+  <div class="search-box">
+    <span class="ico">🔍</span>
+    <input type="search" id="q" placeholder="Buscar por nombre, código o marca — ej. E2V35, SWEP, compresor" autocomplete="off">
+  </div>
+</section>
+
+<div class="filtros" id="filtros"></div>
+<p class="conteo" id="conteo"></p>
+<div class="rejilla" id="rejilla"></div>
+
+<footer>
+  <p><strong>ECUCLIMA</strong> — Refrigeración Industrial Ecuador</p>
+  <p>Conocoto, Quito | Lun–Vie 8:30 AM – 5:30 PM | Emergencias 24/7</p>
+  <p style="margin-top:1rem"><a href="mailto:info@ecuclima.com">info@ecuclima.com</a> | <a href="tel:+593980420996">+593 98 042 0996</a></p>
+  <p style="margin-top:2rem;font-size:0.85rem;opacity:0.7">© 2026 Ecuclima. Todos los derechos reservados.</p>
+</footer>
+
+<div id="chatModal" style="display:none;position:fixed;bottom:0;right:0;width:100%;max-width:400px;height:500px;background:#fff;border-radius:12px 12px 0 0;box-shadow:0 -4px 20px rgba(0,0,0,0.2);z-index:1000;flex-direction:column;overflow:hidden">
+  <div style="background:#004080;color:#fff;padding:1rem;font-weight:600;display:flex;justify-content:space-between;align-items:center">💬 Escribe tu mensaje<button onclick="cerrarChat()" style="background:0;border:0;color:#fff;font-size:1.5rem;cursor:pointer">×</button></div>
+  <div style="flex:1;overflow-y:auto;padding:1rem"><p style="color:#666;font-size:0.9rem">Hola! ¿En qué podemos ayudarte?</p></div>
+  <div style="padding:1rem;border-top:1px solid #eee">
+    <textarea id="msgInput" placeholder="Escribe tu mensaje aquí..." style="width:100%;padding:0.8rem;border:1px solid #ddd;border-radius:6px;font-family:inherit;resize:none;height:80px"></textarea>
+    <button onclick="enviarWhatsApp()" style="width:100%;margin-top:0.8rem;padding:0.8rem;background:#FF8000;color:#fff;border:0;border-radius:6px;font-weight:600;cursor:pointer">Enviar por WhatsApp</button>
+  </div>
+</div>
+
+<script>
+const PRODUCTOS = [
+  {n:"E2V35 CAREL Válvula de expansión electrónica E2V35BS100",c:"Válvulas CAREL",p:252.90,iva:true,s:2,f:"e2v35-carel.jpg"},
+  {n:"E2V18 Válvula de expansión electrónica E2V18SSF10",c:"Válvulas CAREL",p:151.30,iva:true,s:2,f:"e2v18-carel.jpg"},
+  {n:"E3V-65 Válvula de expansión electrónica E3V65SWS00",c:"Válvulas CAREL",p:560.00,iva:true,s:2,f:"e3v65-carel.jpg"},
+  {n:"E5V-A5 Válvula de expansión electrónica 35-35 E5VA5AST00",c:"Válvulas CAREL",p:1034.70,iva:true,s:2,f:"e5va5-carel.jpg"},
+  {n:"E5V-A2 Válvula de expansión electrónica E5VA2AST00",c:"Válvulas CAREL",p:1004.50,iva:true,s:2,f:"e5va2-carel.jpg"},
+  {n:"Válvula de expansión electrónica E4V95BST00",c:"Válvulas CAREL",p:759.00,iva:true,s:1,f:"e4v95-carel.jpg"},
+  {n:"Plato de válvula para compresor BITZER 4FE/6FE New Ecoline",c:"Repuestos BITZER",p:365.00,iva:true,s:3,f:"plato-valvula-bitzer.jpg"},
+  {n:"Compresor BITZER serie HS.53 – HS.85 (tornillo semihermético)",c:"Compresores",p:null,f:"compresor-bitzer-hs53-hs85.jpg"},
+  {n:"Compresor BITZER serie Ecoline 6HE-35Y (pistón semihermético)",c:"Compresores",p:null,f:"compresor-bitzer-6he35y.jpg"},
+  {n:"Compresor BITZER serie Ecoline 6GE-40Y (pistón semihermético)",c:"Compresores",p:null,f:"compresor-bitzer-6ge40y.jpg"},
+  {n:"Compresor BITZER semihermético de 2 etapas",c:"Compresores",p:null,f:"compresor-bitzer-2etapas.jpg"},
+  {n:"Máquina de hielo Snowkey 15TR",c:"Máquinas Hielo",p:null,f:"maquina-hielo-snowkey-15tr.jpg"},
+  {n:"Máquina de hielo Snowkey TIM10A",c:"Máquinas Hielo",p:null,f:"maquina-hielo-snowkey-tim10a.jpg"},
+  {n:"Intercambiador de calor SWEP 2 Ton B8THx301P",c:"Intercambiadores SWEP",p:401.00,iva:true,s:5,f:"swep-2ton-b8thx301p.jpg"},
+  {n:"Intercambiador de calor SWEP 30 Ton V200THx80",c:"Intercambiadores SWEP",p:4943.00,iva:true,s:1,f:"swep-30ton-v200thx80.jpg"},
+  {n:"Intercambiador de calor SWEP 7.5 Ton V80Hx40",c:"Intercambiadores SWEP",p:956.00,iva:true,s:1,f:"swep-7-5ton-v80hx40.jpg"},
+  {n:"Intercambiador de calor SWEP 15 Ton B80Hx70",c:"Intercambiadores SWEP",p:null,f:"swep-15ton-b80hx70.jpg"},
+  {n:"Intercambiador de calor SWEP 7.5 Ton B80Hx40",c:"Intercambiadores SWEP",p:1131.00,iva:true,s:2,f:"swep-7-5ton-b80hx40.jpg"},
+  {n:"Intercambiador de calor SWEP 10 Ton V80Hx50",c:"Intercambiadores SWEP",p:1117.00,iva:true,s:2,f:"swep-10ton-v80hx50.jpg"},
+  {n:"Intercambiador de calor SWEP desarmable M10NHx20",c:"Intercambiadores SWEP",p:541.00,iva:true,s:1,f:"swep-desarmable-m10nhx20.jpg"},
+  {n:"Intercambiador de calor SWEP 3 Ton B80Hx20",c:"Intercambiadores SWEP",p:611.00,iva:true,s:1,f:"swep-3ton-b80hx20.jpg"},
+  {n:"Intercambiador de calor SWEP 5 Ton B80Hx26",c:"Intercambiadores SWEP",p:672.00,iva:true,s:5,f:"swep-5ton-b80hx26.jpg"},
+  {n:"Sensor de aceite C3/C4S, OLC-K1, 115V, 42 bar, M20",c:"Sensores",p:260.00,iva:true,s:1,f:"sensor-aceite-c3c4s.jpg"},
+  {n:"Pantalla display EVDIS00ES0 CAREL",c:"Controladores",p:185.00,iva:false,s:3,f:"pantalla-evdis00es0-carel.jpg"},
+  {n:"Controlador de válvula EVD4 CAREL",c:"Controladores",p:320.00,iva:false,s:2,f:"controlador-evd4-carel.jpg"},
+  {n:"Buje BRG, BSHG, D36, DP4 C2/C3 — reemplaza 311112-01",c:"Repuestos BITZER",p:29.00,iva:true,s:6,f:"buje-brg-bshg-d36.jpg"},
+  {n:"Resistencia de cárter 140W 230V",c:"Repuestos",p:237.00,iva:true,s:2,f:"resistencia-carter-140w.jpg"}
+];
+
+const WHATSAPP = "593980420996";
+let categoriaActiva = "Todas";
+
+function normalizar(s){
+  return s.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase();
+}
+
+function pintarFiltros(){
+  const cats = ["Todas", ...new Set(PRODUCTOS.map(p => p.c))];
+  document.getElementById("filtros").innerHTML = cats.map(c =>
+    '<button class="chip' + (c === categoriaActiva ? ' on' : '') + '" data-cat="' + c + '">' + c + '</button>'
+  ).join("");
+  document.querySelectorAll(".chip").forEach(b => {
+    b.addEventListener("click", () => {
+      categoriaActiva = b.dataset.cat;
+      pintarFiltros();
+      pintar();
+    });
+  });
+}
+
+function pintar(){
+  const q = normalizar(document.getElementById("q").value.trim());
+  const lista = PRODUCTOS.filter(p => {
+    const okCat = categoriaActiva === "Todas" || p.c === categoriaActiva;
+    const okQ = !q || normalizar(p.n + " " + p.c).includes(q);
+    return okCat && okQ;
+  });
+
+  document.getElementById("conteo").textContent =
+    lista.length === 0 ? "" :
+    lista.length === 1 ? "1 parte encontrada" : lista.length + " partes encontradas";
+
+  if (lista.length === 0){
+    document.getElementById("rejilla").innerHTML =
+      '<div class="vacio"><strong>Sin resultados para “' + document.getElementById("q").value.trim() + '”</strong>' +
+      'Escribinos y te conseguimos la parte que necesitás.<br><br>' +
+      '<button class="btn-consulta" style="max-width:260px" onclick="abrirChat()">Consultar por WhatsApp</button></div>';
+    return;
+  }
+
+  document.getElementById("rejilla").innerHTML = lista.map(p => {
+    const bajoPedido = p.p === null;
+    const precio = bajoPedido
+      ? '<div class="precio pedido">Precio bajo consulta</div>'
+      : '<div class="precio">$' + p.p.toFixed(2) + (p.iva ? '<small>+ IVA</small>' : '<small>IVA incluido</small>') + '</div>';
+    const stock = bajoPedido
+      ? '<span class="stock pedido">Bajo pedido</span>'
+      : '<span class="stock hay">' + p.s + ' en stock</span>';
+    const msg = encodeURIComponent("Hola Ecuclima, me interesa: " + p.n);
+    return '<article class="parte">' +
+      '<div class="parte-foto"><img src="img/productos/' + p.f + '" alt="' + p.n + '" loading="lazy" onerror="this.style.display=\'none\'"></div>' +
+      '<div class="parte-cuerpo">' +
+        '<p class="parte-cat">' + p.c + '</p>' +
+        '<h3>' + p.n + '</h3>' +
+        '<div class="parte-pie">' + precio + stock + '</div>' +
+        '<a class="btn-consulta" style="display:block;text-align:center;text-decoration:none" href="https://wa.me/' + WHATSAPP + '?text=' + msg + '" target="_blank" rel="noopener">Consultar</a>' +
+      '</div></article>';
+  }).join("");
+}
+
+function toggleMenu(){ document.getElementById("navMenu").classList.toggle("active"); }
+function abrirChat(){ document.getElementById("chatModal").style.display = "flex"; }
+function cerrarChat(){ document.getElementById("chatModal").style.display = "none"; }
+function enviarWhatsApp(){
+  const msg = document.getElementById("msgInput").value;
+  if (!msg.trim()){ alert("Por favor escribe un mensaje"); return; }
+  window.open("https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(msg), "_blank");
+  cerrarChat();
+  document.getElementById("msgInput").value = "";
+}
+
+document.getElementById("q").addEventListener("input", pintar);
+pintarFiltros();
+pintar();
+</script>
+</body>
+</html>

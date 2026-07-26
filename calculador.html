@@ -1,0 +1,2275 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cálculo de carga térmica — Cámaras de refrigeración</title>
+<style>
+:root{
+  --bg:#0f1419; --panel:#171d26; --panel2:#1e2733; --line:#2b3644;
+  --tx:#e6edf5; --tx2:#95a3b6; --ac:#3fa7ff; --ok:#3ddc97; --wa:#ffb454; --er:#ff6b6b;
+  /* marca Ecuclima — los valores reales se inyectan desde data/marca.json */
+  --br1:#004080; --br1d:#001F3F; --br2:#FF8000; --br2d:#CC6600; --br1c:#E6F2FF;
+}
+@media (prefers-color-scheme: light){
+  :root{--bg:#f4f6f9;--panel:#fff;--panel2:#eef2f7;--line:#d4dbe4;--tx:#16202c;--tx2:#5a6b80;--ac:#0a6ed1;}
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.5 system-ui,"Segoe UI",sans-serif}
+header{background:linear-gradient(100deg,var(--br1d),var(--br1));border-bottom:3px solid var(--br2);
+  padding:12px 20px;display:flex;flex-wrap:wrap;gap:14px;align-items:center;position:sticky;top:0;z-index:20;color:#fff}
+header h1{font-size:16px;margin:0;font-weight:600;letter-spacing:.2px}
+header .sub{color:#b9cee6;font-size:12px}
+header img.logo{height:46px;width:auto;display:block}
+header .brand{display:flex;align-items:center;gap:13px}
+header .bname{font-size:11px;letter-spacing:2.4px;color:var(--br2);font-weight:700;text-transform:uppercase}
+.spacer{flex:1}
+.unit-toggle{display:flex;border:1px solid rgba(255,255,255,.35);border-radius:6px;overflow:hidden}
+.unit-toggle button{background:transparent;color:#cfe0f2;border:0;padding:6px 14px;cursor:pointer;font:inherit}
+.unit-toggle button.on{background:var(--br2);color:#20140a;font-weight:600}
+/* El menú se acomoda en varias líneas antes que esconder pestañas tras un scroll horizontal */
+nav{display:flex;flex-wrap:wrap;gap:0 2px;background:var(--panel);padding:0 20px;
+  border-bottom:1px solid var(--line);position:sticky;top:var(--navtop,85px);z-index:19}
+nav button{background:transparent;border:0;border-bottom:2px solid transparent;color:var(--tx2);padding:11px 16px;cursor:pointer;font:inherit;white-space:nowrap}
+nav button.on{color:var(--ac);border-bottom-color:var(--ac)}
+main{padding:20px;max-width:1180px;margin:0 auto}
+section{display:none} section.on{display:block}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin-bottom:16px}
+.card h2{font-size:13px;text-transform:uppercase;letter-spacing:.8px;color:var(--tx2);margin:0 0 14px}
+.grid{display:grid;gap:12px 16px;grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
+label{display:block;font-size:12px;color:var(--tx2);margin-bottom:4px}
+input,select{width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--tx);border-radius:6px;padding:7px 9px;font:inherit}
+input:focus,select:focus{outline:2px solid var(--ac);outline-offset:-1px}
+/* los campos calculados no se editan: se muestran como dato, no como casilla */
+input[readonly]{background:transparent;border:0;padding:7px 0;color:var(--tx);font-weight:600;
+  font-variant-numeric:tabular-nums;cursor:default}
+input[readonly]:focus{outline:none}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:7px 9px;border-bottom:1px solid var(--line)}
+th{color:var(--tx2);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+/* el nombre del producto se acota para que quepan todas las columnas de carga */
+.prodcol{width:22%;min-width:120px}
+#tb_proddet td:first-child{max-width:190px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.scroll{overflow-x:auto}
+button.act{background:var(--br2);color:#20140a;font-weight:600;border:0;border-radius:6px;padding:8px 16px;cursor:pointer;font:inherit}
+button.act:hover{background:var(--br2d);color:#fff}
+button.gh{background:transparent;color:var(--tx2);border:1px solid var(--line);border-radius:6px;padding:7px 13px;cursor:pointer;font:inherit}
+button.gh:hover{color:var(--tx);border-color:var(--ac)}
+button.del{background:transparent;border:0;color:var(--er);cursor:pointer;font-size:16px;padding:0 6px}
+.kpi{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+.kpi div{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:13px 15px}
+.kpi .lab{font-size:11px;color:var(--tx2);text-transform:uppercase;letter-spacing:.6px}
+.kpi .val{font-size:22px;font-weight:600;font-variant-numeric:tabular-nums;margin-top:3px}
+.kpi .alt{font-size:12px;color:var(--tx2);font-variant-numeric:tabular-nums}
+.bar{height:26px;display:flex;border-radius:5px;overflow:hidden;border:1px solid var(--line)}
+.bar span{display:flex;align-items:center;justify-content:center;font-size:11px;color:#04121e;font-weight:600;min-width:0;overflow:hidden}
+.leg{display:flex;flex-wrap:wrap;gap:14px;margin-top:10px;font-size:12px;color:var(--tx2)}
+.leg i{width:10px;height:10px;border-radius:2px;display:inline-block;margin-right:6px}
+.note{background:var(--panel2);border-left:3px solid var(--wa);padding:9px 13px;border-radius:0 6px 6px 0;font-size:12.5px;color:var(--tx2);margin-top:12px}
+.note.ok{border-left-color:var(--ok)}
+.note.er{border-left-color:var(--er)}
+.warn{color:var(--wa);font-size:11px}
+.pill{display:inline-block;background:var(--panel2);border:1px solid var(--line);border-radius:20px;padding:2px 10px;font-size:11px;color:var(--tx2)}
+/* --- ayuda contextual --- */
+.qm{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;
+  border:1px solid var(--line);color:var(--tx2);font-size:10px;font-weight:700;cursor:pointer;margin-left:5px;
+  vertical-align:middle;background:transparent;padding:0;line-height:1}
+.qm:hover{border-color:var(--ac);color:var(--ac)}
+#drawer{position:fixed;top:0;right:0;width:min(430px,92vw);height:100%;background:var(--panel);
+  border-left:1px solid var(--line);box-shadow:-8px 0 30px rgba(0,0,0,.28);z-index:60;
+  transform:translateX(100%);transition:transform .22s ease;display:flex;flex-direction:column}
+#drawer.on{transform:none}
+#drawer .dh{padding:16px 18px;border-bottom:1px solid var(--line);display:flex;align-items:flex-start;gap:12px}
+#drawer .dh h3{margin:0;font-size:15px;font-weight:600;flex:1}
+#drawer .dc{padding:18px;overflow-y:auto;flex:1;font-size:13.5px;line-height:1.62}
+#drawer .dc p{margin:0 0 14px}
+#drawer .fx{background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:11px 13px;
+  font-family:ui-monospace,Consolas,monospace;font-size:12.5px;margin:0 0 14px;overflow-x:auto}
+#drawer .meta{font-size:11.5px;color:var(--tx2);border-top:1px solid var(--line);padding-top:12px;margin-top:4px}
+#drawer .meta b{color:var(--tx)}
+#scrim{position:fixed;inset:0;background:rgba(0,0,0,.42);z-index:59;display:none}
+#scrim.on{display:block}
+.closeX{background:transparent;border:0;color:var(--tx2);font-size:22px;cursor:pointer;line-height:1;padding:0 2px}
+.closeX:hover{color:var(--tx)}
+/* --- pestaña manual --- */
+.man-sec{margin-bottom:10px}
+.man-sec>summary{cursor:pointer;font-weight:600;padding:12px 14px;background:var(--panel2);
+  border:1px solid var(--line);border-radius:8px;list-style:none;font-size:14px}
+.man-sec>summary::-webkit-details-marker{display:none}
+.man-sec>summary:before{content:"▸ ";color:var(--ac)}
+.man-sec[open]>summary:before{content:"▾ ";color:var(--ac)}
+.man-t{padding:15px 16px 4px 18px;border-left:2px solid var(--line);margin:12px 0 12px 12px}
+.man-t h4{margin:0 0 8px;font-size:13.5px;font-weight:600;color:var(--ac)}
+.man-t p{margin:0 0 12px;font-size:13.5px;line-height:1.62}
+mark{background:var(--wa);color:#04121e;border-radius:2px}
+/* datos de contexto: informativos, no son resultados. Deliberadamente discretos. */
+.mini{display:flex;flex-wrap:wrap;gap:3px 20px;margin-top:13px;font-size:12.5px;color:var(--tx2)}
+.mini span{white-space:nowrap}
+.mini b{color:var(--tx);font-weight:600;font-variant-numeric:tabular-nums}
+.mini i{color:var(--ac);font-style:normal;font-weight:600}
+/* --- ventanas angostas: apretar cabecera y menú, y soltar el pegado para no comerse la pantalla --- */
+@media (max-width:900px){
+  header{padding:10px 14px;gap:10px}
+  header img.logo{height:38px}
+  header h1{font-size:14px}
+  header .sub{display:none}
+  nav{padding:0 10px}
+  nav button{padding:9px 11px;font-size:13px}
+  main{padding:14px}
+}
+@media (max-width:640px){
+  /* El encabezado se va al bajar, pero el menú queda pegado arriba: dos filas de pestañas
+     más la cabecera completa taparían media pantalla, y perder el menú es peor. */
+  header{position:static}
+  nav{top:0}
+  header h1{font-size:13.5px}
+  nav button{padding:8px 8px;font-size:12px}
+  .grid{grid-template-columns:1fr}
+  /* iOS hace zoom al enfocar un campo de menos de 16px, y después la página queda descuadrada */
+  input,select{font-size:16px;padding:9px 10px}
+  input[readonly]{font-size:15px;padding:6px 0}
+  /* el ícono de ayuda necesita superficie para un dedo, sin crecer visualmente */
+  .qm{width:15px;height:15px;padding:12px;background-clip:content-box;position:relative}
+  .qm:after{content:'';position:absolute;inset:-6px}
+  .kpi{grid-template-columns:1fr 1fr;gap:8px}
+  .kpi div{padding:10px 11px}
+  .kpi .val{font-size:18px}
+  main{padding:12px}
+  .card{padding:13px 13px}
+
+  /* La tabla de productos no cabe en un teléfono: cada producto pasa a ser una ficha */
+  #s-productos .card:first-of-type table,
+  #s-productos .card:first-of-type thead{display:block}
+  #s-productos .card:first-of-type thead{display:none}
+  #tb_prod{display:block}
+  #tb_prod tr{display:block;border:1px solid var(--line);border-radius:8px;
+    padding:10px 12px;margin-bottom:10px;background:var(--panel2);position:relative}
+  #tb_prod td{display:flex;align-items:center;justify-content:space-between;gap:12px;
+    border:0;padding:5px 0;text-align:left}
+  #tb_prod td:before{content:attr(data-l);color:var(--tx2);font-size:12px;flex:0 0 auto}
+  #tb_prod td:first-child{display:block;padding-bottom:9px}
+  #tb_prod td:first-child:before{display:block;margin-bottom:4px}
+  #tb_prod td input{width:auto;max-width:150px;text-align:right}
+  #tb_prod td:last-child{position:absolute;top:6px;right:8px;padding:0}
+  #tb_prod td:last-child:before{display:none}
+  #tb_prod button.del{font-size:22px}
+}
+@media (max-width:430px){
+  nav button{padding:7px 6px;font-size:11.5px}
+}
+/* --- guía de uso --- */
+.gp{margin:0 0 12px;font-size:13.5px;line-height:1.65}
+.gsteps{margin:0;padding-left:22px}
+.gsteps li{margin-bottom:11px;font-size:13.5px;line-height:1.65}
+.gsteps li:last-child{margin-bottom:0}
+.gsteps b{color:var(--tx)}
+.gsteps i{font-style:normal;color:var(--ac);font-weight:600}
+#descargo{margin:26px 0 8px;padding:14px 16px;border:1px solid var(--line);border-left:3px solid var(--br2);
+  border-radius:0 8px 8px 0;background:var(--panel);color:var(--tx2);font-size:11.5px;line-height:1.6}
+#descargo b{color:var(--tx)}
+.row-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.muted{color:var(--tx2);font-size:12px}
+/* --- membrete del informe: oculto en pantalla, visible al imprimir --- */
+#report,#reportPie{display:none}
+/* --- impresión / PDF --- */
+@media print{
+  @page{size:A4;margin:14mm 12mm}
+  :root{--bg:#fff;--panel:#fff;--panel2:#f4f6f9;--line:#c8d2de;--tx:#111;--tx2:#555;--ac:#004080}
+  body{background:#fff;color:#111;font-size:11px}
+  #descargo{margin:10px 0 0;padding:7px 9px;border:1px solid #c8d2de;border-left:3px solid #FF8000;
+    background:#fff;color:#444;font-size:8.6px;line-height:1.45;break-inside:avoid}
+  #descargo b{color:#111}
+  header,nav,#drawer,#scrim,.row-actions,.qm,#s-manual,#s-catalogo,#s-dimensionar,#s-guia,#avisoRestaurar,
+  .unit-toggle,#m_q,#btnAddProd,button.del,#dimAcciones{display:none!important}
+  main{padding:0;max-width:none}
+  section{display:block!important;break-inside:auto}
+  .card{border:1px solid #c8d2de;border-radius:6px;padding:9px 11px;margin-bottom:9px;break-inside:avoid;background:#fff}
+  .card h2{color:#004080;font-size:10px;margin-bottom:8px;border-bottom:1px solid #e3e9f1;padding-bottom:4px}
+  input,select{background:#fff;border:1px solid #d5dde7;color:#111;padding:3px 5px;font-size:10.5px;-webkit-appearance:none;appearance:none}
+  input[readonly]{border:0;padding:3px 0;font-weight:700;color:#004080}
+  .kpi div{background:#f4f6f9;border:1px solid #d5dde7;padding:8px 10px}
+  .kpi .val{font-size:15px;color:#004080}
+  table{font-size:10px} th,td{padding:3px 5px}
+  .note{font-size:10px;padding:6px 9px;background:#f7f9fc}
+  #report{display:block;border-bottom:3px solid #FF8000;padding-bottom:9px;margin-bottom:13px}
+  #report .rh{display:flex;align-items:center;gap:14px}
+  #report img{height:62px;width:auto}
+  #report .rt{flex:1}
+  #report .rt h1{margin:0;font-size:16px;color:#004080;font-weight:700}
+  #report .rt .rsub{font-size:10.5px;color:#555;margin-top:2px}
+  #report .rc{font-size:9.5px;color:#555;text-align:right;line-height:1.45}
+  #report .rmeta{margin-top:9px;font-size:10px;color:#333;display:flex;gap:22px;flex-wrap:wrap}
+  #report .rmeta b{color:#004080}
+  #reportPie{display:block;margin-top:14px;padding-top:8px;border-top:1px solid #c8d2de;
+    font-size:8.6px;color:#666;line-height:1.5;break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<style>@media(max-width:760px){#ecuclimaBar .sec{display:none}#ecuclimaBar{gap:1rem;padding:0.55rem 1rem}}</style>
+<div id="ecuclimaBar" style="background:#004080;border-bottom:3px solid #FF8000;padding:0.6rem 1.4rem;display:flex;align-items:center;gap:1.4rem;flex-wrap:wrap;position:sticky;top:0;z-index:9999;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;box-shadow:0 2px 12px rgba(0,0,0,.25)">
+  <a href="index.html" style="display:flex;align-items:center;gap:8px;color:#fff;text-decoration:none;font-weight:700;font-size:.95rem;letter-spacing:-.3px">
+    <img src="logo-ecuclima.png" alt="ECUCLIMA" style="height:30px"> ECUCLIMA
+  </a>
+  <span style="flex:1"></span>
+  <a href="index.html" style="color:#fff;text-decoration:none;font-size:.82rem;font-weight:500;opacity:.95">← Inicio</a>
+  <a href="partes.html" style="color:#fff;text-decoration:none;font-size:.82rem;font-weight:500;opacity:.95">Buscar partes</a>
+  <a class="sec" href="index.html#quienes" style="color:#fff;text-decoration:none;font-size:.82rem;font-weight:500;opacity:.95">Quiénes somos</a>
+  <a class="sec" href="index.html#marcas" style="color:#fff;text-decoration:none;font-size:.82rem;font-weight:500;opacity:.95">Marcas</a>
+  <a href="https://wa.me/593980420996" target="_blank" rel="noopener" style="color:#FF8000;text-decoration:none;font-size:.82rem;font-weight:600">💬 WhatsApp</a>
+</div>
+
+<header>
+  <div class="brand">
+    <img class="logo" id="brLogo" alt="" hidden>
+    <div>
+      <div class="bname" id="brName"></div>
+      <h1>Cálculo de carga térmica — Cámaras de refrigeración</h1>
+      <div class="sub">Método Emerson / ASHRAE · Motor interno en unidades imperiales · Resultados en ambos sistemas</div>
+    </div>
+  </div>
+  <div class="spacer"></div>
+  <div class="unit-toggle" id="unitToggle">
+    <button data-u="si" class="on">Métrico</button>
+    <button data-u="imp">Imperial</button>
+  </div>
+</header>
+
+<nav id="nav">
+  <button data-t="guia" class="on">Cómo se usa</button>
+  <button data-t="dimensionar">Dimensionar</button>
+  <button data-t="camara">Cámara</button>
+  <button data-t="productos">Productos</button>
+  <button data-t="internas">Cargas internas</button>
+  <button data-t="resultados">Resultados</button>
+  <button data-t="energia">Energía y CO₂</button>
+  <button data-t="catalogo">Catálogo</button>
+  <button data-t="manual">Manual</button>
+</nav>
+
+<div id="scrim"></div>
+<aside id="drawer">
+  <div class="dh"><h3 id="dTit"></h3><button class="closeX" id="dClose">×</button></div>
+  <div class="dc" id="dBody"></div>
+</aside>
+
+<main>
+
+<div class="note" id="avisoRestaurar" style="display:none;border-left-color:var(--ac);margin-bottom:16px"></div>
+
+<!-- ============ MEMBRETE DEL INFORME (solo al imprimir) ============ -->
+<div id="report">
+  <div class="rh">
+    <img id="rpLogo" alt="">
+    <div class="rt">
+      <h1>Cálculo de carga térmica</h1>
+      <div class="rsub">Cámara de refrigeración · Método Emerson AE-103 / ASHRAE</div>
+    </div>
+    <div class="rc" id="rpContacto"></div>
+  </div>
+  <div class="rmeta" id="rpMeta"></div>
+</div>
+
+<!-- ============ GUIA DE USO ============ -->
+<section id="s-guia" class="on">
+  <div class="card">
+    <h2>Empieza por aquí</h2>
+    <p class="gp">Esta herramienta calcula la <b>carga térmica</b> de una cámara de refrigeración: cuánto
+      calor hay que sacar y, por lo tanto, qué equipo se necesita. Sirve para <b>anteproyecto</b>: para
+      decidir tamaños, comparar alternativas y cotizar con fundamento. No reemplaza el diseño definitivo
+      ni la selección con el software del fabricante.</p>
+    <div class="row-actions">
+      <button class="act" id="btnEjemplo">Cargar un ejemplo completo</button>
+      <span class="muted">Cámara de brócoli en Ambato a 0,5 °C, con ingreso de 6 t al día. Se llena todo y puedes revisar los resultados.</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Orden de trabajo</h2>
+    <ol class="gsteps">
+      <li><b>¿No sabes qué cámara necesitas?</b> Empieza en <i>Dimensionar</i>: dices producto,
+        toneladas y temperatura, y te propone medidas, espesor de panel y niveles de estiba. El botón
+        <i>Aplicar</i> lo escribe todo en la pestaña siguiente. Si ya tienes las medidas, sáltate este paso.</li>
+      <li><b><i>Cámara</i>.</b> Datos del proyecto, país y ciudad, medidas, temperaturas y panel.
+        Al elegir la ciudad se calculan solas la presión, la temperatura exterior y la humedad.</li>
+      <li><b><i>Productos</i>.</b> Agrega todo lo que conviva en la cámara. Cada producto se calcula por
+        separado: enfriamiento, congelación si la hay, y calor de respiración.
+        <b>Ojo con la masa:</b> se carga la que <b>entra en el día</b>, no la que está almacenada. Una
+        cámara de 25 t que recibe 6 t diarias se calcula con 6.000 kg. Poner las 25 t da la carga de
+        llenarla entera en un día, que es un túnel de preenfriado y no una cámara de conservación.</li>
+      <li><b><i>Cargas internas</i>.</b> Iluminación, motores, personas, apertura de puertas y desescarche.</li>
+      <li><b><i>Resultados</i>.</b> La capacidad requerida, el reparto de cargas, el evaporador, la
+        energía, el CO₂ y el costo estimado de la cámara. Aquí se guarda e imprime.</li>
+      <li><b><i>Energía y CO₂</i>.</b> El detalle del consumo y el comparador de espesor de panel.</li>
+      <li><b><i>Catálogo</i> y <i>Manual</i>.</b> Las tablas completas para consultar, y la guía de cálculo.</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h2>Cuatro cosas que conviene no perderse</h2>
+    <ul class="gsteps">
+      <li><b>El ícono <button class="qm" type="button" id="qmDemo">i</button> que está junto a casi todos los campos.</b>
+        Ábrelo: explica qué es ese dato, en qué fórmula entra, de qué tabla sale y en qué página del manual está.
+        Pruébalo aquí mismo, este de al lado funciona.</li>
+      <li><b>El botón <i>Usar condiciones sugeridas</i></b>, en la pestaña Cámara. Rellena la temperatura
+        exterior, la humedad y la del terreno a partir de la ciudad. Si tienes el dato real de una estación
+        meteorológica cercana, escríbelo a mano: ese siempre manda.</li>
+      <li><b>El conmutador Métrico / Imperial</b>, arriba a la derecha. Convierte todo lo que ya escribiste.
+        Los resultados salen siempre en los dos sistemas.</li>
+      <li><b>No se pierde el trabajo.</b> Se guarda solo en tu navegador y al volver a abrir te ofrece
+        retomar donde quedaste. Igual conviene usar <i>Guardar proyecto</i> para dejar el archivo en la
+        carpeta de la obra.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Qué tiene esto que un calculador corriente no tiene</h2>
+    <ul class="gsteps">
+      <li><b>Corrige por altura.</b> A 2.500 m el aire pesa un cuarto menos, así que la carga por
+        infiltración cae cerca de 26 %. Casi ningún calculador lo hace: en la sierra se sobredimensiona.</li>
+      <li><b>Infiltración por Gosney-Olama</b>, el método que usa ASHRAE hoy, con psicrometría real,
+        en vez de suponer un número de cambios de aire. Y con el efecto de cortinas, puertas rápidas
+        y antecámaras.</li>
+      <li><b>132 productos con sus propiedades térmicas</b>: punto de congelación, calor específico antes
+        y después de congelar, calor latente y calor de respiración. Varios productos conviviendo en la
+        misma cámara, cada uno con su masa, su temperatura de entrada y su plazo.</li>
+      <li><b>Separa pull-down de régimen.</b> La capacidad para bajar el producto que entra no es la misma
+        que mantiene la cámara fría. El compresor se elige por una; el consumo anual lo manda la otra.</li>
+      <li><b>Dice cuánto cuesta operarla:</b> kWh al año, dólares al año y toneladas de CO₂. Y compara
+        espesores de panel con su retorno en años.</li>
+      <li><b>Dimensiona al revés:</b> de toneladas de producto a medidas de cámara, considerando el sistema
+        de almacenamiento y los niveles de estiba.</li>
+      <li><b>Muestra de dónde sale cada número.</b> Tabla y página del manual en cada dato, y las anomalías
+        del original quedan advertidas en vez de corregidas en silencio.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Si estás evaluando esta herramienta</h2>
+    <p class="gp">Nos sirve muchísimo que nos respondas tres cosas concretas:</p>
+    <ol class="gsteps">
+      <li>¿Los resultados cuadran con obras que ya hiciste? Si algo se va lejos, dinos cuál y cuánto.</li>
+      <li>¿Qué campo te sobra, cuál te falta, y qué no se entiende?</li>
+      <li><b>¿Qué producto tuyo no está en el catálogo?</b> Esta es la más importante: el manual base es
+        estadounidense de 1968 y no trae buena parte de lo que se guarda en la región.</li>
+    </ol>
+    <div class="note" id="guiaContacto"></div>
+  </div>
+</section>
+
+<!-- ============ DIMENSIONAR (calculo inverso) ============ -->
+<section id="s-dimensionar">
+  <div class="card">
+    <h2>¿Qué cámara necesito?</h2>
+    <div class="grid">
+      <div><label>Producto a almacenar</label><select id="d_prod"></select></div>
+      <div><label>Cantidad a guardar <span class="u ud"></span></label><input id="d_ton" type="number" step="100" value="25000"></div>
+      <div><label>Temperatura objetivo <span class="u ut"></span></label><input id="d_ti" type="number" step="0.5" value="0"></div>
+      <div><label>Altura interior disponible <span class="u ul"></span></label><input id="d_alto" type="number" step="0.1" value="3.2"></div>
+      <div><label>Forma de estiba</label><select id="d_envase"></select></div>
+      <div><label>Sistema de almacenamiento</label><select id="d_sistema"></select></div>
+      <div><label>Niveles de carga</label><select id="d_niveles"></select></div>
+      <div><label>Proporción largo : ancho</label><select id="d_forma">
+        <option value="1" selected>1 : 1 — cuadrada, el mínimo de muro</option>
+        <option value="1.5">1,5 : 1</option>
+        <option value="2">2 : 1 — alargada</option>
+        <option value="3">3 : 1 — muy alargada</option>
+      </select></div>
+      <div><label>Medidas redondeadas a</label><select id="d_modulo">
+        <option value="1" selected>Metro entero</option>
+        <option value="1.15">Módulo de panel 1,15 m</option>
+        <option value="1.2">Módulo de panel 1,20 m</option>
+        <option value="0.5">Medio metro</option>
+      </select></div>
+    </div>
+    <div class="mini" id="dimDet"></div>
+  </div>
+
+  <div class="card">
+    <h2>Cámara sugerida</h2>
+    <div class="kpi" id="dimKpi"></div>
+    <div class="row-actions" id="dimAcciones">
+      <button class="act" id="btnAplicarDim">Aplicar a la pestaña Cámara</button>
+      <span class="muted">Escribe las dimensiones, el espesor de panel, la temperatura y carga el producto.</span>
+    </div>
+    <div class="note" id="dimNota"></div>
+  </div>
+</section>
+
+<!-- ============ CAMARA ============ -->
+<section id="s-camara">
+  <div class="card">
+    <h2>Proyecto</h2>
+    <div class="grid">
+      <div><label>Nombre del proyecto</label><input id="p_nombre" placeholder="Planta de proceso — cámara de frío"></div>
+      <div><label>Nombre de la cámara</label><input id="c_nombre" placeholder="Cámara N°1 — conservación"></div>
+      <div><label>Cliente</label><input id="p_cliente" placeholder="Nombre del cliente"></div>
+      <div><label>Elaborado por</label><input id="p_autor" placeholder="Nombre del ingeniero"></div>
+    </div>
+    <div class="note">Estos datos y la fecha del día encabezan el informe al imprimir o exportar a PDF.</div>
+  </div>
+
+  <div class="card">
+    <h2>Ubicación y clima del lugar</h2>
+    <div class="grid">
+      <div><label>País</label><select id="g_pais"></select></div>
+      <div><label>Ciudad</label><select id="g_ciudad"></select></div>
+      <div><label>Altitud del sitio (m)</label><input id="g_alt" type="number" step="1" value="2850"></div>
+      <div><label>Emplazamiento</label><select id="g_tipo">
+        <option value="continente">Interior / continente — aire seco</option>
+        <option value="costa">Costa — aire húmedo</option>
+      </select></div>
+      <div><label>Latitud (de la ciudad)</label><input id="g_lat" readonly></div>
+      <input id="g_grad" type="hidden" value="4.5">
+    </div>
+    <div class="mini" id="geoKpi"></div>
+    <div class="row-actions"><button class="act" id="btnUsarClima">Usar condiciones sugeridas</button>
+      <span class="muted">Copia la temperatura exterior y la humedad a los campos de abajo.</span></div>
+    <div class="note" id="geoNota"></div>
+  </div>
+
+  <div class="card">
+    <h2>Dimensiones exteriores</h2>
+    <div class="grid">
+      <div><label>Largo <span class="u ul"></span></label><input id="c_largo" type="number" step="0.01" value="12.19"></div>
+      <div><label>Ancho <span class="u ul"></span></label><input id="c_ancho" type="number" step="0.01" value="3.05"></div>
+      <div><label>Alto <span class="u ul"></span></label><input id="c_alto" type="number" step="0.01" value="2.44"></div>
+      <div><label>Volumen interior</label><input id="c_vol" readonly></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Temperaturas y clima</h2>
+    <div class="grid">
+      <div><label>Temperatura de cámara <span class="u ut"></span></label><input id="c_ti" type="number" step="0.1" value="4.4"></div>
+      <div><label>Temperatura exterior de diseño <span class="u ut"></span></label><input id="c_te" type="number" step="0.1" value="37.8"></div>
+      <div><label>Humedad relativa exterior %</label><input id="c_hr" type="number" step="1" value="50"></div>
+      <div><label>Temperatura bajo el piso <span class="u ut"></span></label><input id="c_tg" type="number" step="0.1" value="12.8"></div>
+      <div><label>Hemisferio</label><select id="c_hemi"><option value="sur">Sur</option><option value="norte">Norte</option></select></div>
+    </div>
+    <div class="mini" id="climaMini"></div>
+    <div class="note">Estos son los valores que <b>manda el cálculo</b>. El bloque de ubicación de arriba solo <i>sugiere</i>: si tienes el dato de una estación meteorológica cercana, escríbelo aquí y prevalece. El criterio del manual es la temperatura superada solo el 1% de las horas de verano.</div>
+    <div class="note"><b>La temperatura bajo el piso no es la exterior, y la diferencia es grande.</b>
+      El aire exterior de diseño es un pico de verano; el suelo bajo el radier es una masa enorme que no
+      sigue ni el vaivén diario ni el de las estaciones, y a un metro de profundidad se queda cerca de la
+      <b>media anual</b> del lugar. Por eso el piso ve un salto térmico mucho menor que los muros: usar la
+      temperatura exterior para el piso infla la carga sin motivo. Solo se aplica si el piso está sobre
+      radier en contacto con el suelo; si la cámara está elevada con aire por debajo, se cambia el selector
+      de Piso y entonces manda la temperatura exterior.</div>
+  </div>
+
+  <div class="card">
+    <h2>Panel aislante</h2>
+    <div class="grid">
+      <div><label>Material</label><select id="c_aisl">
+        <option value="0.16">Poliuretano / poliestireno expandido (k = 0.16)</option>
+        <option value="0.32">Lana de vidrio o lana mineral (k = 0.32)</option>
+        <option value="custom">Otro (ingresar k)</option>
+      </select></div>
+      <div id="wrap_k" style="display:none"><label>k en BTU/(hr·ft²·°F) por pulgada</label><input id="c_k" type="number" step="0.01" value="0.20"></div>
+      <div><label>Espesor de panel <span class="u ue"></span></label><input id="c_esp" type="number" step="1" value="100"></div>
+      <div><label>Factor resultante</label><input id="c_factor" readonly></div>
+      <div><label>Espesor mínimo sugerido</label><input id="c_espmin" readonly></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Exposición solar por superficie</h2>
+    <div class="scroll"><table>
+      <thead><tr><th>Superficie</th><th>Orientación</th><th>Color / acabado</th><th class="n">Área</th><th class="n">TD efectivo</th><th class="n">Carga 24 h</th></tr></thead>
+      <tbody id="tb_sup"></tbody>
+    </table></div>
+    <div class="grid" style="margin-top:14px">
+      <div><label>Piso</label><select id="c_piso">
+        <option value="terreno">Sobre radier en contacto con terreno</option>
+        <option value="exterior">Expuesto a temperatura exterior</option>
+      </select></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRODUCTOS ============ -->
+<section id="s-productos">
+  <div class="card">
+    <h2>Productos en la cámara</h2>
+    <div class="scroll"><table>
+      <thead><tr>
+        <th style="min-width:210px">Producto</th>
+        <th class="n">Masa <span class="u um"></span></th>
+        <th class="n">T entrada <span class="u ut"></span></th>
+        <th class="n">T final <span class="u ut"></span></th>
+        <th class="n">Horas</th>
+        <th class="n">Embalaje %</th>
+        <th class="n">Carga 24 h</th>
+        <th></th>
+      </tr></thead>
+      <tbody id="tb_prod"></tbody>
+    </table></div>
+    <div class="row-actions">
+      <button class="act" id="btnAddProd">Agregar producto</button>
+      <span class="muted" id="prodCount"></span>
+    </div>
+    <div class="note">Se pueden cargar todos los productos que convivan en la misma cámara. Cada uno se calcula por separado, tal como exige el manual: calor sensible sobre congelación, calor latente de congelación, calor sensible bajo congelación y calor de respiración. La columna Horas permite un abatimiento más rápido que 24 h; el embalaje se estima como porcentaje de la masa con calor específico de cartón.</div>
+    <div id="prodWarn"></div>
+  </div>
+
+  <div class="card">
+    <h2>Detalle del cálculo por producto</h2>
+    <div class="scroll"><table>
+      <thead><tr><th class="prodcol">Producto</th><th class="n">Sobre<br>congelación</th><th class="n">Congelación<br>(latente)</th><th class="n">Bajo<br>congelación</th><th class="n">Respiración</th><th class="n">Embalaje</th><th class="n">Total</th></tr></thead>
+      <tbody id="tb_proddet"></tbody>
+    </table></div>
+  </div>
+</section>
+
+<!-- ============ INTERNAS ============ -->
+<section id="s-internas">
+  <div class="card">
+    <h2>Iluminación y resistencias</h2>
+    <div class="grid">
+      <div><label>Potencia instalada (W)</label><input id="i_luzW" type="number" step="1" value="200"></div>
+      <div><label>Horas de uso al día</label><input id="i_luzH" type="number" step="0.5" value="12"></div>
+      <div><label>Carga 24 h</label><input id="i_luzQ" readonly></div>
+    </div>
+    <div class="grid" style="margin-top:12px">
+      <div><label>Nivel de iluminación</label><select id="l_lux">
+        <option value="100">100 lux — almacenamiento, tránsito ocasional</option>
+        <option value="150" selected>150 lux — almacenamiento con lectura de etiquetas</option>
+        <option value="300">300 lux — preparación de pedidos y control</option>
+        <option value="500">500 lux — sala de proceso o despacho</option>
+      </select></div>
+      <div><label>Eficacia de la luminaria (lm/W)</label><input id="l_lm" type="number" step="5" value="120"></div>
+      <div><label>Potencia por luminaria (W)</label><input id="l_pot" type="number" step="5" value="40"></div>
+      <div><label>Potencia sugerida</label><input id="l_sug" readonly></div>
+      <div><label>Luminarias necesarias</label><input id="l_num" readonly></div>
+    </div>
+    <div class="row-actions"><button class="act" id="btnUsarLuz">Usar potencia sugerida</button></div>
+    <div class="note" id="luzNota"></div>
+  </div>
+  <div class="card">
+    <h2>Motores</h2>
+    <div class="grid">
+      <div><label>Potencia total (HP)</label><input id="i_hp" type="number" step="0.01" value="0.5"></div>
+      <div><label>Ubicación</label><select id="i_mcaso">
+        <option value="0">Motor y carga dentro de la cámara (ventiladores de evaporador)</option>
+        <option value="1">Pérdidas del motor fuera, trabajo útil dentro</option>
+        <option value="2">Motor dentro, trabajo útil fuera</option>
+      </select></div>
+      <div><label>Horas de marcha al día</label><input id="i_mh" type="number" step="0.5" value="24"></div>
+      <div><label>Carga 24 h</label><input id="i_mQ" readonly></div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Personas</h2>
+    <div class="grid">
+      <div><label>Número de personas</label><input id="i_pers" type="number" step="1" value="2"></div>
+      <div><label>Horas de permanencia al día</label><input id="i_persH" type="number" step="0.5" value="2"></div>
+      <div><label>Carga 24 h</label><input id="i_persQ" readonly></div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Infiltración por apertura de puertas</h2>
+    <div class="grid">
+      <div><label>Método de cálculo</label><select id="i_metodo">
+        <option value="emerson">Cambios de aire — Emerson, tablas 8 y 9</option>
+        <option value="gosney">Gosney-Olama — ASHRAE, flujo por puerta</option>
+      </select></div>
+      <div><label>Intensidad de uso</label><select id="i_uso">
+        <option value="1">Normal (factor 1.0)</option>
+        <option value="2">Intenso (factor 2.0)</option>
+        <option value="0.6">Almacenamiento prolongado (factor 0.6)</option>
+      </select></div>
+      <div><label>Cambios de aire / 24 h</label><input id="i_cambios" readonly></div>
+      <div><label>Calor por pie cúbico</label><input id="i_btuft3" readonly></div>
+      <div><label>Carga 24 h</label><input id="i_infQ" readonly></div>
+    </div>
+
+    <div id="wrap_gosney" style="display:none">
+      <div class="grid" style="margin-top:14px">
+        <div><label>Ancho de puerta <span class="u ul"></span></label><input id="i_pAncho" type="number" step="0.1" value="1.2"></div>
+        <div><label>Alto de puerta <span class="u ul"></span></label><input id="i_pAlto" type="number" step="0.1" value="2.2"></div>
+        <div><label>Aperturas por día</label><input id="i_pAper" type="number" step="1" value="40"></div>
+        <div><label>Segundos por apertura</label><input id="i_pSeg" type="number" step="1" value="30"></div>
+        <div><label>Minutos al día con puerta abierta</label><input id="i_pMin" type="number" step="1" value="0"></div>
+        <div><label>Protección de la puerta</label><select id="i_pProt"></select></div>
+        <div><label>Humedad relativa en cámara %</label><input id="i_pHRi" type="number" step="1" value="85"></div>
+        <div><label>Aire al otro lado de la puerta</label><select id="i_pLado">
+          <option value="ext">El ambiente exterior de diseño</option>
+          <option value="otro">Otro recinto: sala de proceso, antecámara, andén</option>
+        </select></div>
+        <div id="wrap_pTe" style="display:none"><label>Temperatura de ese aire <span class="u ut"></span></label><input id="i_pTe" type="number" step="0.1" value="18"></div>
+        <div id="wrap_pHRe" style="display:none"><label>Humedad relativa de ese aire %</label><input id="i_pHRe" type="number" step="1" value="60"></div>
+      </div>
+      <div class="mini" id="gosneyDet"></div>
+      <div class="note">Método de Gosney-Olama, el que usa hoy ASHRAE: calcula el intercambio real de aire por la
+        puerta a partir de la diferencia de densidad entre el aire de dentro y el de fuera, en vez de suponer un
+        número de cambios de aire por el volumen. Es sensible a la altura de la puerta y a la humedad, que es
+        donde está el grueso de la carga. La presión barométrica del lugar entra directamente en el cálculo.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Desescarche</h2>
+    <div class="grid">
+      <div><label>Desescarches por día</label><input id="i_deshN" type="number" step="1" value="0"></div>
+      <div><label>Minutos por desescarche</label><input id="i_deshMin" type="number" step="1" value="25"></div>
+      <div><label>Potencia de resistencias (kW)</label><input id="i_deshKW" type="number" step="0.1" value="0"></div>
+      <div><label>Horas de desescarche al día</label><input id="i_deshH" readonly></div>
+      <div><label>Recargo si no conoces las resistencias %</label><input id="i_desh" type="number" step="1" value="0"></div>
+      <div><label>Carga 24 h</label><input id="i_deshQ" readonly></div>
+    </div>
+    <div class="note" id="deshNota"></div>
+    <div class="note">Las horas de desescarche importan dos veces. <b>Suman calor</b>, porque lo que entrega la
+      resistencia termina dentro de la cámara y hay que volver a sacarlo. Y sobre todo <b>son horas en que el
+      equipo no está enfriando</b>: hay que descontarlas de las horas disponibles de operación, o el compresor
+      queda chico. Sobre 0 °C, con desescarche por parada o por aire, la carga es despreciable pero las horas
+      igual se pierden.</div>
+  </div>
+</section>
+
+<!-- ============ RESULTADOS ============ -->
+<section id="s-resultados">
+  <div class="card">
+    <h2>Capacidad requerida</h2>
+    <div class="grid" style="margin-bottom:16px">
+      <div><label>Factor de seguridad %</label><input id="r_fs" type="number" step="1" value="15"></div>
+      <div><label>Horas de operación del compresor</label><input id="r_horas" type="number" step="1" value="16"></div>
+      <div><label>Horas disponibles al día</label><input id="r_hdisp" readonly></div>
+      <div><label>Humedad relativa objetivo en cámara %</label><select id="r_hr">
+        <option value="90">90</option><option value="85">85</option>
+        <option value="80" selected>80</option><option value="75">75</option>
+      </select></div>
+    </div>
+    <div class="kpi" id="kpi"></div>
+    <div class="note" id="regNota"></div>
+  </div>
+
+  <div class="card">
+    <h2>Energía y emisiones</h2>
+    <div class="kpi" id="kpiEner"></div>
+    <div class="note">Resumen. El detalle, los supuestos de COP y el comparador de espesor de panel
+      están en la pestaña <b>Energía y CO₂</b>.</div>
+  </div>
+
+  <div class="card">
+    <h2>Reparto de cargas en 24 horas</h2>
+    <div class="bar" id="bar"></div>
+    <div class="leg" id="leg"></div>
+    <div class="scroll" style="margin-top:16px"><table>
+      <thead><tr><th>Componente</th><th class="n">BTU / 24 h</th><th class="n">kcal / 24 h</th><th class="n">%</th></tr></thead>
+      <tbody id="tb_res"></tbody>
+    </table></div>
+  </div>
+
+  <div class="card">
+    <h2>Selección de compresor</h2>
+    <div id="compOut"></div>
+  </div>
+
+  <div class="card">
+    <h2>Selección de condensador</h2>
+    <div class="grid" style="margin-bottom:14px">
+      <div><label>Tipo de compresor</label><select id="r_tipocomp">
+        <option value="herm">Hermético o semihermético — motor enfriado por el refrigerante</option>
+        <option value="abierto">Abierto — motor externo, su calor no entra al circuito</option>
+      </select></div>
+      <div><label>Rendimiento del motor</label><input id="r_etamot" type="number" step="0.01" value="0.90"></div>
+    </div>
+    <div id="condOut"></div>
+  </div>
+
+  <div class="card">
+    <h2>Selección de evaporador</h2>
+    <div class="grid" style="margin-bottom:14px">
+      <div><label>ΔT del evaporador: aire − refrigerante <span class="u ut2"></span></label>
+        <input id="r_dtevap" type="number" step="0.5" value="6"></div>
+      <div><label>Recomendación del manual</label><input id="r_tdman" readonly></div>
+    </div>
+    <div id="evapOut"></div>
+  </div>
+
+  <div class="card">
+    <h2>Costo estimado de la cámara</h2>
+    <div class="grid">
+      <div><label>Costo del panel (USD/m²)</label><input id="k_panel" type="number" step="0.5"></div>
+      <div><label>Costo del piso (USD/m²)</label><input id="k_piso" type="number" step="0.5" value="55"></div>
+      <div><label>Costo por luminaria (USD)</label><input id="k_lampara" type="number" step="5" value="60"></div>
+    </div>
+    <div class="scroll" style="margin-top:14px"><table>
+      <thead><tr><th>Partida</th><th class="n">Cantidad</th><th class="n">Unitario USD</th><th class="n">Total USD</th></tr></thead>
+      <tbody id="tb_costo"></tbody>
+    </table></div>
+    <div class="note" id="costoNota"></div>
+  </div>
+
+  <div class="card">
+    <h2>Guardar e imprimir</h2>
+    <div class="grid" style="margin-bottom:14px">
+      <div><label>Ubicación de la obra (si difiere de la ciudad)</label><input id="p_lugar"></div>
+    </div>
+    <div class="row-actions">
+      <button class="gh" id="btnSave">Guardar proyecto (.json)</button>
+      <button class="gh" id="btnLoad">Cargar proyecto</button>
+      <button class="gh" id="btnPrint">Imprimir / PDF</button>
+      <input type="file" id="fileLoad" accept=".json" style="display:none">
+    </div>
+  </div>
+</section>
+
+<!-- ============ ENERGIA Y CO2 ============ -->
+<section id="s-energia">
+  <div class="card">
+    <h2>Rendimiento del sistema</h2>
+    <div class="grid">
+      <div><label>Salto térmico del condensador <span class="u ut2"></span></label><input id="e_dtcond" type="number" step="1" value="12"></div>
+      <div><label>Rendimiento respecto de Carnot</label><input id="e_eta" type="number" step="0.01" value="0.55"></div>
+      <div><label>Temperatura de evaporación</label><input id="e_tev" readonly></div>
+      <div><label>Temperatura de condensación</label><input id="e_tco" readonly></div>
+      <div><label>COP estimado</label><input id="e_cop" readonly></div>
+      <div><label>Potencia eléctrica a instalar</label><input id="e_pot" readonly></div>
+    </div>
+    <div class="note">El COP se estima como <b>η · T<sub>ev</sub> / (T<sub>cond</sub> − T<sub>ev</sub>)</b> con temperaturas absolutas. El rendimiento respecto de Carnot recoge el rendimiento isentrópico y las pérdidas del ciclo real; 0,55 es un valor típico de compresor semihermético. Es una estimación de anteproyecto: para cifras firmes hay que usar el software de selección del fabricante.</div>
+  </div>
+
+  <div class="card">
+    <h2>Consumo, costo y emisiones</h2>
+    <div class="grid">
+      <div><label>Costo de la electricidad (USD/kWh)</label><input id="e_costo" type="number" step="0.001" value="0.095"></div>
+      <div><label>Factor de emisión de la red (kg CO₂/kWh)</label><input id="e_co2" type="number" step="0.01" value="0.16"></div>
+      <div><label>Días de operación al año</label><input id="e_dias" type="number" step="1" value="365"></div>
+    </div>
+    <div class="kpi" id="eKpi" style="margin-top:16px"></div>
+    <div class="scroll" style="margin-top:16px"><table>
+      <thead><tr><th>Concepto</th><th class="n">kWh/día</th><th class="n">kWh/año</th><th class="n">USD/año</th><th class="n">t CO₂/año</th></tr></thead>
+      <tbody id="tb_ener"></tbody>
+    </table></div>
+    <div class="note" id="eNota"></div>
+  </div>
+
+  <div class="card">
+    <h2>Refrigerante y huella total</h2>
+    <div class="grid">
+      <div><label>Refrigerante</label><select id="e_ref"></select></div>
+      <div><label>Carga estimada (kg)</label><input id="e_carga" type="number" step="0.5" value="0"></div>
+      <div><label>Tasa de fuga anual %</label><input id="e_fuga" type="number" step="1" value="10"></div>
+      <div><label>GWP a 100 años</label><input id="e_gwp" readonly></div>
+    </div>
+    <div class="mini" id="tewiDet"></div>
+    <div class="note" id="refNota"></div>
+  </div>
+
+  <div class="card">
+    <h2>¿Conviene subir el espesor de panel?</h2>
+    <div class="grid">
+      <div><label>Costo del panel: base (USD/m²)</label><input id="e_pbase" type="number" step="0.5" value="18"></div>
+      <div><label>Costo del panel: por mm (USD/m²·mm)</label><input id="e_pmm" type="number" step="0.01" value="0.22"></div>
+      <div><label>Superficie de envolvente</label><input id="e_area" readonly></div>
+    </div>
+    <div class="scroll" style="margin-top:14px"><table>
+      <thead><tr><th class="n">Espesor</th><th class="n">Carga 24 h</th><th class="n">kWh/año</th><th class="n">USD/año</th>
+        <th class="n">Ahorro USD/año</th><th class="n">Sobrecosto panel</th><th class="n">Retorno</th><th class="n">t CO₂/año</th></tr></thead>
+      <tbody id="tb_esp"></tbody>
+    </table></div>
+    <div class="note">El ahorro se compara contra el espesor que tienes puesto en la pestaña Cámara, marcado en la tabla. Al cambiar el espesor cambia también el volumen interior, así que se recalcula transmisión e infiltración, no solo la transmisión. El retorno simple no descuenta ni considera el alza de la energía: en la práctica el payback real es más corto.</div>
+  </div>
+</section>
+
+<!-- ============ MANUAL ============ -->
+<section id="s-manual">
+  <div class="card">
+    <h2>Guía de cálculo</h2>
+    <div class="muted">Guía de trabajo redactada a partir del método del <i>Emerson Refrigeration Manual Part 3 —
+      The Refrigeration Load</i>. El texto es propio; cada tema indica la página del original donde se trata la materia,
+      para poder contrastarla en la fuente.</div>
+    <div style="margin-top:14px"><input id="m_q" placeholder="Buscar en el manual: infiltración, latente, desescarche, factor de seguridad..."></div>
+    <div id="m_hits" class="muted" style="margin-top:8px"></div>
+  </div>
+  <div id="m_body"></div>
+</section>
+
+<!-- ============ CATALOGO ============ -->
+<section id="s-catalogo">
+  <div class="card">
+    <h2>Consulta de la base de datos</h2>
+    <div class="grid">
+      <div><label>Tabla</label><select id="k_tabla"></select></div>
+      <div><label>Buscar</label><input id="k_q" placeholder="nombre, ciudad, material..."></div>
+    </div>
+    <div id="k_info" class="muted" style="margin-top:10px"></div>
+    <div class="scroll" style="margin-top:12px;max-height:60vh"><table>
+      <thead id="k_head"></thead><tbody id="k_body"></tbody>
+    </table></div>
+  </div>
+</section>
+
+<div id="reportPie"></div>
+
+<footer id="descargo">
+  <b>Herramienta de estimación para anteproyecto.</b>
+  Los resultados dependen enteramente de los datos que ingrese el usuario y de tablas de referencia
+  publicadas, cuya fecha se indica en cada archivo de la base de datos. <b>No constituyen un diseño de
+  ingeniería ni un cálculo definitivo</b>, y no sustituyen la revisión de un profesional que se haga
+  responsable del proyecto. ECUCLIMA no garantiza la exactitud de los resultados ni asume
+  responsabilidad por decisiones de dimensionamiento, compra o inversión tomadas a partir de ellos.
+  Antes de comprar o construir, contraste con las ediciones vigentes de ASHRAE, con los catálogos de
+  los fabricantes y con las condiciones reales del sitio.
+  <span id="descargoContacto"></span>
+</footer>
+
+</main>
+
+<script src="datos.js?v=20260725141146"></script>
+<script>
+/* Si falta datos.js la app quedaba muerta en silencio: sin menús y con los selectores
+   vacíos. Pasa cuando se manda app.html suelto en vez del archivo único. */
+if(typeof CF==='undefined' || !CF || !Object.keys(CF).length){
+  document.body.innerHTML=
+    '<div style="max-width:620px;margin:60px auto;padding:26px 28px;border:1px solid #d4dbe4;'
+   +'border-left:4px solid #FF8000;border-radius:0 10px 10px 0;background:#fff;color:#16202c;'
+   +'font:15px/1.65 system-ui,\'Segoe UI\',sans-serif">'
+   +'<h1 style="margin:0 0 14px;font-size:19px;color:#004080">Falta la base de datos</h1>'
+   +'<p style="margin:0 0 14px">Este archivo es <b>app.html</b>, que no funciona solo: necesita '
+   +'<b>datos.js</b> y la carpeta <b>data/</b> junto a él.</p>'
+   +'<p style="margin:0 0 14px">Si te lo enviaron por correo o WhatsApp, pide el archivo '
+   +'<b>«Calculo camaras de frio.html»</b>, que lleva todo adentro y se abre con doble clic. '
+   +'Se distinguen por el peso: este pesa unos 88 KB y el completo, cerca de 280 KB.</p>'
+   +'<p style="margin:0;color:#5a6b80;font-size:13px">ECUCLIMA · Refrigeración Industrial · '
+   +'info@ecuclima.com · +593 98 042 0996</p></div>';
+  throw new Error('datos.js no se cargó');
+}
+
+/* ============================================================
+   MOTOR DE CALCULO — todo internamente en unidades imperiales
+   ============================================================ */
+var U = 'si';                                   // sistema mostrado
+var M2FT=1/0.3048, KG2LB=1/0.45359237, MM2IN=1/25.4;
+function c2f(c){return c*9/5+32}
+function f2c(f){return (f-32)*5/9}
+function dC2dF(d){return d*9/5}                  // diferencia de temperatura
+var CP_CARTON = 0.324;                           // Tabla 11, Paper
+
+function inLen(v){return U==='si'? v*M2FT : v}          // a ft
+function inMass(v){return U==='si'? v*KG2LB : v}        // a lb
+function inTemp(v){return U==='si'? c2f(v) : v}         // a F
+function inEsp(v){return U==='si'? v*MM2IN : v}         // a in
+function outLen(ft){return U==='si'? ft*0.3048 : ft}
+function nf(x,d){ if(x===null||x===undefined||isNaN(x))return '—';
+  return Number(x).toLocaleString('es-CL',{minimumFractionDigits:d===undefined?0:d,maximumFractionDigits:d===undefined?0:d}); }
+
+/* ---------- interpoladores sobre las tablas ---------- */
+function interp(x,x0,x1,y0,y1){ if(x1===x0)return y0; return y0+(y1-y0)*(x-x0)/(x1-x0); }
+
+function lerpTable(rows, x, ix, iy){          // rows ordenadas por rows[ix]
+  var a=rows.slice().sort(function(p,q){return p[ix]-q[ix]});
+  if(x<=a[0][ix])return a[0][iy];
+  if(x>=a[a.length-1][ix])return a[a.length-1][iy];
+  for(var i=0;i<a.length-1;i++){
+    if(x>=a[i][ix]&&x<=a[i+1][ix]) return interp(x,a[i][ix],a[i+1][ix],a[i][iy],a[i+1][iy]);
+  }
+  return a[0][iy];
+}
+
+// Tabla 8: cambios de aire por volumen. Interpolacion log-log (la relacion es potencial).
+function cambiosAire(volFt3, tempF){
+  var f=CF.aire.tabla8_cambios_aire.filas, col=(tempF>=32)?1:2;
+  var a=f.slice();
+  if(volFt3<=a[0][0])return a[0][col];
+  if(volFt3>=a[a.length-1][0])return a[a.length-1][col];
+  for(var i=0;i<a.length-1;i++){
+    if(volFt3>=a[i][0]&&volFt3<=a[i+1][0]){
+      var t=(Math.log(volFt3)-Math.log(a[i][0]))/(Math.log(a[i+1][0])-Math.log(a[i][0]));
+      return Math.exp(Math.log(a[i][col])+t*(Math.log(a[i+1][col])-Math.log(a[i][col])));
+    }
+  }
+  return a[0][col];
+}
+
+// Tabla 9: BTU por pie cubico segun T camara, T exterior y HR
+function btuPorFt3(tiF, teF, hr){
+  var t9=CF.aire.tabla9_calor_por_pie_cubico;
+  var b = (tiF>=30)? t9.bloque_temperatura_alta : t9.bloque_temperatura_baja;
+  var cols=b.columnas_temp_ext_hr, filas=b.filas;
+  // 1. fila interpolada por temperatura de camara
+  var fila=[];
+  for(var c=1;c<=cols.length;c++) fila.push(lerpTable(filas, tiF, 0, c));
+  // 2. agrupar por temperatura exterior e interpolar en HR
+  var porTe={};
+  cols.forEach(function(p,i){ (porTe[p[0]]=porTe[p[0]]||[]).push([p[1],fila[i]]); });
+  var tes=Object.keys(porTe).map(Number).sort(function(a,b){return a-b});
+  var vals=tes.map(function(te){
+    var pts=porTe[te].sort(function(a,b){return a[0]-b[0]});
+    if(pts.length===1)return pts[0][1];
+    var h=Math.max(pts[0][0],Math.min(pts[pts.length-1][0],hr));   // acotado al rango tabulado
+    return lerpTable(pts.map(function(p){return [p[0],p[1]]}), h, 0, 1);
+  });
+  // 3. interpolar en temperatura exterior
+  var pares=tes.map(function(te,i){return [te,vals[i]]});
+  return lerpTable(pares, teF, 0, 1);
+}
+
+// Tabla 6: grados a sumar al TD por efecto del sol
+function factorSol(color, orient, hemi){
+  if(color==='none'||orient==='sombra')return 0;
+  var f=CF.envolvente.tabla6_efecto_sol.filas;
+  var r = color==='osc'?f[0] : color==='med'?f[1] : f[2];
+  var o=orient;
+  if(hemi==='sur'){ if(o==='N')o='S_sol'; else if(o==='S')o='sombra'; }
+  else { if(o==='S')o='S_sol'; else if(o==='N')o='sombra'; }
+  if(o==='sombra')return 0;
+  if(o==='E')return r[1];
+  if(o==='S_sol')return r[2];
+  if(o==='O')return r[3];
+  if(o==='techo')return r[4];
+  return 0;
+}
+
+// Tabla 16 y 17
+function btuPorHp(hp, caso){
+  var f=CF.internas.tabla16_motores.filas;
+  for(var i=0;i<f.length;i++){ if(hp<=f[i][1]) return f[i][2+caso]; }
+  return f[f.length-1][2+caso];
+}
+function btuPorPersona(tiF){ return lerpTable(CF.internas.tabla17_ocupacion.filas, tiF, 0, 1); }
+
+// Tabla 7: espesor minimo recomendado
+function espesorMinimo(tiF){
+  var f=CF.envolvente.tabla7_espesor_minimo.filas;
+  for(var i=0;i<f.length;i++){ if(tiF>=f[i][0]&&tiF<=f[i][1]) return f[i][3]; }
+  return tiF<-40? 5 : 1;
+}
+
+/* ---------- catalogo unificado de productos ---------- */
+var PRODUCTOS=[];
+['productos_vegetales','productos_carnes','productos_frutas','productos_misc','productos_tropicales'].forEach(function(k){
+  var j=CF[k]; if(!j)return;
+  j.productos.forEach(function(p){ p._cat=j.categoria; PRODUCTOS.push(p); });
+});
+PRODUCTOS.sort(function(a,b){return (a.nombre_es||a.nombre).localeCompare(b.nombre_es||b.nombre)});
+
+/* ---------- grupos de manejo: ordenan el catálogo, no entran en el cálculo ---------- */
+var GRUPOS = CF.grupos || null;
+(function(){
+  if(!GRUPOS){ PRODUCTOS.forEach(function(p){ p._grupo=p._cat; }); return; }
+  var idx={};
+  Object.keys(GRUPOS.asignaciones||{}).forEach(function(g){
+    GRUPOS.asignaciones[g].forEach(function(n){ idx[n]=g; });
+  });
+  PRODUCTOS.forEach(function(p){
+    var n=p.nombre_es||p.nombre;
+    p._grupo = idx[n] || (GRUPOS.por_defecto||{})[p._cat] || p._cat;
+  });
+})();
+function gruposOrdenados(){
+  var orden=(GRUPOS&&GRUPOS.orden)||[], vistos={}, out=[];
+  orden.forEach(function(g){ if(PRODUCTOS.some(function(p){return p._grupo===g})){ out.push(g); vistos[g]=1; } });
+  PRODUCTOS.forEach(function(p){ if(!vistos[p._grupo]){ vistos[p._grupo]=1; out.push(p._grupo); } });
+  return out;
+}
+// Un solo <select> pero agrupado: la lista queda navegable sin agregar otro control
+function opcionesProducto(sel){
+  return gruposOrdenados().map(function(g){
+    var items=PRODUCTOS.map(function(p,i){return {p:p,i:i}}).filter(function(x){return x.p._grupo===g});
+    if(!items.length)return '';
+    return '<optgroup label="'+esc(g)+'">'+items.map(function(x){
+      return '<option value="'+x.i+'"'+(x.i===sel?' selected':'')+'>'
+        +esc(x.p.nombre_es||x.p.nombre)+'</option>';
+    }).join('')+'</optgroup>';
+  }).join('');
+}
+
+var CORR={}; if(CF._correcciones){ CF._correcciones.correcciones.forEach(function(c){ CORR[c.producto]=c; }); }
+
+function val(p,campo){                                  // toma valor, admite rangos min/max
+  if(p[campo]!==undefined&&p[campo]!==null)return p[campo];
+  var a=p[campo+'_min'], b=p[campo+'_max'];
+  if(a!==undefined&&a!==null&&b!==undefined&&b!==null)return (a+b)/2;
+  return null;
+}
+function respiracion(p, tiF){                            // BTU/24h por tonelada
+  var r=p.respiracion||[]; if(!r.length)return 0;
+  var pts=r.map(function(x){return [x.T_F,(x.min+x.max)/2]}).sort(function(a,b){return a[0]-b[0]});
+  if(pts.length===1)return pts[0][1];
+  return lerpTable(pts, tiF, 0, 1);
+}
+
+/* ============================================================
+   ESTADO
+   ============================================================ */
+var SUP=[
+  {id:'m1',nom:'Muro largo A',orient:'N',color:'cla'},
+  {id:'m2',nom:'Muro largo B',orient:'S',color:'cla'},
+  {id:'m3',nom:'Muro corto A',orient:'E',color:'cla'},
+  {id:'m4',nom:'Muro corto B',orient:'O',color:'cla'},
+  {id:'te',nom:'Techo',orient:'techo',color:'cla'},
+  {id:'pi',nom:'Piso',orient:'sombra',color:'none'}
+];
+var FILAS=[];   // productos cargados
+var R={};       // resultados
+
+function el(id){return document.getElementById(id)}
+function v(id){return parseFloat(el(id).value)||0}
+
+/* ---------- render de tablas editables ---------- */
+function renderSup(){
+  var ops={N:'Norte',S:'Sur',E:'Este',O:'Oeste',techo:'Techo',sombra:'Sin sol'};
+  var cols={none:'Sin exposición',cla:'Claro',med:'Medio',osc:'Oscuro'};
+  el('tb_sup').innerHTML=SUP.map(function(s,i){
+    var oo=Object.keys(ops).map(function(k){return '<option value="'+k+'"'+(s.orient===k?' selected':'')+'>'+ops[k]+'</option>'}).join('');
+    var cc=Object.keys(cols).map(function(k){return '<option value="'+k+'"'+(s.color===k?' selected':'')+'>'+cols[k]+'</option>'}).join('');
+    var dis=(s.id==='pi')?' disabled':'';
+    return '<tr><td>'+s.nom+'</td>'
+      +'<td><select data-si="'+i+'" data-f="orient"'+dis+'>'+oo+'</select></td>'
+      +'<td><select data-si="'+i+'" data-f="color"'+dis+'>'+cc+'</select></td>'
+      +'<td class="n" id="sa'+i+'"></td><td class="n" id="st'+i+'"></td><td class="n" id="sq'+i+'"></td></tr>';
+  }).join('');
+  el('tb_sup').querySelectorAll('select').forEach(function(s){
+    s.onchange=function(){ SUP[+this.dataset.si][this.dataset.f]=this.value; calc(); };
+  });
+}
+
+function renderProd(){
+  el('tb_prod').innerHTML=FILAS.map(function(f,i){
+    var um = U==='si'?'kg':'lb', ut = U==='si'?'°C':'°F';
+    return '<tr>'
+    +'<td data-l="Producto"><select data-i="'+i+'" data-f="pi">'+opcionesProducto(f.pi)+'</select></td>'
+    +'<td data-l="Masa ('+um+')"><input class="n" type="number" step="1" data-i="'+i+'" data-f="masa" value="'+f.masa+'"></td>'
+    +'<td data-l="T entrada ('+ut+')"><input class="n" type="number" step="0.1" data-i="'+i+'" data-f="t1" value="'+f.t1+'"></td>'
+    +'<td data-l="T final ('+ut+')"><input class="n" type="number" step="0.1" data-i="'+i+'" data-f="t2" value="'+f.t2+'"></td>'
+    +'<td data-l="Horas"><input class="n" type="number" step="1" data-i="'+i+'" data-f="horas" value="'+f.horas+'"></td>'
+    +'<td data-l="Embalaje %"><input class="n" type="number" step="1" data-i="'+i+'" data-f="emb" value="'+f.emb+'"></td>'
+    +'<td class="n" data-l="Carga 24 h" id="pq'+i+'"></td>'
+    +'<td><button class="del" data-del="'+i+'" title="Quitar">×</button></td></tr>';
+  }).join('');
+  el('tb_prod').querySelectorAll('select,input').forEach(function(x){
+    x.oninput=x.onchange=function(){
+      var f=FILAS[+this.dataset.i];
+      f[this.dataset.f]= this.dataset.f==='pi'? +this.value : (parseFloat(this.value)||0);
+      calc();
+    };
+  });
+  el('tb_prod').querySelectorAll('[data-del]').forEach(function(b){
+    b.onclick=function(){ FILAS.splice(+this.dataset.del,1); renderProd(); calc(); };
+  });
+  var g=U==='si'?'°C':'°F';
+  el('prodCount').innerHTML=FILAS.length+' producto(s) · catálogo de '+PRODUCTOS.length
+    +' &nbsp;·&nbsp; <b>cámara a '+esc(el('c_ti').value)+' '+g+'</b>'
+    +' &nbsp;·&nbsp; exterior '+esc(el('c_te').value)+' '+g;
+  tecladoNumerico();
+}
+
+/* ============================================================
+   CALCULO PRINCIPAL
+   ============================================================ */
+/* Transmisión e infiltración para un espesor cualquiera. Se usa dos veces: para el
+   espesor puesto en la pestaña Cámara, y para cada fila del comparador de espesores. */
+function envolvente(espIn, c, pintar){
+  var Li=Math.max(0.1,c.L-2*espIn/12), Wi=Math.max(0.1,c.W-2*espIn/12), Hi=Math.max(0.1,c.H-2*espIn/12);
+  var volFt3=Li*Wi*Hi;
+  var factor = espIn>0? 24*c.k/espIn : 0;                  // BTU/24h por ft2 por F (Tabla 7A verificada)
+  var areas={m1:c.L*c.H, m2:c.L*c.H, m3:c.W*c.H, m4:c.W*c.H, te:c.L*c.W, pi:c.L*c.W};
+  var areaEnv=0, qTrans=0;
+  SUP.forEach(function(s,i){
+    var A=areas[s.id]; areaEnv+=A;
+    var td, sol=0;
+    if(s.id==='pi'){ td=(c.piso==='terreno'? c.tgF : c.teF)-c.tiF; }
+    else { sol=factorSol(s.color,s.orient,c.hemi); td=(c.teF-c.tiF)+sol; }
+    var q=factor*A*Math.max(0,td);
+    qTrans+=q;
+    if(pintar){
+      var e;
+      e=el('sa'+i); if(e) e.textContent = U==='si'? nf(A*0.092903,1)+' m²' : nf(A,1)+' ft²';
+      e=el('st'+i); if(e) e.textContent = (U==='si'? nf(td*5/9,1)+' °C' : nf(td,1)+' °F') + (sol? ' (+'+(U==='si'?nf(sol*5/9,1):nf(sol,0))+' sol)':'');
+      e=el('sq'+i); if(e) e.textContent = nf(q,0)+' BTU';
+    }
+  });
+  var cambios=cambiosAire(volFt3,c.tiF);
+  var bft3=btuPorFt3(c.tiF,c.teF,c.hr);
+  // La infiltración transporta masa de aire: a menor densidad, menor carga. De ahí el factor de altura.
+  var qInf=volFt3*cambios*c.uso*bft3*c.fdens, G=null;
+  if(c.metodo==='gosney'){ G=infiltracionGosney(c); qInf=G.btu24; }
+  return {volFt3:volFt3,factor:factor,qTrans:qTrans,qInf:qInf,cambios:cambios,bft3:bft3,
+          areaEnv:areaEnv,gosney:G};
+}
+
+function calc(){
+  // --- geometria en ft ---
+  var L=inLen(v('c_largo')), W=inLen(v('c_ancho')), H=inLen(v('c_alto'));
+  var espIn=inEsp(v('c_esp'));
+  var tiF=inTemp(v('c_ti')), teF=inTemp(v('c_te')), tgF=inTemp(v('c_tg')), hr=v('c_hr');
+  var hemi=el('c_hemi').value;
+
+  // --- aislante ---
+  var ksel=el('c_aisl').value;
+  var k = ksel==='custom'? v('c_k') : parseFloat(ksel);
+  el('wrap_k').style.display = ksel==='custom'?'':'none';
+
+  var metodo=el('i_metodo').value;
+  el('wrap_gosney').style.display = metodo==='gosney'?'':'none';
+  var ctx={L:L,W:W,H:H,k:k,tiF:tiF,teF:teF,tgF:tgF,hr:hr,hemi:hemi,
+           piso:el('c_piso').value, uso:parseFloat(el('i_uso').value), fdens:factorDensidad(v('g_alt')),
+           metodo:metodo, presion:presionKPa(v('g_alt')),
+           pA:inLen(v('i_pAncho'))*0.3048, pH:inLen(v('i_pAlto'))*0.3048,   // a metros
+           pAper:v('i_pAper'), pSeg:v('i_pSeg'), pMin:v('i_pMin'),
+           prot:parseFloat(el('i_pProt').value)||0, hri:v('i_pHRi'),
+           pTeF: el('i_pLado').value==='otro'? inTemp(v('i_pTe')) : teF,
+           pHRe: el('i_pLado').value==='otro'? v('i_pHRe') : hr};
+  var otroLado=(el('i_pLado').value==='otro');
+  el('wrap_pTe').style.display=otroLado?'':'none';
+  el('wrap_pHRe').style.display=otroLado?'':'none';
+  var E=envolvente(espIn,ctx,true);
+  var volFt3=E.volFt3, qTrans=E.qTrans, qInf=E.qInf;
+  var LiFt=Math.max(0.1,L-2*espIn/12), WiFt=Math.max(0.1,W-2*espIn/12);
+  var areaPisoFt2=LiFt*WiFt, areaPisoM2=areaPisoFt2*0.092903;
+  if(E.gosney){
+    var G=E.gosney;
+    el('gosneyDet').innerHTML=
+       '<span>Puerta abierta <b>'+nf(G.Dt*100,2)+' %</b> del día</span>'
+      +'<span>Flujo con puerta abierta <b>'+nf(G.q,1)+' kW</b></span>'
+      +'<span>Carga media <i>'+nf(G.kW,2)+' kW</i></span>'
+      +'<span>Reducción por protección <b>'+nf(ctx.prot*100,0)+' %</b></span>'
+      +'<span>Aire que entra a <b>'+(U==='si'? nf(f2c(ctx.pTeF),1)+' °C':nf(ctx.pTeF,1)+' °F')+'</b> y '+nf(ctx.pHRe,0)+' % HR</span>';
+  }
+
+  el('c_vol').value = U==='si'? nf(volFt3*0.0283168,1)+' m³' : nf(volFt3,0)+' ft³';
+  el('c_factor').value = nf(E.factor,3)+' BTU/24h·ft²·°F';
+  var emin=espesorMinimo(tiF);
+  var eminTxt = U==='si'? nf(emin*25.4,0)+' mm' : nf(emin,0)+' in';
+  el('c_espmin').value = eminTxt + (espIn < emin-0.05 ? '  ⚠ insuficiente' : '  ✓');
+
+  // Aviso de clima: el terreno se queda viejo con facilidad si se escribe el exterior a mano
+  var pisoTerreno=(el('c_piso').value==='terreno');
+  var mm=[];
+  if(GEOSUG){
+    var dTe=v('c_te')-(U==='si'? GEOSUG.te : c2f(GEOSUG.te));
+    mm.push('<span>Sugerido para '+esc(LUG.ciudad)+': exterior <b>'
+      +nf(U==='si'? GEOSUG.te : c2f(GEOSUG.te),1)+'°</b>, humedad <b>'+nf(GEOSUG.hr,0)+' %</b></span>');
+    if(Math.abs(dTe)>0.05) mm.push('<span>Estás usando <i>'+(dTe>0?'+':'')+nf(dTe,1)+'°</i> de exterior</span>');
+  }
+  mm.push(pisoTerreno
+    ? '<span>El piso usa la <b>temperatura del terreno</b></span>'
+    : '<span>Piso expuesto: usa la <b>temperatura exterior</b>, el terreno no interviene</span>');
+  el('climaMini').innerHTML=mm.join('');
+  el('c_tg').style.opacity = pisoTerreno? '' : '.45';
+
+  el('i_cambios').value=nf(E.cambios,1);
+  el('i_btuft3').value=nf(E.bft3,2)+' BTU/ft³';
+  // El aviso de altura solo aplica al método de cambios de aire; en Gosney la presión ya entra
+  // por la densidad y la entalpía del aire, no como factor aparte.
+  el('i_infQ').value=nf(qInf,0)+' BTU'
+    +(metodo==='emerson'&&ctx.fdens<0.995? '  (−'+nf((1-ctx.fdens)*100,0)+'% por altura)':'');
+
+  // --- producto ---
+  var qProd=0, qResp=0, det=[], avisos=[], apuro=null;
+  FILAS.forEach(function(f,i){
+    var p=PRODUCTOS[f.pi]; if(!p)return;
+    var Wlb=inMass(f.masa), T1=inTemp(f.t1), T2=inTemp(f.t2);
+    var tf=val(p,'punto_congelacion_F');
+    var cpA=val(p,'cp_sobre'), cpB=val(p,'cp_bajo'), hif=val(p,'latente_fusion');
+    var qs1=0,ql=0,qs2=0,qr=0,qe=0,esp_=false;
+
+    if(tf===null){                                   // sin punto de congelacion: solo sensible
+      if(cpA!==null) qs1=Wlb*cpA*Math.max(0,T1-T2);
+    } else {
+      var Tstop=Math.max(T2,tf);
+      if(cpA!==null&&T1>Tstop) qs1=Wlb*cpA*(T1-Tstop);
+      if(T2<tf){
+        if(hif!==null) ql=Wlb*hif;
+        if(cpB!==null) qs2=Wlb*cpB*(tf-T2);
+      }
+    }
+    qr = (Wlb/2000)*respiracion(p,inTemp(v('c_ti')));   // BTU/24h por tonelada corta
+    // Las flores cortadas no se tabulan por masa sino por superficie de piso ocupada
+    var ce=p.carga_especial;
+    if(ce && /pie cuadrado/i.test(ce.unidad||'')){ qr = ce.valor*areaPisoFt2; esp_=true; }
+    if(f.emb>0 && cpA!==null) qe = Wlb*(f.emb/100)*CP_CARTON*Math.max(0,T1-T2);
+
+    var sub=qs1+ql+qs2+qe;
+    // Ojo: no llamar "esc" a esto, que tapa la función esc() de escape de HTML
+    var escala = (f.horas>0&&f.horas<24)? 24/f.horas : 1;   // llevar el abatimiento a base 24 h
+    var tot=sub*escala+qr;
+    qProd+=tot; qResp+=qr;      // la respiración es carga permanente, no de abatimiento
+    if(f.horas>0 && f.horas<24 && (!apuro || f.horas<apuro.h))
+      apuro={h:f.horas, n:(p.nombre_es||p.nombre), esc:escala};   // el plazo más corto manda el equipo
+    det.push({n:(p.nombre_es||p.nombre),qs1:qs1*escala,ql:ql*escala,qs2:qs2*escala,
+              qr:qr,qe:qe*escala,tot:tot,esp:esp_});
+    var e=el('pq'+i); if(e)e.textContent=nf(tot,0)+' BTU';
+
+    // Una cámara no puede llevar el producto bajo su propia consigna
+    if(T2 < tiF-0.9) avisos.push('<b>'+(p.nombre_es||p.nombre)+'</b>: la temperatura final está por '
+      +'debajo de la de cámara ('+(U==='si'? nf(v('c_ti'),1)+' °C' : nf(tiF,1)+' °F')
+      +'). Una cámara no enfría bajo su consigna: sube la temperatura final o baja la de la cámara.');
+    if(p.punto_congelacion_estimado && T2<tf+2) avisos.push('<b>'+(p.nombre_es||p.nombre)+'</b>: el punto de '
+      +'congelación es una <b>estimación</b>, no un dato publicado, y aquí sí pesa porque el producto se '
+      +'congela. Conviene confirmarlo antes de comprometer equipo.');
+    if(p.respiracion_estimada) avisos.push('<b>'+(p.nombre_es||p.nombre)+'</b>: el calor de respiración está '
+      +'<b>estimado por analogía</b> — '+esc(p.respiracion_analogia||'')+'. Es orden de magnitud, no medida.');
+    // Solo el producto vegetal vivo respira: el pescado y el grano seco no
+    else if(!(p.respiracion||[]).length && !p.carga_especial
+        && ['Frutas','Hortalizas y verduras','Tuberculos y raices'].indexOf(p._grupo)>=0 && p.pct_agua>60)
+      avisos.push('<b>'+(p.nombre_es||p.nombre)+'</b>: sin calor de respiración cargado. En conservación '
+      +'prolongada esa carga puede ser importante y aquí queda subestimada.');
+    if(CORR[p.nombre]) avisos.push('<b>'+(p.nombre_es||p.nombre)+'</b>: '+CORR[p.nombre].fuente);
+    if(cpA===null&&tf!==null) avisos.push('<b>'+(p.nombre_es||p.nombre)+'</b>: el manual no publica calor específico sobre congelación para este producto.');
+  });
+
+  // Un cero se lee como "falta el dato"; un guion dice "no aplica", que es lo que pasa
+  // cuando el producto no se congela o no respira.
+  var cel=function(x){ return '<td class="n">'+(x>0? nf(x,0) : '<span class="muted">—</span>')+'</td>'; };
+  el('tb_proddet').innerHTML = det.length? det.map(function(d){
+    return '<tr><td>'+d.n+(d.esp?' <span class="pill">por superficie</span>':'')+'</td>'
+    +cel(d.qs1)+cel(d.ql)+cel(d.qs2)+cel(d.qr)+cel(d.qe)
+    +'<td class="n"><b>'+nf(d.tot,0)+'</b></td></tr>';
+  }).join('') : '<tr><td colspan="7" class="muted">Sin productos cargados.</td></tr>';
+  el('prodWarn').innerHTML = avisos.length? '<div class="note">'+avisos.join('<br>')+'</div>' : '';
+
+  // --- iluminación sugerida por nivel de lux ---
+  var lux=parseFloat(el('l_lux').value)||150, lmW=Math.max(20,v('l_lm')), potLum=Math.max(1,v('l_pot'));
+  var FU=0.45;                       // utilización por mantenimiento: cámara con racks, poca reflexión
+  var potSug=areaPisoM2*lux/(lmW*FU);
+  var nLum=Math.max(1,Math.ceil(potSug/potLum));
+  el('l_sug').value=nf(potSug,0)+' W';
+  el('l_num').value=nLum+' un · '+nf(nLum*potLum,0)+' W instalados';
+  el('luzNota').innerHTML='Sobre '+nf(areaPisoM2,1)+' m² de piso: potencia = área × lux ÷ (eficacia × 0,45). '
+    +'El 0,45 es el factor de utilización por mantenimiento en cámara, que es bajo porque los racks bloquean '
+    +'el reparto de luz y el polvo y la escarcha ensucian la óptica. El LED gana eficacia en frío, al revés '
+    +'que el fluorescente. La potencia que usa el cálculo térmico es la del campo de arriba: el botón la reemplaza.';
+
+  // --- suplementaria ---
+  var qLuz=v('i_luzW')*v('i_luzH')*3.41;
+  var qMot=v('i_hp')*btuPorHp(v('i_hp'),+el('i_mcaso').value)*v('i_mh');
+  var qPer=v('i_pers')*v('i_persH')*btuPorPersona(tiF);
+  el('i_luzQ').value=nf(qLuz,0)+' BTU'; el('i_mQ').value=nf(qMot,0)+' BTU'; el('i_persQ').value=nf(qPer,0)+' BTU';
+  var qSup=qLuz+qMot+qPer;
+
+  // --- desescarche: aporta calor y, sobre todo, quita horas de operación ---
+  var base4=qTrans+qInf+qProd+qSup;
+  var hDesh=Math.min(12, v('i_deshN')*v('i_deshMin')/60);
+  var kwDesh=v('i_deshKW'), qDesh, porResist=(kwDesh>0 && hDesh>0);
+  if(porResist) qDesh=kwDesh*hDesh*3412.142;          // lo que entrega la resistencia queda en la cámara
+  else          qDesh=base4*v('i_desh')/100;
+  el('i_deshH').value=nf(hDesh,2)+' h';
+  el('i_deshQ').value=nf(qDesh,0)+' BTU';
+  el('deshNota').innerHTML = porResist
+    ? 'Calculado por las <b>resistencias</b>: '+nf(kwDesh,1)+' kW × '+nf(hDesh,2)+' h = '+nf(qDesh,0)
+      +' BTU/24 h. El campo de porcentaje queda ignorado mientras haya potencia de resistencias declarada.'
+    : 'Calculado como <b>porcentaje</b> de la carga, porque no hay potencia de resistencias declarada. '
+      +'ASHRAE estima 5 a 15 % en congelados. Si conoces el kW de las resistencias, escríbelo arriba: '
+      +'el cálculo por potencia real es mucho más firme.';
+
+  // --- totales ---
+  var total=base4+qDesh;
+  var fs=v('r_fs');
+  // Las horas de desescarche no enfrían: salen del denominador
+  var hDisp=Math.max(1, 24-hDesh);
+  var horas=Math.max(1,v('r_horas'));
+  var horasExceso=horas>hDisp;
+  if(horasExceso) horas=hDisp;                        // no se puede pedir más de lo que hay
+  el('r_hdisp').value=nf(hDisp,1)+' h'+(hDesh>0? '  (24 − '+nf(hDesh,2)+' de desescarche)':'')
+    +(horasExceso? '  ⚠ se ajustó a este tope':'');
+  var conFS=total*(1+fs/100);
+  var btuh=conFS/horas;
+  // Régimen: la cámara ya fría, sin abatimiento de producto. Solo respiración del producto.
+  var baseReg=qTrans+qInf+qSup+qResp;
+  var reg=baseReg + (porResist? qDesh : baseReg*v('i_desh')/100);
+  var btuhReg=reg*(1+fs/100)/horas;
+  R={qTrans:qTrans,qInf:qInf,qProd:qProd,qSup:qSup,qDesh:qDesh,qResp:qResp,total:total,
+     conFS:conFS,btuh:btuh,horas:horas,reg:reg,btuhReg:btuhReg,nLum:nLum,
+     hDesh:hDesh,hDisp:hDisp,horasExceso:horasExceso,apuro:apuro,
+     ctx:ctx,espIn:espIn,areaEnv:E.areaEnv,fs:fs,tiF:tiF,teF:teF};
+
+  // KPI
+  el('kpi').innerHTML=
+     kpi('Carga total 24 h', nf(total,0)+' BTU', nf(total*0.252,0)+' kcal')
+    +kpi('Con factor de seguridad', nf(conFS,0)+' BTU', fs+'% adicional')
+    +kpi('Capacidad de pull-down', nf(btuh,0)+' BTU/h', nf(btuh*0.00029307,2)+' kW · '+nf(btuh/12000,2)+' TR')
+    +kpi('Capacidad de régimen', nf(btuhReg,0)+' BTU/h', nf(btuhReg*0.00029307,2)+' kW · '+nf(btuhReg/12000,2)+' TR')
+    +kpi('Volumen interior', (U==='si'? nf(volFt3*0.0283168,1)+' m³':nf(volFt3,0)+' ft³'), 'operación '+horas+' h/día');
+
+  // barra
+  var parts=[['Transmisión',qTrans,'#3fa7ff'],['Infiltración',qInf,'#3ddc97'],['Producto',qProd,'#ffb454'],
+             ['Suplementaria',qSup,'#c792ea'],['Desescarche',qDesh,'#ff8a65']];
+  el('bar').innerHTML=parts.map(function(p){
+    var pc=total>0?p[1]/total*100:0;
+    return '<span style="width:'+pc.toFixed(2)+'%;background:'+p[2]+'">'+(pc>7?pc.toFixed(0)+'%':'')+'</span>';
+  }).join('');
+  el('leg').innerHTML=parts.map(function(p){return '<span><i style="background:'+p[2]+'"></i>'+p[0]+'</span>'}).join('');
+  el('tb_res').innerHTML=parts.map(function(p){
+    var pc=total>0?p[1]/total*100:0;
+    return '<tr><td>'+p[0]+'</td><td class="n">'+nf(p[1],0)+'</td><td class="n">'+nf(p[1]*0.252,0)+'</td><td class="n">'+pc.toFixed(1)+'</td></tr>';
+  }).join('')+'<tr><td><b>Total</b></td><td class="n"><b>'+nf(total,0)+'</b></td><td class="n"><b>'+nf(total*0.252,0)+'</b></td><td class="n"><b>100.0</b></td></tr>';
+
+  // evaporador
+  var hrObj=+el('r_hr').value;
+  var tdRec = tiF<=10? [0,15] : hrObj===90?[8,12] : hrObj===85?[10,14] : hrObj===80?[12,16] : [16,22];
+  // El ΔT lo fija el usuario. El del manual queda a la vista como referencia, no manda.
+  var dtEvapF = U==='si'? dC2dF(v('r_dtevap')) : v('r_dtevap');
+  R.tdRec=tdRec; R.dtEvapF=dtEvapF;
+  el('r_tdman').value = U==='si'? nf(tdRec[0]*5/9,1)+' a '+nf(tdRec[1]*5/9,1)+' °C'
+                                : nf(tdRec[0],0)+' a '+nf(tdRec[1],0)+' °F';
+  var tevapF = tiF - dtEvapF;
+  var hrEsp = dtEvapF<=dC2dF(5)? 90 : dtEvapF<=dC2dF(7)? 85 : dtEvapF<=dC2dF(9)? 80 : 75;
+  el('evapOut').innerHTML='<div class="grid">'
+    +'<div><label>Temperatura de evaporación</label><input readonly value="'
+      +(U==='si'? nf(f2c(tevapF),1)+' °C' : nf(tevapF,1)+' °F')+'"></div>'
+    +'<div><label>Humedad relativa que cabe esperar</label><input readonly value="≈ '+hrEsp+' %"></div>'
+    +'<div><label>Capacidad del evaporador</label><input readonly value="'+nf(btuh,0)+' BTU/h  ·  '+nf(btuh*0.00029307,2)+' kW"></div>'
+    +'</div>'
+    +'<div class="note"><b>Bajar el ΔT es lo que conserva el producto.</b> Con menos diferencia entre el aire '
+    +'y el refrigerante, la batería condensa menos agua, la cámara queda más húmeda y el producto pierde menos '
+    +'peso; además sube la temperatura de evaporación y con ella el COP. El precio es un evaporador más grande. '
+    +'Por eso el valor de fábrica aquí es <b>6 °C</b> y no el del manual de 1968, que llega hasta 12 °C en '
+    +'régimen seco. Para congelados se usan 5 a 7 °C, y para cámaras de producto fresco con humedad alta, 4 a 6 °C.</div>'
+    +'<div class="note"><b>Esto no es el recalentamiento.</b> El ΔT de arriba es la diferencia entre el aire de '
+    +'la cámara y el refrigerante que hierve dentro de la batería, y define el tamaño del evaporador. El '
+    +'recalentamiento es otra cosa: los grados que gana el vapor a la salida del evaporador antes de llegar al '
+    +'compresor, lo fija la válvula de expansión y también anda en 5 a 7 °C. Se confunden porque los números se '
+    +'parecen, pero el recalentamiento no entra en este cálculo de carga.</div>'
+    +'<div class="note">El manual recomienda además seleccionar el compresor para la capacidad requerida entre '
+    +'2 y 3 °F por debajo de la temperatura de evaporación deseada, como reserva por pérdidas de línea.</div>';
+
+  calcEnergia();
+  calcCosto(L,W,H,espIn);
+}
+
+/* ---------- costo referencial de la obra de paneles ---------- */
+function calcCosto(L,W,H,espIn){
+  var AL=CF.almacenamiento, cr=(AL&&AL.costos_referenciales_usd)||{};
+  var mm = espIn*25.4;
+  var sug = (cr.panel_base_m2||18)+(cr.panel_por_mm||0.22)*mm;      // USD/m² para este espesor
+  var pan = el('k_panel');
+  if(pan.value===''){ pan.value=sug.toFixed(1); }                   // se rellena una vez; luego manda el usuario
+  pan.placeholder=sug.toFixed(1);
+
+  var aMuros=2*(L+W)*H*0.092903, aTecho=L*W*0.092903, aPiso=aTecho;  // m²
+  var cPan=v('k_panel')||sug, cPiso=v('k_piso');
+  var nLum=R.nLum||0, cLum=v('k_lampara');
+  var part=[
+    ['Panel de muros', aMuros, 'm²', cPan],
+    ['Panel de techo', aTecho, 'm²', cPan],
+    ['Piso',           aPiso,  'm²', cPiso],
+    ['Iluminación',    nLum,   'un', cLum]
+  ];
+  var tot=part.reduce(function(s,p){return s+p[1]*p[3]},0);
+
+  el('tb_costo').innerHTML=part.map(function(p){
+    return '<tr><td>'+p[0]+'</td><td class="n">'+nf(p[1],p[2]==='un'?0:1)+' '+p[2]+'</td><td class="n">'
+      +nf(p[3],1)+'</td><td class="n">'+nf(p[1]*p[3],0)+'</td></tr>';
+  }).join('')
+   +'<tr><td><b>Total</b></td><td class="n"><b>'+nf(aMuros+aTecho+aPiso,1)+' m² de envolvente</b></td>'
+   +'<td class="n">—</td><td class="n"><b>'+nf(tot,0)+'</b></td></tr>';
+
+  var volM3=R.ctx? R.ctx.L*R.ctx.W*R.ctx.H*0.0283168 : 0;
+  el('costoNota').innerHTML='Referencial para anteproyecto, no es una cotización. '
+    +(volM3>0? '<b>'+nf(tot/volM3,0)+' USD por m³</b> de cámara. ':'')
+    +'El precio del panel se propone como '+nf(cr.panel_base_m2||18,0)+' + '+nf(cr.panel_por_mm||0.22,2)
+    +' × '+nf(mm,0)+' mm = '+nf(sug,1)+' USD/m², pero manda lo que escribas en el campo. '
+    +'Los valores por defecto están en <b>data/almacenamiento.json</b>: cámbialos por los precios reales de Ecuclima.';
+}
+function kpi(l,v1,v2){return '<div><div class="lab">'+l+'</div><div class="val">'+v1+'</div><div class="alt">'+v2+'</div></div>'}
+
+/* ============================================================
+   CATALOGO
+   ============================================================ */
+var TABLAS=[
+  {k:'productos',   n:'Tabla 10 · Productos alimenticios'},
+  {k:'tabla11_solidos', n:'Tabla 11 · Propiedades de sólidos'},
+  {k:'tabla12_liquidos',n:'Tabla 12 · Propiedades de líquidos'},
+  {k:'tabla4_materiales',n:'Tabla 4 · Coeficientes de transmisión'},
+  {k:'tabla5_diseno_exterior',n:'Tabla 5 · Diseño exterior de verano'},
+  {k:'tabla13_almacenamiento',n:'Tabla 13 · Condiciones de almacenamiento'},
+  {k:'tabla14_flores',n:'Tabla 14 · Flores cortadas y vivero'},
+  {k:'tabla15_embalajes',n:'Tabla 15 · Envases, peso y densidad'}
+];
+function initCat(){
+  el('k_tabla').innerHTML=TABLAS.map(function(t){return '<option value="'+t.k+'">'+t.n+'</option>'}).join('');
+  el('k_tabla').onchange=renderCat; el('k_q').oninput=renderCat; renderCat();
+}
+function renderCat(){
+  var k=el('k_tabla').value, q=el('k_q').value.toLowerCase().trim();
+  var cols,rows,info='';
+  if(k==='productos'){
+    cols=['Producto','Nombre original','Grupo','T cong. °F','% agua','cp sobre','cp bajo','Latente BTU/lb'];
+    rows=PRODUCTOS.map(function(p){return [p.nombre_es||p.nombre,p.nombre,p._grupo,
+      val(p,'punto_congelacion_F'),val(p,'pct_agua'),val(p,'cp_sobre'),val(p,'cp_bajo'),val(p,'latente_fusion')]});
+    info='Fuente: Emerson AE-103 R3, páginas 14-1 a 14-3, extraído del ASHRAE Handbook of Fundamentals 1967.';
+  } else {
+    var j=CF[k]; if(!j){el('k_body').innerHTML='';return;}
+    cols=j.columnas; rows=j.filas; info='Fuente: '+j.fuente;
+  }
+  if(q) rows=rows.filter(function(r){return r.join(' ').toLowerCase().indexOf(q)>=0});
+  el('k_info').textContent=info+'  ·  '+rows.length+' registros';
+  el('k_head').innerHTML='<tr>'+cols.map(function(c){return '<th>'+c+'</th>'}).join('')+'</tr>';
+  el('k_body').innerHTML=rows.slice(0,600).map(function(r){
+    return '<tr>'+r.map(function(c){return '<td>'+(c===null||c===undefined?'—':c)+'</td>'}).join('')+'</tr>';
+  }).join('');
+}
+
+/* ============================================================
+   AYUDA CONTEXTUAL
+   ============================================================ */
+var AY = CF.ayuda || {campos:{},bloques:{},manual:[]};
+
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+function abrirAyuda(o){
+  if(!o)return;
+  var h='';
+  if(o.texto)   h+='<p>'+esc(o.texto)+'</p>';
+  if(o.formula) h+='<div class="fx">'+esc(o.formula)+'</div>';
+  var m=[];
+  if(o.tabla)  m.push('Tabla usada: <b>'+esc(o.tabla)+'</b>');
+  if(o.pagina) m.push('Manual, página <b>'+esc(o.pagina)+'</b>');
+  if(m.length) h+='<div class="meta">'+m.join('<br>')+'</div>';
+  el('dTit').textContent=o.titulo||'Ayuda';
+  el('dBody').innerHTML=h;
+  el('drawer').classList.add('on'); el('scrim').classList.add('on');
+}
+function cerrarAyuda(){ el('drawer').classList.remove('on'); el('scrim').classList.remove('on'); }
+el('dClose').onclick=cerrarAyuda; el('scrim').onclick=cerrarAyuda;
+document.addEventListener('keydown',function(e){ if(e.key==='Escape')cerrarAyuda(); });
+
+// Inserta el icono de ayuda en la etiqueta del campo indicado
+function marcarCampo(id, clave){
+  var e=el(id); if(!e)return;
+  var lab=e.previousElementSibling;
+  if(!lab||lab.tagName!=='LABEL'){ var w=e.closest('div'); lab=w?w.querySelector('label'):null; }
+  if(!lab||lab.querySelector('.qm'))return;
+  var o=AY.campos[clave||id]; if(!o)return;
+  var b=document.createElement('button');
+  b.className='qm'; b.type='button'; b.textContent='i';
+  b.title=o.titulo; b.onclick=function(ev){ ev.preventDefault(); abrirAyuda(o); };
+  lab.appendChild(b);
+}
+// Agrega el icono al titulo de una tarjeta, para explicar el bloque completo
+function marcarBloque(sel, clave){
+  var h=document.querySelector(sel); if(!h||h.querySelector('.qm'))return;
+  var o=AY.bloques[clave]; if(!o)return;
+  var b=document.createElement('button');
+  b.className='qm'; b.type='button'; b.textContent='i';
+  b.title=o.titulo; b.onclick=function(){ abrirAyuda(o); };
+  h.appendChild(b);
+}
+function initAyuda(){
+  ['c_largo','c_ti','c_te','c_hr','c_tg','c_aisl','c_esp','c_hemi','c_piso',
+   'i_luzW','i_hp','i_mcaso','i_pers','i_uso','r_fs','r_horas','r_hr'].forEach(function(id){marcarCampo(id)});
+  marcarBloque('#s-camara .card:nth-of-type(4) h2','sol');
+  marcarBloque('#s-productos .card:nth-of-type(1) h2','producto');
+  marcarBloque('#s-internas .card:nth-of-type(4) h2','infiltracion');
+  marcarBloque('#s-resultados .card:nth-of-type(2) h2','transmision');
+  // encabezados de la tabla de productos
+  var th=document.querySelectorAll('#s-productos thead th');
+  [[1,'prod_masa'],[4,'prod_horas'],[5,'prod_emb']].forEach(function(p){
+    var t=th[p[0]], o=AY.campos[p[1]];
+    if(!t||!o||t.querySelector('.qm'))return;
+    var b=document.createElement('button'); b.className='qm'; b.type='button'; b.textContent='i';
+    b.title=o.titulo; b.onclick=function(){abrirAyuda(o)};
+    t.appendChild(b);
+  });
+}
+
+/* ---------- pestaña Manual ---------- */
+function renderManual(){
+  var q=(el('m_q').value||'').toLowerCase().trim();
+  var hits=0;
+  var html=(AY.manual||[]).map(function(s){
+    var temas=s.temas.filter(function(t){
+      if(!q)return true;
+      return (t.titulo+' '+t.texto+' '+(t.formula||'')).toLowerCase().indexOf(q)>=0;
+    });
+    if(!temas.length)return '';
+    hits+=temas.length;
+    var cuerpo=temas.map(function(t){
+      var p=esc(t.texto), ti=esc(t.titulo);
+      if(q){ var re=new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','ig');
+             p=p.replace(re,'<mark>$1</mark>'); ti=ti.replace(re,'<mark>$1</mark>'); }
+      var h='<div class="man-t"><h4>'+ti+'</h4><p>'+p+'</p>';
+      if(t.formula)h+='<div class="fx">'+esc(t.formula)+'</div>';
+      h+='<div class="meta">Manual, página <b>'+esc(t.pagina||'')+'</b></div>';
+      return h+'</div>';
+    }).join('');
+    return '<details class="man-sec card"'+(q?' open':'')+'><summary>'+esc(s.seccion)
+           +'  <span class="pill">'+temas.length+' temas</span></summary>'+cuerpo+'</details>';
+  }).join('');
+  el('m_body').innerHTML = html || '<div class="card muted">Sin resultados para esa búsqueda.</div>';
+  el('m_hits').textContent = q? hits+' tema(s) coinciden con "'+el('m_q').value+'"' : '';
+}
+el('m_q').oninput=renderManual;
+
+/* ============================================================
+   UI
+   ============================================================ */
+document.querySelectorAll('#nav button').forEach(function(b){
+  b.onclick=function(){
+    document.querySelectorAll('#nav button').forEach(function(x){x.classList.remove('on')});
+    document.querySelectorAll('section').forEach(function(x){x.classList.remove('on')});
+    this.classList.add('on'); el('s-'+this.dataset.t).classList.add('on');
+  };
+});
+document.querySelectorAll('#unitToggle button').forEach(function(b){
+  b.onclick=function(){
+    var nuevo=this.dataset.u; if(nuevo===U)return;
+    // convertir los valores visibles al nuevo sistema
+    var lens=['c_largo','c_ancho','c_alto','d_alto','i_pAncho','i_pAlto'], temps=['c_ti','c_te','c_tg','d_ti'];
+    lens.forEach(function(id){ el(id).value=(nuevo==='imp'? v(id)*M2FT : v(id)*0.3048).toFixed(2); });
+    temps.forEach(function(id){ el(id).value=(nuevo==='imp'? c2f(v(id)) : f2c(v(id))).toFixed(1); });
+    el('c_esp').value=(nuevo==='imp'? (v('c_esp')*MM2IN).toFixed(2) : (v('c_esp')*25.4).toFixed(0));
+    el('d_ton').value=(nuevo==='imp'? v('d_ton')*KG2LB : v('d_ton')*0.45359237).toFixed(0);
+    // saltos térmicos: son diferencias, no temperaturas, así que van por 9/5 sin el offset
+    ['r_dtevap','e_dtcond'].forEach(function(id){
+      el(id).value=(nuevo==='imp'? v(id)*9/5 : v(id)*5/9).toFixed(1); });
+    FILAS.forEach(function(f){
+      f.masa=+(nuevo==='imp'? f.masa*KG2LB : f.masa*0.45359237).toFixed(0);
+      f.t1=+(nuevo==='imp'? c2f(f.t1):f2c(f.t1)).toFixed(1);
+      f.t2=+(nuevo==='imp'? c2f(f.t2):f2c(f.t2)).toFixed(1);
+    });
+    U=nuevo;
+    document.querySelectorAll('#unitToggle button').forEach(function(x){x.classList.toggle('on',x.dataset.u===U)});
+    setUnitLabels(); renderProd(); calc();
+  };
+});
+function setUnitLabels(){
+  document.querySelectorAll('.ul').forEach(function(e){e.textContent=U==='si'?'(m)':'(ft)'});
+  document.querySelectorAll('.ut').forEach(function(e){e.textContent=U==='si'?'(°C)':'(°F)'});
+  document.querySelectorAll('.um').forEach(function(e){e.textContent=U==='si'?'(kg)':'(lb)'});
+  document.querySelectorAll('.ue').forEach(function(e){e.textContent=U==='si'?'(mm)':'(in)'});
+  document.querySelectorAll('.ut2').forEach(function(e){e.textContent=U==='si'?'(°C)':'(°F)'});
+  document.querySelectorAll('.ud').forEach(function(e){e.textContent=U==='si'?'(kg)':'(lb)'});
+}
+el('btnUsarLuz').onclick=function(){
+  el('i_luzW').value=Math.round((R.nLum||1)*Math.max(1,v('l_pot')));
+  calc();
+};
+el('btnAddProd').onclick=function(){
+  // El producto nace entrando a la temperatura exterior y terminando a la de cámara, que es
+  // lo normal. Antes nacía con 4 °C fijos, absurdo en una cámara de congelados.
+  var ti=parseFloat(el('c_ti').value), te=parseFloat(el('c_te').value);
+  if(isNaN(ti)) ti = U==='si'?4:39;
+  if(isNaN(te)) te = U==='si'?25:77;
+  FILAS.push({pi:0, masa:(U==='si'?1000:2200), t1:+te.toFixed(1), t2:+ti.toFixed(1), horas:24, emb:0});
+  renderProd(); calc();
+};
+['c_largo','c_ancho','c_alto','c_ti','c_te','c_hr','c_tg','c_esp','c_k','c_aisl','c_hemi','c_piso',
+ 'i_luzW','i_luzH','i_hp','i_mh','i_mcaso','i_pers','i_persH','i_uso','r_fs','r_horas','r_hr','r_dtevap','r_tipocomp','r_etamot',
+ 'e_dtcond','e_eta','e_costo','e_co2','e_dias','e_pbase','e_pmm','e_ref','e_carga','e_fuga',
+ 'i_metodo','i_pAncho','i_pAlto','i_pAper','i_pSeg','i_pMin','i_pProt','i_pHRi','i_desh','i_deshN','i_deshMin','i_deshKW',
+ 'k_panel','k_piso','k_lampara','l_lux','l_lm','l_pot']
+ .forEach(function(id){ var e=el(id); if(e){e.oninput=calc; e.onchange=calc;} });
+
+// El desescarche solo pesa bajo cero. Se propone 10 % al cruzar los 0 °C, salvo que ya lo hayan tocado.
+var deshManual=false;
+el('i_desh').addEventListener('input',function(){deshManual=true});
+el('c_ti').addEventListener('change',function(){
+  if(deshManual)return;
+  var bajoCero=inTemp(v('c_ti'))<32;
+  el('i_desh').value = bajoCero? 10 : 0;
+  el('i_deshN').value = bajoCero? 4 : 0;            // bajo cero hay que desescarchar sí o sí
+  calc();
+});
+
+/* ============================================================
+   PROYECTO: guardar, cargar y autoguardado local
+   ============================================================ */
+var CAMPOS_PROYECTO=[
+  'c_largo','c_ancho','c_alto','c_ti','c_te','c_hr','c_tg','c_esp','c_k','c_aisl','c_hemi','c_piso',
+  'i_luzW','i_luzH','i_hp','i_mh','i_mcaso','i_pers','i_persH','i_uso','r_fs','r_horas','r_hr','r_dtevap','r_tipocomp','r_etamot',
+  'p_nombre','p_cliente','p_lugar','p_autor','c_nombre',
+  'g_pais','g_ciudad','g_alt','g_tipo','g_grad','e_dtcond','e_eta','e_costo','e_co2','e_dias','e_pbase','e_pmm',
+  'e_ref','e_carga','e_fuga','i_metodo','i_pAncho','i_pAlto','i_pAper','i_pSeg','i_pMin','i_pProt','i_pHRi','i_desh','i_deshN','i_deshMin','i_deshKW',
+  'i_pLado','i_pTe','i_pHRe','k_panel','k_piso','k_lampara','l_lux','l_lm','l_pot',
+  'd_prod','d_ton','d_ti','d_alto','d_sistema','d_niveles','d_forma','d_modulo'
+];
+function estadoProyecto(){
+  var p={u:U,sup:SUP,filas:FILAS,campos:{}};
+  CAMPOS_PROYECTO.forEach(function(id){ var e=el(id); if(e)p.campos[id]=e.value; });
+  return p;
+}
+function aplicarProyecto(p){
+  U=p.u||'si'; SUP=p.sup||SUP; FILAS=p.filas||[];
+  Object.keys(p.campos||{}).forEach(function(id){ if(el(id))el(id).value=p.campos[id]; });
+  // la ciudad depende del país, hay que repoblar la lista antes de reponer el valor
+  if(GEO && p.campos && p.campos.g_pais){
+    el('g_pais').value=p.campos.g_pais; llenarCiudades(p.campos.g_pais);
+    el('g_ciudad').value=p.campos.g_ciudad;
+    var r=ciudadSel(); if(r) LUG={pais:r[0],ciudad:r[1],lat:r[2],alt:r[4],tipo:r[5]};
+    ['g_alt','g_tipo','g_grad'].forEach(function(id){
+      if(p.campos[id]!==undefined) el(id).value=p.campos[id]; });
+    pintarGeo();
+    if(p.campos.c_hemi) el('c_hemi').value=p.campos.c_hemi;   // pintarGeo lo deriva de la latitud
+  }
+  if(p.campos && p.campos.d_sistema!==undefined){ llenarNiveles(); el('d_niveles').value=p.campos.d_niveles||'auto'; }
+  document.querySelectorAll('#unitToggle button').forEach(function(x){x.classList.toggle('on',x.dataset.u===U)});
+  setUnitLabels(); renderSup(); renderProd(); llenarEnvases(); calc(); calcDim();
+}
+
+el('btnSave').onclick=function(){
+  var nom=(el('p_nombre').value||'camara').trim().replace(/[^\wáéíóúñÁÉÍÓÚÑ -]/g,'').slice(0,40)||'camara';
+  var b=new Blob([JSON.stringify(estadoProyecto(),null,2)],{type:'application/json'});
+  var a=document.createElement('a'); a.href=URL.createObjectURL(b);
+  a.download=nom+'-'+new Date().toISOString().slice(0,10)+'.json'; a.click();
+  sucio=false; guardarLocal();
+};
+el('btnLoad').onclick=function(){el('fileLoad').click()};
+el('fileLoad').onchange=function(){
+  var f=this.files[0]; if(!f)return; var r=new FileReader();
+  r.onload=function(){
+    try{ aplicarProyecto(JSON.parse(r.result)); sucio=false; guardarLocal(); }
+    catch(e){ alert('Archivo de proyecto no válido.'); }
+  };
+  r.readAsText(f);
+};
+
+/* ---------- autoguardado: nunca sale del navegador del usuario ---------- */
+var CLAVE='ecuclima-camara-v1', sucio=false, tGuardar=null, listoParaGuardar=false;
+function guardarLocal(){
+  if(!listoParaGuardar)return;                    // no pisar la sesión guardada antes de ofrecerla
+  try{ localStorage.setItem(CLAVE, JSON.stringify({fecha:Date.now(), p:estadoProyecto()})); }
+  catch(e){ /* modo privado o cuota llena: se sigue sin autoguardado */ }
+}
+function marcarSucio(e){
+  if(e && e.isTrusted===false)return;             // solo cuenta lo que escribe una persona
+  sucio=true;
+  clearTimeout(tGuardar);
+  tGuardar=setTimeout(guardarLocal,800);          // no escribir en cada tecla
+}
+document.addEventListener('input',marcarSucio,true);
+document.addEventListener('change',marcarSucio,true);
+window.addEventListener('beforeunload',function(e){
+  guardarLocal();
+  if(!sucio)return;
+  e.preventDefault(); e.returnValue='';           // el navegador muestra su propio aviso
+});
+function restaurarLocal(){
+  var raw; try{ raw=localStorage.getItem(CLAVE); }catch(e){ listoParaGuardar=true; return; }
+  var d=null; try{ d=raw? JSON.parse(raw):null; }catch(e){}
+  if(!d||!d.p){ listoParaGuardar=true; return; }   // sin sesión previa, se puede guardar de inmediato
+  var f=new Date(d.fecha||Date.now());
+  var nom=(d.p.campos&&(d.p.campos.p_nombre||d.p.campos.c_nombre))||'';
+  el('avisoRestaurar').innerHTML='<b>Hay una sesión guardada'+(nom?' — '+esc(nom):'')+'</b>, del '
+    +f.toLocaleDateString('es-CL')+' a las '+f.toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit'})+'. '
+    +'<button class="gh" id="btnRestaurar">Retomar donde quedé</button> '
+    +'<button class="gh" id="btnDescartar">Empezar de cero</button>';
+  el('avisoRestaurar').style.display='';
+  el('btnRestaurar').onclick=function(){
+    aplicarProyecto(d.p); el('avisoRestaurar').style.display='none';
+    sucio=false; listoParaGuardar=true;
+  };
+  el('btnDescartar').onclick=function(){
+    try{ localStorage.removeItem(CLAVE); }catch(e){}
+    el('avisoRestaurar').style.display='none';
+    sucio=false; listoParaGuardar=true;
+  };
+}
+/* ============================================================
+   UBICACION Y CLIMA — data/geo.json. Todo por formula, sin tablas climaticas.
+   ============================================================ */
+var GEO = CF.geo || null;
+var LUG = {pais:'Ecuador', ciudad:'Quito', lat:-0.22, alt:2850, tipo:'continente'};
+var GEOSUG = null;
+
+// Atmosfera estandar ISA
+function presionKPa(h){ return 101.325*Math.pow(Math.max(0.01,1-2.25577e-5*h),5.25588); }
+// La carga de infiltracion es proporcional a la densidad del aire, y esta a la presion
+function factorDensidad(h){ return presionKPa(h)/101.325; }
+
+/* La temperatura de diseño sale de la latitud y la altura. Costa o continente NO la modifica:
+   eso solo define la humedad relativa y la amplitud térmica típicas. */
+function tDisenoC(lat, altM, grad){
+  if(!GEO) return null;
+  return lerpTable(GEO.curva_latitud_C, Math.abs(lat), 0, 1) - grad*altM/1000;
+}
+
+function llenarCiudades(pais){
+  var cs=GEO.ciudades.filter(function(c){return c[0]===pais});
+  cs.sort(function(a,b){return a[1].localeCompare(b[1])});
+  el('g_ciudad').innerHTML=cs.map(function(c){return '<option>'+esc(c[1])+'</option>'}).join('');
+}
+function ciudadSel(){
+  var p=el('g_pais').value, c=el('g_ciudad').value;
+  for(var i=0;i<GEO.ciudades.length;i++){
+    var r=GEO.ciudades[i]; if(r[0]===p&&r[1]===c) return r;
+  }
+  return null;
+}
+function aplicarCiudad(){
+  var r=ciudadSel(); if(!r)return;
+  LUG={pais:r[0],ciudad:r[1],lat:r[2],alt:r[4],tipo:r[5]};
+  el('g_alt').value=r[4];
+  el('g_tipo').value=r[5];
+  var pf=(GEO.paises&&GEO.paises[r[0]])||GEO.pais_por_defecto;
+  el('e_costo').value=pf[0]; el('e_co2').value=pf[1];
+  if(el('p_lugar')) el('p_lugar').placeholder=r[1]+', '+r[0];
+  pintarGeo(); calc();
+}
+function pintarGeo(){
+  if(!GEO)return;
+  var alt=v('g_alt'), tipo=el('g_tipo').value, grad=v('g_grad'), lat=LUG.lat;
+  el('g_lat').value = nf(Math.abs(lat),2)+'° '+(lat<0?'S':'N');
+  var P=presionKPa(alt), fd=factorDensidad(alt);
+  var tdis=tDisenoC(lat,alt,grad);
+  var hrs=GEO.humedad_relativa_pct[tipo];
+  var sur=lat<0;
+  el('c_hemi').value = sur?'sur':'norte';
+  GEOSUG={te:tdis,hr:hrs};
+  el('geoKpi').innerHTML=
+     '<span>Presión <b>'+nf(P,1)+' kPa</b></span>'
+    +'<span>Infiltración por altura <i>'+(fd<0.999?'−':'')+nf((1-fd)*100,1)+' %</i></span>'
+    +'<span>T exterior sugerida <b>'+nf(tdis,1)+' °C</b></span>'
+    +'<span>HR sugerida <b>'+nf(hrs,0)+' %</b></span>'
+    +'<span>Hemisferio <b>'+(sur?'sur':'norte')+'</b> · verano '+(sur?'dic–mar':'jun–sep')+'</span>'
+    +'<span>Amplitud diaria ≈ <b>'+nf(GEO.amplitud_termica_C[tipo],0)+' °C</b></span>';
+  el('geoNota').innerHTML='Temperatura estimada por la latitud '+nf(Math.abs(lat),1)+'° y corregida por los '
+    +nf(alt,0)+' m de altura del sitio. El emplazamiento solo define la humedad y la amplitud térmica, '
+    +'no la temperatura. <b>Es una estimación de anteproyecto:</b> si tienes el dato de una estación '
+    +'meteorológica cercana, escríbelo abajo y ese manda.';
+}
+function usarClimaSugerido(){
+  if(!GEOSUG)return;
+  el('c_te').value=(U==='si'? GEOSUG.te : c2f(GEOSUG.te)).toFixed(1);
+  el('c_hr').value=Math.round(GEOSUG.hr);
+  calc();
+}
+function initGeo(){
+  if(!GEO){ el('geoNota').textContent='No se encontró data/geo.json.'; return; }
+  var paises=[];
+  GEO.ciudades.forEach(function(c){ if(paises.indexOf(c[0])<0) paises.push(c[0]); });
+  paises.sort(function(a,b){return a.localeCompare(b)});
+  el('g_pais').innerHTML=paises.map(function(p){
+    return '<option'+(p===LUG.pais?' selected':'')+'>'+esc(p)+'</option>'}).join('');
+  el('g_grad').value=GEO.gradiente_vertical_C_por_km;
+  el('g_pais').onchange=function(){ llenarCiudades(this.value); aplicarCiudad(); };
+  el('g_ciudad').onchange=aplicarCiudad;
+  ['g_alt','g_tipo'].forEach(function(id){
+    el(id).oninput=el(id).onchange=function(){ pintarGeo(); calc(); };
+  });
+  el('btnUsarClima').onclick=usarClimaSugerido;
+  llenarCiudades(LUG.pais);
+  el('g_ciudad').value=LUG.ciudad;
+  aplicarCiudad();
+}
+
+/* ============================================================
+   PSICROMETRIA E INFILTRACION POR GOSNEY-OLAMA (ASHRAE)
+   ============================================================ */
+function pSat(tC){                                   // presion de vapor saturado, kPa (Magnus)
+  return tC>=0 ? 0.61094*Math.exp(17.625*tC/(tC+243.04))    // sobre agua
+               : 0.61115*Math.exp(22.452*tC/(tC+272.55));   // sobre hielo
+}
+function humedadAbs(tC,hrPct,pKPa){                  // kg de agua por kg de aire seco
+  var pw=Math.max(0,Math.min(pKPa*0.99, hrPct/100*pSat(tC)));
+  return 0.62198*pw/(pKPa-pw);
+}
+function entalpia(tC,W){ return 1.006*tC + W*(2501+1.86*tC); }          // kJ/kg aire seco
+function densidadHumeda(tC,W,pKPa){                                      // kg/m3 de mezcla
+  var vol=0.287055*(tC+273.15)*(1+1.6078*W)/pKPa;                        // m3/kg aire seco
+  return (1+W)/vol;
+}
+
+// q = 0.221 A (hi-hr) pr (1 - pi/pr)^0.5 (g H)^0.5 Fm    [kW]  -> devuelve BTU/24 h
+function infiltracionGosney(c){
+  var A=c.pA*c.pH;
+  // El aire que entra por la puerta no siempre es el exterior de diseño: puede venir de una
+  // sala de proceso, un andén techado o una antecámara, que están bastante más frescos.
+  var ti=f2c(c.tiF), te=f2c(c.pTeF), P=c.presion;
+  var Wr=humedadAbs(ti,c.hri,P), Wi=humedadAbs(te,c.pHRe,P);
+  var hR=entalpia(ti,Wr),        hI=entalpia(te,Wi);
+  var dR=densidadHumeda(ti,Wr,P), dI=densidadHumeda(te,Wi,P);
+  if(dR<=dI || hI<=hR) return {q:0,Dt:0,kW:0};                 // sin tiro térmico no hay flujo
+  var Fm=Math.pow(2/(1+Math.pow(dR/dI,1/3)),1.5);
+  var q=0.221*A*(hI-hR)*dR*Math.sqrt(1-dI/dR)*Math.sqrt(9.81*c.pH)*Fm;   // kW con puerta abierta
+  // Dt: fracción del día con la puerta efectivamente abierta
+  var Dt=(c.pAper*c.pSeg + 60*c.pMin)/(3600*24);
+  var Df=0.8;                                                   // factor de flujo de puerta
+  var kW=q*Dt*Df*(1-c.prot);
+  return {q:q, Dt:Dt, kW:kW, btu24:kW*24*3412.142};
+}
+
+/* ============================================================
+   ENERGIA, COSTO Y CO2
+   ============================================================ */
+var BTU2KWH = 0.000293071;
+
+function calcEnergia(){
+  if(!R.total||R.dtEvapF===undefined)return;
+  var eta=v('e_eta')||0.55;
+  var dtcondF = U==='si'? dC2dF(v('e_dtcond')) : v('e_dtcond');
+  var tevF=R.tiF-R.dtEvapF, tcoF=R.teF+dtcondF;
+  var Tev=(tevF+459.67)*5/9, Tco=(tcoF+459.67)*5/9;      // kelvin
+  var cop = Tco>Tev? eta*Tev/(Tco-Tev) : 0;
+
+  el('e_tev').value = U==='si'? nf(f2c(tevF),1)+' °C' : nf(tevF,1)+' °F';
+  el('e_tco').value = U==='si'? nf(f2c(tcoF),1)+' °C' : nf(tcoF,1)+' °F';
+  el('e_cop').value = nf(cop,2);
+  // Potencia eléctrica que hay que tener instalada, no solo la energía anual
+  var kwFrio=R.btuh*0.00029307, kwEje=cop>0? kwFrio/cop : 0;
+  var kwAux=(v('i_luzW')/1000)+v('i_hp')*0.7457;
+  el('e_pot').value=nf(kwEje+kwAux,2)+' kW  ·  compresor '+nf(kwEje,2)+' kW';
+
+  // --- selección de compresor: es lo que hay que pedirle al proveedor ---
+  var tEv = U==='si'? nf(f2c(tevF),1)+' °C' : nf(tevF,1)+' °F';
+  var tCo = U==='si'? nf(f2c(tcoF),1)+' °C' : nf(tcoF,1)+' °F';
+  var av='';
+  if(R.horasExceso) av+='<div class="note er"><b>Pediste más horas de operación de las que hay.</b> Con '
+    +nf(R.hDesh,2)+' h de desescarche solo quedan '+nf(R.hDisp,1)+' h útiles, y el cálculo se ajustó a ese tope. '
+    +'Si necesitas más margen, reduce los desescarches o acepta un compresor mayor.</div>';
+  if(R.apuro) av+='<div class="note"><b>Manda el plazo más corto:</b> '+esc(R.apuro.n)+' en '+nf(R.apuro.h,0)
+    +' h. Esa exigencia multiplica su carga por '+nf(R.apuro.esc,2)+' respecto de hacerlo en 24 h, y es la que '
+    +'define el tamaño del equipo. Si el plazo se puede estirar, el compresor baja de precio en la misma '
+    +'proporción; si no se puede, hay que asumirlo.</div>';
+
+  el('compOut').innerHTML='<div class="kpi" style="margin-bottom:14px">'
+    + kpi('Capacidad a pedir', nf(R.btuh,0)+' BTU/h', nf(R.btuh*0.00029307,2)+' kW · '+nf(R.btuh/12000,2)+' TR')
+    + kpi('En régimen', nf(R.btuhReg,0)+' BTU/h', nf(R.btuhReg*0.00029307,2)+' kW · '+nf(R.btuhReg/12000,2)+' TR')
+    + kpi('Potencia al eje', nf(kwEje,2)+' kW', 'COP '+nf(cop,2))
+    + kpi('Horas de operación', nf(R.horas,1)+' h/día', 'de '+nf(R.hDisp,1)+' h disponibles')
+    +'</div>'
+    +'<div class="mini">'
+    +'<span>Temperatura de evaporación <b>'+tEv+'</b></span>'
+    +'<span>Temperatura de condensación <b>'+tCo+'</b></span>'
+    +'<span>Factor de seguridad incluido <b>'+nf(R.fs,0)+' %</b></span>'
+    +'<span>Desescarche <b>'+nf(R.hDesh,2)+' h/día</b></span>'
+    +'</div>'
+    + av
+    +'<div class="note">Lo que se le pide al proveedor es <b>'+nf(R.btuh,0)+' BTU/h ('+nf(R.btuh*0.00029307,2)
+    +' kW) a '+tEv+' de evaporación y '+tCo+' de condensación</b>. Una capacidad sin sus dos temperaturas no '
+    +'significa nada: el mismo compresor da bastante menos si baja la evaporación o sube la condensación. '
+    +'Conviene seleccionarlo 2 a 3 °F por debajo de la temperatura de evaporación deseada, como reserva por '
+    +'pérdidas de línea.</div>';
+
+  /* --- condensador: bota la carga MÁS el trabajo de compresión ---
+     El factor de rechazo de calor es exacto, 1 + 1/COP, no hay que buscarlo en catálogos.
+     En hermético y semihermético el calor del motor entra al gas de aspiración y también
+     hay que botarlo, así que el COP efectivo baja por el rendimiento del motor. */
+  var tipoComp=el('r_tipocomp').value, etaMot=Math.max(0.5,Math.min(1,v('r_etamot')));
+  var copEfe = tipoComp==='herm'? cop*etaMot : cop;
+  var HRF = copEfe>0? 1+1/copEfe : 1;
+  var qCond = R.btuh*HRF;
+  var refCorto = tipoComp==='herm'? 'hermético o semihermético' : 'abierto';
+  el('condOut').innerHTML='<div class="kpi" style="margin-bottom:14px">'
+    + kpi('Calor a disipar', nf(qCond,0)+' BTU/h', nf(qCond*0.00029307,2)+' kW · '+nf(qCond/12000,2)+' TR')
+    + kpi('Factor de rechazo', nf(HRF,2)+' ×', '+'+nf((HRF-1)*100,0)+' % sobre la carga')
+    + kpi('Trabajo de compresión', nf(qCond-R.btuh,0)+' BTU/h', nf((qCond-R.btuh)*0.00029307,2)+' kW')
+    +'</div>'
+    +'<div class="mini">'
+    +'<span>Condensación a <b>'+tCo+'</b></span>'
+    +'<span>Salto sobre el ambiente <b>'+(U==='si'? nf(v('e_dtcond'),1)+' °C':nf(v('e_dtcond'),1)+' °F')+'</b></span>'
+    +'<span>Compresor <b>'+refCorto+'</b></span>'
+    +'<span>COP efectivo <b>'+nf(copEfe,2)+'</b></span>'
+    +'</div>'
+    +'<div class="note"><b>No es un porcentaje fijo.</b> El condensador tiene que botar la carga de la cámara '
+    +'más el trabajo que le mete el compresor, y eso vale exactamente <b>1 + 1/COP</b>. Con COP 4, propio de '
+    +'media temperatura, da 1,25 — de ahí sale la regla de "25 % más grande". Pero con COP 2, que es lo normal '
+    +'en congelados, da 1,50, y con COP 1,5 llega a 1,67. Aplicar el 25 % a una cámara de congelados deja el '
+    +'condensador corto, sube la presión de condensación y se pierde capacidad justo cuando más falta.</div>'
+    +'<div class="note">Aquí sale <b>'+nf(HRF,2)+'</b>, o sea '+nf((HRF-1)*100,0)+' % sobre la carga. '
+    +(tipoComp==='herm'
+      ? 'Como el compresor es hermético o semihermético, el calor del motor se disipa en el gas de aspiración '
+        +'y también hay que botarlo: por eso el COP efectivo baja de '+nf(cop,2)+' a '+nf(copEfe,2)+'.'
+      : 'Como el compresor es abierto, el calor del motor se va al aire de la sala y no entra al circuito.')
+    +' Pide la capacidad del condensador <b>a '+tCo+' de condensación</b>: un condensador cotizado a otro salto '
+    +'térmico no es comparable.</div>';
+
+  var dias=Math.max(1,v('e_dias')), pc=v('e_costo'), fco=v('e_co2');
+  var kwhComp = cop>0? R.conFS*BTU2KWH/cop : 0;                       // compresor, kWh/día
+  var kwhAux  = v('i_luzW')*v('i_luzH')/1000 + v('i_hp')*0.7457*v('i_mh');
+  var kwhDia  = kwhComp+kwhAux;
+
+  var filas=[['Compresor',kwhComp],['Ventiladores e iluminación',kwhAux],['Total',kwhDia]];
+  el('tb_ener').innerHTML=filas.map(function(f,i){
+    var a=f[1]*dias, b=(i===2)?'<b>':'', c=(i===2)?'</b>':'';
+    return '<tr><td>'+b+f[0]+c+'</td><td class="n">'+b+nf(f[1],1)+c+'</td><td class="n">'+b+nf(a,0)+c
+      +'</td><td class="n">'+b+nf(a*pc,0)+c+'</td><td class="n">'+b+nf(a*fco/1000,2)+c+'</td></tr>';
+  }).join('');
+
+  var kwhAno=kwhDia*dias, volM3=R.ctx? envolvente(R.espIn,R.ctx,false).volFt3*0.0283168 : 0;
+  el('eKpi').innerHTML=
+     kpi('COP estimado', nf(cop,2), 'η '+nf(eta,2)+' respecto de Carnot')
+    +kpi('Consumo anual', nf(kwhAno,0)+' kWh', nf(kwhDia,1)+' kWh/día')
+    +kpi('Costo anual', 'USD '+nf(kwhAno*pc,0), 'a '+nf(pc,3)+' USD/kWh')
+    +kpi('Emisiones', nf(kwhAno*fco/1000,2)+' t CO₂/año', nf(fco,2)+' kg CO₂/kWh')
+    +kpi('Intensidad', volM3>0? nf(kwhAno/volM3,0)+' kWh/m³·año':'—', 'por metro cúbico de cámara');
+  // Resumen en la pestaña Resultados: carga térmica, energía y CO2 juntos
+  el('kpiEner').innerHTML=
+     kpi('Carga térmica', nf(R.btuh,0)+' BTU/h', nf(R.btuh*0.00029307,2)+' kW frigoríficos')
+    +kpi('Consumo eléctrico', nf(kwhAno,0)+' kWh/año', nf(kwhDia,1)+' kWh/día · COP '+nf(cop,2))
+    +kpi('Costo de operación', 'USD '+nf(kwhAno*pc,0)+'/año', 'a '+nf(pc,3)+' USD/kWh')
+    +kpi('Huella de carbono', nf(kwhAno*fco/1000,2)+' t CO₂/año', nf(fco,2)+' kg CO₂/kWh de red');
+  el('regNota').innerHTML='<b>Pull-down</b> es la capacidad para bajar la temperatura del producto que entra '
+    +'en el plazo pedido; <b>régimen</b> es la que sostiene la cámara ya fría, sin abatimiento. El compresor se '
+    +'selecciona por la primera, pero la segunda es la que manda en el consumo anual y en el control de capacidad. '
+    +'Si el pull-down es mucho mayor, conviene escalonar la carga del producto antes que sobredimensionar el equipo.';
+
+  el('eNota').innerHTML='Los ventiladores y la iluminación aparecen dos veces y está bien: '
+    +'su calor ya está dentro de la carga térmica que el compresor debe extraer, y además consumen '
+    +'electricidad por sí mismos. Los factores de costo y emisión vienen precargados por país desde '
+    +'<b>data/geo.json</b> y son orientativos: reemplázalos por la tarifa real del cliente.';
+
+  // --- refrigerante: emisión directa por fugas y TEWI simplificado ---
+  var RF=CF.refrigerantes;
+  if(RF){
+    var ref=RF.filas[+el('e_ref').value]||RF.filas[0];
+    el('e_gwp').value=nf(ref[1],0);
+    var directo=v('e_carga')*ref[1]*(v('e_fuga')/100)/1000;     // t CO2e/año
+    var indirecto=kwhAno*fco/1000;
+    var tewi=directo+indirecto;
+    el('tewiDet').innerHTML=
+       '<span>Directa por fugas <b>'+nf(directo,2)+' t CO₂e/año</b></span>'
+      +'<span>Indirecta por consumo <b>'+nf(indirecto,2)+' t CO₂e/año</b></span>'
+      +'<span>TEWI simplificado <i>'+nf(tewi,2)+' t CO₂e/año</i></span>'
+      +(tewi>0? '<span>La fuga pesa <b>'+nf(directo/tewi*100,0)+' %</b> del total</span>':'');
+    el('refNota').innerHTML='<b>'+esc(ref[0])+'</b> · '+esc(ref[2])+' · '+esc(ref[3])+'. '
+      +'Con GWP '+nf(ref[1],0)+', cada kilo que se fuga equivale a '+nf(ref[1],0)+' kg de CO₂. '
+      +(ref[1]>=2500? 'Está en retirada por el Reglamento F-Gas y la Enmienda de Kigali: no conviene proyectarlo en obra nueva. '
+        : ref[1]>=750? 'Aceptable hoy, pero con restricciones crecientes de cuota. '
+        : 'Baja huella directa: la que manda es la eléctrica, así que el aislamiento y el COP son lo decisivo. ')
+      +esc(RF.nota_fuga||'');
+  }
+
+  comparadorEspesores(cop,dias,pc,fco);
+}
+
+function comparadorEspesores(cop,dias,pc,fco){
+  if(!R.ctx)return;
+  var mmAct = U==='si'? v('c_esp') : v('c_esp')*25.4;
+  var lista=[50,75,100,125,150,200];
+  if(!lista.some(function(m){return Math.abs(m-mmAct)<0.6})) lista.push(Math.round(mmAct));
+  lista.sort(function(a,b){return a-b});
+
+  var areaM2=R.areaEnv*0.092903, pbase=v('e_pbase'), pmm=v('e_pmm');
+  el('e_area').value = U==='si'? nf(areaM2,1)+' m²' : nf(R.areaEnv,0)+' ft²';
+
+  var filas=lista.map(function(mm){
+    var E=envolvente(mm/25.4,R.ctx,false);
+    var conFS=(E.qTrans+E.qInf+R.qProd+R.qSup)*(1+R.fs/100);
+    var kwh=cop>0? conFS*BTU2KWH/cop*dias : 0;
+    return {mm:mm,tot:E.qTrans+E.qInf+R.qProd+R.qSup,kwh:kwh,usd:kwh*pc,
+            co2:kwh*fco/1000,panel:areaM2*(pbase+pmm*mm)};
+  });
+  var act=filas.filter(function(f){return Math.abs(f.mm-mmAct)<0.6})[0]||filas[0];
+
+  el('tb_esp').innerHTML=filas.map(function(f){
+    var esAct=(f===act);
+    var ahorro=act.usd-f.usd, extra=f.panel-act.panel;
+    var ret = (!esAct && ahorro>0 && extra>0)? nf(extra/ahorro,1)+' años'
+            : (!esAct && ahorro>0 && extra<=0)? 'inmediato' : '—';
+    var esp = U==='si'? nf(f.mm,0)+' mm' : nf(f.mm/25.4,1)+' in';
+    return '<tr'+(esAct?' style="background:var(--panel2)"':'')+'>'
+      +'<td class="n">'+(esAct?'<b>'+esp+' ◄</b>':esp)+'</td>'
+      +'<td class="n">'+nf(f.tot,0)+'</td><td class="n">'+nf(f.kwh,0)+'</td><td class="n">'+nf(f.usd,0)+'</td>'
+      +'<td class="n">'+(esAct?'—':(ahorro>0?'+':'')+nf(ahorro,0))+'</td>'
+      +'<td class="n">'+(esAct?'—':(extra>0?'+':'')+nf(extra,0))+'</td>'
+      +'<td class="n">'+ret+'</td><td class="n">'+nf(f.co2,2)+'</td></tr>';
+  }).join('');
+}
+
+/* ============================================================
+   GUIA DE USO Y EJEMPLO CARGADO
+   ============================================================ */
+function irA(t){ var b=document.querySelector('#nav button[data-t="'+t+'"]'); if(b)b.click(); }
+
+// Caso realista: brócoli en Ambato. Elegido a propósito porque el brócoli respira mucho
+// —esa carga se olvida siempre— y Ambato está a 2.577 m, donde se nota la corrección por altura.
+function cargarEjemplo(){
+  var i=PRODUCTOS.findIndex(function(p){return p.nombre.indexOf('Broccoli')===0});
+  if(i<0)i=0;
+  if(U!=='si'){
+    U='si';
+    document.querySelectorAll('#unitToggle button').forEach(function(x){x.classList.toggle('on',x.dataset.u==='si')});
+    setUnitLabels();
+  }
+  el('p_nombre').value='Ejemplo — planta de brócoli de exportación';
+  el('c_nombre').value='Cámara de preenfriado N°1';
+  el('p_cliente').value='Cliente de demostración';
+  if(GEO){
+    el('g_pais').value='Ecuador'; llenarCiudades('Ecuador');
+    el('g_ciudad').value='Ambato'; aplicarCiudad(); usarClimaSugerido();
+  }
+  el('c_largo').value=8; el('c_ancho').value=5; el('c_alto').value=3.5;
+  el('c_esp').value=100; el('c_ti').value=0.5; el('c_piso').value='terreno';
+  el('i_luzW').value=150; el('i_luzH').value=8;
+  el('i_hp').value=1.5;  el('i_mh').value=20;
+  el('i_pers').value=3;  el('i_persH').value=4;
+  el('i_uso').value='2'; el('i_desh').value=0;
+  el('r_horas').value=18;
+  // La masa es la que ENTRA en el día, no la almacenada: 6 t de ingreso diario sobre 25 t en cámara
+  FILAS=[{pi:i, masa:6000, t1:18, t2:0.5, horas:20, emb:8}];
+  el('d_prod').value=i; llenarEnvases();
+  el('d_ton').value=25000; el('d_ti').value=0.5;
+  renderProd(); calcDim(); calc();
+  sucio=true; listoParaGuardar=true; guardarLocal();
+  irA('camara');
+}
+
+function initGuia(){
+  el('btnEjemplo').onclick=cargarEjemplo;
+  // el ícono de demostración abre una ayuda real, la del primer campo que exista
+  var demo=AY.campos&&(AY.campos.c_ti||AY.campos.c_te||AY.campos.c_largo);
+  el('qmDemo').onclick=function(){
+    if(demo) abrirAyuda(demo);
+    else abrirAyuda({titulo:'Ayuda contextual',texto:'Cada campo trae su explicación en este panel.'});
+  };
+  var k=(MARCA&&MARCA.contacto)||{};
+  el('guiaContacto').innerHTML='Escríbele a <b>'+esc(k.responsable||'')+'</b>'
+    +(k.email? ' — <b>'+esc(k.email)+'</b>':'')
+    +(k.telefono? ' o al <b>'+esc(k.telefono)+'</b>':'')+'. Cuéntanos también qué versión probaste: '
+    +'aparece en la fecha del archivo que te enviamos.';
+  // la primera vez se abre en la guía; después, directo a trabajar
+  var visto=false; try{ visto=!!localStorage.getItem('ecuclima-camara-guia'); }catch(e){ visto=true; }
+  if(!visto){ irA('guia'); try{ localStorage.setItem('ecuclima-camara-guia','1'); }catch(e){} }
+}
+
+/* ---------- refrigerantes y protección de puertas ---------- */
+function initRef(){
+  var RF=CF.refrigerantes; if(!RF)return;
+  el('e_ref').innerHTML=RF.filas.map(function(r,i){
+    return '<option value="'+i+'"'+(r[0].indexOf('R-448A')===0?' selected':'')+'>'
+      +esc(r[0])+' — GWP '+nf(r[1],0)+'</option>'}).join('');
+  el('e_fuga').value=RF.tasa_fuga_anual_pct_por_defecto;
+  el('i_pProt').innerHTML=RF.proteccion_puerta.filas.map(function(f){
+    return '<option value="'+f[1]+'">'+esc(f[0])+'</option>'}).join('');
+}
+
+/* ============================================================
+   DIMENSIONAR — cálculo inverso: del producto a la cámara
+   ============================================================ */
+var DIM=null;
+
+// Filas de la Tabla 15 que corresponden al producto elegido. Se busca por el nombre en
+// español, que es como quedó la tabla; el inglés se conserva solo como referencia de origen.
+function envasesDe(p){
+  var t=CF.tabla15_embalajes; if(!t)return [];
+  var claves=[p.nombre_es,p.nombre].filter(Boolean).map(function(s){
+    return s.toLowerCase().split('(')[0].split('/')[0].split(',')[0].trim();
+  });
+  var vistas={};
+  return t.filas.filter(function(f){
+    var m=String(f[0]).toLowerCase();
+    return claves.some(function(n){
+      return n && (m===n || m.indexOf(n)===0 || n.indexOf(m)===0);
+    });
+  }).filter(function(f){                       // sin envases repetidos para el mismo producto
+    var k=f[1]+'|'+f[5]; if(vistas[k])return false; vistas[k]=1; return true;
+  });
+}
+function llenarEnvases(){
+  var p=PRODUCTOS[+el('d_prod').value];
+  var fs=p? envasesDe(p):[];
+  var op=fs.map(function(f){
+    var d=f[5]||f[6];                                   // densidad bruta, si no la neta
+    return d? '<option value="'+d+'">'+esc(f[1])+' — '+nf(d*16.0185,0)+' kg/m³</option>' : '';
+  }).filter(Boolean);
+  if(!op.length) op=['<option value="20">Estimación genérica — 320 kg/m³</option>'];
+  op.push('<option value="12.5">Cajas sueltas apiladas — 200 kg/m³</option>');
+  op.push('<option value="25">Estiba densa en pallet — 400 kg/m³</option>');
+  el('d_envase').innerHTML=op.join('');
+}
+// Los niveles ofrecidos dependen del sistema: apilar en piso no admite los mismos que un rack
+function llenarNiveles(){
+  var AL=CF.almacenamiento; if(!AL)return;
+  var sis=AL.filas[+el('d_sistema').value]||AL.filas[0], nivMax=sis[4], prev=el('d_niveles').value;
+  var op=['<option value="auto">Automático — los que permita la altura</option>'];
+  for(var n=1;n<=nivMax;n++) op.push('<option value="'+n+'">'+n+' nivel'+(n>1?'es':'')+' — altura interior '
+    +nf(n*sis[2]+AL.claro_techo_m,2)+' m</option>');
+  el('d_niveles').innerHTML=op.join('');
+  el('d_niveles').value = (prev&&el('d_niveles').querySelector('option[value="'+prev+'"]'))? prev : 'auto';
+}
+
+function calcDim(){
+  var p=PRODUCTOS[+el('d_prod').value]; if(!p)return;
+  var AL=CF.almacenamiento; if(!AL)return;
+  var sis=AL.filas[+el('d_sistema').value]||AL.filas[0];
+  var ocupPlanta=sis[1], paso=sis[2], altCarga=sis[3], nivMax=sis[4];
+
+  var masaLb = U==='si'? v('d_ton')*2.2046226 : v('d_ton');    // el campo va en kg (o lb en imperial)
+  var dens=parseFloat(el('d_envase').value)||20;              // lb/ft³ del bulto, solo el envase
+  var volEnvFt3=masaLb/dens, volEnvM3=volEnvFt3*0.0283168;
+
+  var altoM=Math.max(2.0, inLen(v('d_alto'))*0.3048);         // altura interior, metros
+  var util=Math.max(0, altoM-AL.claro_techo_m);
+  var modo=el('d_niveles').value, niveles, fijo=(modo!=='auto');
+  if(fijo){
+    // El usuario fija los niveles y la altura de la cámara se ajusta a ellos
+    niveles=Math.max(1,Math.min(nivMax,parseInt(modo,10)||1));
+    var altoNec=niveles*paso+AL.claro_techo_m;
+    if(Math.abs(altoNec-altoM)>0.005){
+      altoM=altoNec; util=altoM-AL.claro_techo_m;
+      el('d_alto').value=(U==='si'? altoM : altoM/0.3048).toFixed(2);
+    }
+  } else {
+    // Los niveles los da la altura disponible dividida por el paso del sistema
+    niveles=Math.max(1,Math.min(nivMax,Math.floor(util/paso)));
+  }
+  var sobra=util-niveles*paso;
+  var faltaM=(!fijo && niveles<nivMax)? (paso-sobra) : 0;      // cuánto falta para un nivel más
+
+  // m³ de envase que cabe por cada m² de piso, con este sistema y esta altura
+  var m3PorM2=ocupPlanta*niveles*altCarga*AL.factor_estiba_en_pallet;
+  var areaM2=volEnvM3/Math.max(0.01,m3PorM2);
+  // Para una misma superficie, el cuadrado es el que deja menos muro y por lo tanto menos carga.
+  var rel=parseFloat(el('d_forma').value)||1;
+  // El ancho, que es la medida menor, se lleva a una cifra redonda —módulo de panel o metro
+  // entero— y el largo absorbe la diferencia. Así queda al menos una medida limpia en obra.
+  var paso=parseFloat(el('d_modulo').value)||1, mod=paso;
+  var WiM=Math.max(paso, Math.round(Math.sqrt(areaM2/rel)/paso)*paso);
+  var LiM=Math.max(WiM, Math.ceil((areaM2/WiM)/paso)*paso);
+  var areaReal=LiM*WiM;
+  var Li=LiM/0.3048, Wi=WiM/0.3048;
+  var areaFt2=areaReal/0.092903;
+  var altoFt=altoM/0.3048, volCam=areaFt2*altoFt;
+  // Muro perimetral: cuánto se paga por no ser cuadrada
+  var muroReal=2*(LiM+WiM)*altoM, muroCuad=4*Math.sqrt(areaReal)*altoM;
+  var penal=muroCuad>0? (muroReal/muroCuad-1)*100 : 0;
+  // Con las medidas ya redondeadas cabe algo más de producto del pedido
+  var capReal=areaReal*m3PorM2/ (volEnvM3/masaLb);            // lb que caben de verdad
+  var tiF=inTemp(v('d_ti'));
+  var espIn=espesorMinimo(tiF);
+  var L=Li+2*espIn/12, W=Wi+2*espIn/12, H=altoFt+2*espIn/12;
+
+  DIM={L:L,W:W,H:H,espIn:espIn,tiF:tiF,masaLb:masaLb,volCam:volCam,areaFt2:areaFt2,niveles:niveles};
+
+  var m=function(ft){return U==='si'? nf(ft*0.3048,2)+' m' : nf(ft,2)+' ft'};
+  var ocupTotal=volEnvM3/(areaReal*altoM);
+  el('dimDet').innerHTML=
+     '<span>Densidad del bulto <b>'+nf(dens*16.0185,0)+' kg/m³</b></span>'
+    +'<span>Volumen de los envases <b>'+nf(volEnvM3,1)+' m³</b></span>'
+    +'<span>Niveles de carga <i>'+niveles+'</i>'+(niveles>=nivMax?' (máximo del sistema)':'')+'</span>'
+    +'<span>Ocupación real del volumen <b>'+nf(ocupTotal*100,0)+' %</b></span>'
+    +'<span>Piso necesario <b>'+nf(areaM2,1)+' m²</b>, resulta <b>'+nf(areaReal,1)+' m²</b></span>'
+    +'<span>Interior <b>'+nf(LiM,2)+' × '+nf(WiM,2)+' m</b> · '+Math.round(LiM/mod)+' × '+Math.round(WiM/mod)+' módulos</span>'
+    +(penal>0.5? '<span>Muro <i>+'+nf(penal,1)+' %</i> respecto de una cuadrada</span>'
+               : '<span>Muro <b>mínimo</b> para esta superficie</span>');
+
+  el('dimKpi').innerHTML=
+     kpi('Dimensiones exteriores', m(L)+' × '+m(W), 'alto '+m(H))
+    +kpi('Volumen interior', (U==='si'? nf(volCam*0.0283168,1)+' m³':nf(volCam,0)+' ft³'), niveles+' nivel(es) de carga')
+    +kpi('Espesor de panel', (U==='si'? nf(espIn*25.4,0)+' mm':nf(espIn,1)+' in'), 'mínimo por Tabla 7')
+    +kpi('Capacidad', nf(U==='si'? capReal*0.45359237 : capReal,0)+(U==='si'?' kg':' lb'),
+         (p.nombre_es||p.nombre)+' · pediste '+nf(U==='si'? masaLb*0.45359237 : masaLb,0)+(U==='si'?' kg':' lb'));
+
+  var aviso='';
+  if(faltaM>0.02) aviso='<br><b>Altura desaprovechada:</b> sobran '+nf(sobra,2)+' m sin usar. '
+    +'Con '+nf(altoM+faltaM,2)+' m interiores entraría un nivel más ('+(niveles+1)+') y la cámara '
+    +'necesitaría alrededor de '+nf(areaM2*niveles/(niveles+1),1)+' m² de piso en vez de '+nf(areaM2,1)+' m².';
+  el('dimNota').innerHTML='<b>Por qué cuadrada:</b> para una misma superficie de piso, el cuadrado es el '
+    +'que deja menos metros de muro, y menos muro es menos carga de transmisión y menos panel que comprar. '
+    +'Una cámara 2:1 tiene alrededor de 6 % más de muro que la cuadrada equivalente. Se sale del cuadrado '
+    +'cuando lo obliga el terreno, la nave existente, el alcance de tiro del evaporador o la trama de '
+    +'pasillos de los racks. El <b>ancho</b> se lleva a una cifra redonda y el <b>largo</b> absorbe la '
+    +'diferencia, para que al menos una medida quede limpia en obra.<br><br><b>'+esc(sis[0])+':</b> '+esc(sis[5])
+    +'<br>La densidad de la Tabla 15 es la del <b>bulto solo</b> —se verificó que es peso bruto sobre volumen '
+    +'geométrico del envase en 80 de 83 filas—, así que no basta para dimensionar: hay que añadir el pallet, los '
+    +'huecos, los pasillos y la estructura. Eso es lo que aporta el sistema de almacenamiento, y por eso los '
+    +'niveles de carga salen de la altura y no se eligen a mano.'+aviso;
+}
+function aplicarDim(){
+  if(!DIM)return;
+  var f=function(ft){return U==='si'? (ft*0.3048).toFixed(2) : ft.toFixed(2)};
+  el('c_largo').value=f(DIM.L); el('c_ancho').value=f(DIM.W); el('c_alto').value=f(DIM.H);
+  el('c_esp').value = U==='si'? Math.round(DIM.espIn*25.4) : DIM.espIn.toFixed(2);
+  el('c_ti').value  = el('d_ti').value;
+  // carga el producto entrando a temperatura ambiente
+  var masa = U==='si'? DIM.masaLb*0.45359237 : DIM.masaLb;
+  FILAS.push({pi:+el('d_prod').value, masa:Math.round(masa),
+              t1:parseFloat(el('c_te').value)||25, t2:parseFloat(el('d_ti').value)||0, horas:24, emb:0});
+  renderProd();
+  document.querySelector('#nav button[data-t="camara"]').click();
+  calc();
+}
+function initDim(){
+  el('d_prod').innerHTML=opcionesProducto(0);
+  var AL=CF.almacenamiento;
+  if(AL) el('d_sistema').innerHTML=AL.filas.map(function(f,i){
+    return '<option value="'+i+'"'+(i===1?' selected':'')+'>'+esc(f[0])+'</option>'}).join('');
+  llenarNiveles();
+  el('d_prod').onchange=function(){ llenarEnvases(); calcDim(); };
+  el('d_sistema').onchange=function(){ llenarNiveles(); calcDim(); };
+  ['d_ton','d_ti','d_alto','d_envase','d_niveles','d_forma','d_modulo'].forEach(function(id){
+    el(id).oninput=el(id).onchange=calcDim; });
+  el('btnAplicarDim').onclick=aplicarDim;
+  llenarEnvases(); calcDim();
+}
+
+/* ============================================================
+   MARCA — data/marca.json
+   ============================================================ */
+var MARCA = CF.marca || null;
+
+function initMarca(){
+  if(!MARCA)return;
+  // colores de marca como variables CSS
+  var c=MARCA.colores||{}, r=document.documentElement.style;
+  if(c.primario)          r.setProperty('--br1', c.primario);
+  if(c.primario_oscuro)   r.setProperty('--br1d',c.primario_oscuro);
+  if(c.secundario)        r.setProperty('--br2', c.secundario);
+  if(c.secundario_oscuro) r.setProperty('--br2d',c.secundario_oscuro);
+  if(c.primario_claro)    r.setProperty('--br1c',c.primario_claro);
+
+  var e=MARCA.empresa||{}, k=MARCA.contacto||{};
+  if(MARCA.logo_png_base64){
+    el('brLogo').src=MARCA.logo_png_base64; el('brLogo').hidden=false;
+    el('brLogo').alt=e.nombre||''; el('rpLogo').src=MARCA.logo_png_base64;
+  }
+  el('brName').textContent = [e.nombre,e.descriptor].filter(Boolean).join(' · ');
+  document.title = (e.nombre? e.nombre+' — ':'')+'Cálculo de carga térmica';
+
+  el('rpContacto').innerHTML = [
+    '<b>'+esc(e.nombre||'')+'</b>', esc(e.descriptor||''),
+    esc(k.direccion||''), esc([k.telefono,k.email].filter(Boolean).join(' · ')),
+    esc(e.sitio||'')
+  ].filter(function(x){return x&&x!=='<b></b>'}).join('<br>');
+
+  el('descargoContacto').innerHTML = (k.telefono||k.email)
+    ? ' Ante cualquier duda, consúltenos: '+esc([k.telefono,k.email].filter(Boolean).join(' · '))+'.' : '';
+  el('reportPie').innerHTML = esc(MARCA.pie||'')
+    + '<br>Fuente de las tablas: Emerson Climate Technologies, <i>Refrigeration Manual Part 3</i>, Form AE-103 R3 © 1968, '
+    + 'con tablas reproducidas de los ASHRAE Handbook of Fundamentals 1967/1981 y ASHRAE Guide &amp; Data Book 1965-1967.'
+    + (e.eslogan? '<br><b>'+esc(e.eslogan)+'</b>' : '');
+}
+
+// En el teléfono conviene el teclado numérico con punto decimal, no el alfabético
+function tecladoNumerico(){
+  document.querySelectorAll('input[type=number]').forEach(function(e){
+    if(!e.getAttribute('inputmode')) e.setAttribute('inputmode','decimal');
+  });
+}
+
+// La barra de pestañas se pega justo debajo del encabezado, que cambia de alto al envolver
+function ajustarNav(){
+  var h=document.querySelector('header');
+  if(h) document.documentElement.style.setProperty('--navtop', h.offsetHeight+'px');
+}
+window.addEventListener('resize',ajustarNav);
+
+// Rellena la línea de datos del proyecto justo antes de imprimir
+function actualizarMembrete(){
+  var f=[['Proyecto','p_nombre'],['Cámara','c_nombre'],['Cliente','p_cliente'],['Elaborado por','p_autor']]
+    .map(function(p){ var t=(el(p[1]).value||'').trim(); return t? '<span><b>'+p[0]+':</b> '+esc(t)+'</span>' : ''; })
+    .filter(Boolean);
+  var lugar=(el('p_lugar').value||'').trim() || (LUG? LUG.ciudad+', '+LUG.pais : '');
+  if(lugar) f.push('<span><b>Ubicación:</b> '+esc(lugar)+'</span>');
+  f.push('<span><b>Fecha:</b> '+new Date().toLocaleDateString('es-CL')+'</span>');
+  el('rpMeta').innerHTML=f.join('');
+}
+window.addEventListener('beforeprint',actualizarMembrete);
+el('btnPrint').onclick=function(){ actualizarMembrete(); window.print(); };
+
+/* arranque. Si algo falla, mejor decirlo que dejar la página muerta sin explicación. */
+try{
+  initMarca(); setUnitLabels(); renderSup(); renderProd(); initCat(); renderManual(); initAyuda();
+  initRef(); initDim(); initGeo(); calc(); initGuia(); restaurarLocal();
+  tecladoNumerico();
+  ajustarNav(); if(el('brLogo').complete===false) el('brLogo').onload=ajustarNav;
+}catch(err){
+  var box=document.createElement('div');
+  box.style.cssText='margin:16px;padding:16px 18px;border:1px solid #d4dbe4;border-left:4px solid #ff6b6b;'
+    +'border-radius:0 10px 10px 0;background:#fff;color:#16202c;font:14px/1.6 system-ui,sans-serif';
+  box.innerHTML='<b>La aplicación no pudo iniciar.</b><br>Si la abriste desde el visor interno de WhatsApp '
+    +'o del correo, guárdala primero y ábrela con Chrome o Safari. Si el problema sigue, avísanos con este '
+    +'detalle: <code style="font-size:12px">'+String(err&&err.message||err).replace(/</g,'&lt;')+'</code>'
+    +'<br><br>ECUCLIMA · info@ecuclima.com · +593 98 042 0996';
+  document.querySelector('main').prepend(box);
+}
+</script>
+</body>
+</html>
