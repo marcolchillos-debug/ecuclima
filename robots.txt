@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://marcolchillos-debug.github.io/ecuclima/sitemap.xml
+Sitemap: https://ecuclima.com/sitemap.xml

@@ -1,0 +1,99 @@
+# ==========================================================
+#  Ecuclima — ecuclima.com
+#  Va en la raiz de public_html cuando el sitio este en Bluehost.
+#  En GitHub Pages este archivo se ignora sin causar problemas;
+#  alli funcionan las carpetas de redireccion equivalentes.
+# ==========================================================
+
+# ----------------------------------------------------------
+#  1. HTTPS y dominio unico sin www
+#     Si Google ve ecuclima.com y www.ecuclima.com como dos
+#     sitios, reparte las senales y ninguno posiciona bien.
+# ----------------------------------------------------------
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  RewriteCond %{HTTPS} !=on
+  RewriteRule ^ https://ecuclima.com%{REQUEST_URI} [R=301,L]
+
+  RewriteCond %{HTTP_HOST} ^www\.ecuclima\.com$ [NC]
+  RewriteRule ^ https://ecuclima.com%{REQUEST_URI} [R=301,L]
+</IfModule>
+
+# ----------------------------------------------------------
+#  2. Direcciones del sitio anterior
+#     Google todavia tiene indexadas estas rutas del WordPress
+#     que fallo. Cada una va a su equivalente en el sitio nuevo,
+#     para que ningun enlace quede muerto.
+# ----------------------------------------------------------
+Redirect 301 /compresores/                  https://ecuclima.com/compresores-bitzer.html
+Redirect 301 /intercambiadores/             https://ecuclima.com/swep-heat-exchangers-info.html
+Redirect 301 /valvulas-de-expansion-carel/  https://ecuclima.com/valvulas-industriales.html
+Redirect 301 /maquinas-de-hielo/            https://ecuclima.com/maquinas-hielo-comerciales-industriales.html
+Redirect 301 /trane/                        https://ecuclima.com/repuestos-trane.html
+Redirect 301 /trane-2/                      https://ecuclima.com/repuestos-trane.html
+Redirect 301 /inema/                        https://ecuclima.com/cuartos-frios-inema.html
+Redirect 301 /productos/                    https://ecuclima.com/partes.html
+Redirect 301 /carrito/                      https://ecuclima.com/partes.html
+Redirect 301 /contacto/                     https://ecuclima.com/ubicacion.html
+
+#  Estas cuatro no tienen equivalente exacto todavia.
+#  Van al destino mas cercano para no dejar enlaces rotos.
+Redirect 301 /evaporadores/                 https://ecuclima.com/partes.html
+Redirect 301 /congelacion-rapida/           https://ecuclima.com/cuartos-frios-inema.html
+Redirect 301 /controles-full-gauge/         https://ecuclima.com/valvulas-industriales.html
+Redirect 301 /mantenimiento-y-reparacion/   https://ecuclima.com/quienes-somos.html
+Redirect 301 /calentamiento-de-agua/        https://ecuclima.com/
+
+# ----------------------------------------------------------
+#  3. Sitio de 2011 a 2014, anterior al WordPress
+# ----------------------------------------------------------
+Redirect 301 /ecuclima/Ecuclima/Bitzer.html    https://ecuclima.com/compresores-bitzer.html
+Redirect 301 /ecuclima/Ecuclima/Swep.html      https://ecuclima.com/swep-heat-exchangers-info.html
+Redirect 301 /ecuclima/Ecuclima/SnowKey.html   https://ecuclima.com/maquinas-hielo-comerciales-industriales.html
+Redirect 301 /ecuclima/Ecuclima/Principal.html https://ecuclima.com/
+Redirect 301 /ecuclima/productos/chiller.html  https://ecuclima.com/trane-chillers.html
+Redirect 301 /ecuclima/productos/pacas.html    https://ecuclima.com/partes.html
+Redirect 301 /ecuclima/                        https://ecuclima.com/
+
+# ----------------------------------------------------------
+#  4. Compresion
+#     datos.js pesa 182 KB y baja a unos 40 KB.
+# ----------------------------------------------------------
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css
+  AddOutputFilterByType DEFLATE application/javascript application/x-javascript
+  AddOutputFilterByType DEFLATE application/json application/xml image/svg+xml
+</IfModule>
+
+# ----------------------------------------------------------
+#  5. Cache del navegador
+#     El HTML se revalida siempre, para que un cambio de precio
+#     se vea de inmediato.
+# ----------------------------------------------------------
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/jpeg              "access plus 6 months"
+  ExpiresByType image/png               "access plus 6 months"
+  ExpiresByType image/webp              "access plus 6 months"
+  ExpiresByType image/svg+xml           "access plus 6 months"
+  ExpiresByType text/css                "access plus 1 month"
+  ExpiresByType application/javascript  "access plus 1 month"
+  ExpiresByType text/html               "access plus 0 seconds"
+</IfModule>
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.(jpg|jpeg|png|webp|svg|ico)$">
+    Header set Cache-Control "public, max-age=15552000"
+  </FilesMatch>
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+  Header set X-Content-Type-Options "nosniff"
+  Header set X-Frame-Options "SAMEORIGIN"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+AddDefaultCharset UTF-8
+DirectoryIndex index.html
+Options -Indexes

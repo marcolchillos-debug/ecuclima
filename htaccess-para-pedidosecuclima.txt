@@ -1,0 +1,38 @@
+# ==========================================================
+#  REDIRECCIONES DE pedidosecuclima.com  ->  ecuclima.com
+#
+#  Este archivo NO va en el sitio principal.
+#  Se sube como .htaccess a la carpeta de pedidosecuclima.com
+#  cuando ese dominio apunte a Bluehost.
+#
+#  Antes de activarlo:
+#   1. Las paginas de destino deben existir en ecuclima.com
+#   2. Google debe haberlas indexado
+#   3. Solo entonces se da de baja el servidor de getlandingsite
+#
+#  Redirigir a una pagina que no corresponde es peor que no
+#  redirigir: Google lo lee como contenido desaparecido y borra
+#  el posicionamiento en vez de trasladarlo.
+# ==========================================================
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTPS} !=on
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+</IfModule>
+
+Redirect 301 /trane-chillers                            https://ecuclima.com/trane-chillers.html
+Redirect 301 /repuestos-trane                           https://ecuclima.com/repuestos-trane.html
+Redirect 301 /compresores-bitzer                        https://ecuclima.com/compresores-bitzer.html
+Redirect 301 /valvulas-industriales                     https://ecuclima.com/valvulas-industriales.html
+Redirect 301 /swep-heat-exchangers-info                 https://ecuclima.com/swep-heat-exchangers-info.html
+Redirect 301 /cuartos-frios-inema                       https://ecuclima.com/cuartos-frios-inema.html
+Redirect 301 /maquinas-hielo-comerciales-industriales   https://ecuclima.com/maquinas-hielo-comerciales-industriales.html
+Redirect 301 /marcas-refrigeracion-industrial           https://ecuclima.com/marcas-refrigeracion-industrial.html
+Redirect 301 /quienes-somos                             https://ecuclima.com/quienes-somos.html
+Redirect 301 /ubicacion                                 https://ecuclima.com/ubicacion.html
+Redirect 301 /tienda                                    https://ecuclima.com/partes.html
+Redirect 301 /cart                                      https://ecuclima.com/partes.html
+
+#  Cualquier otra direccion va a la portada
+RedirectMatch 301 ^/(?!trane-chillers|repuestos-trane|compresores-bitzer|valvulas-industriales|swep-heat-exchangers-info|cuartos-frios-inema|maquinas-hielo-comerciales-industriales|marcas-refrigeracion-industrial|quienes-somos|ubicacion|tienda|cart).*$  https://ecuclima.com/
