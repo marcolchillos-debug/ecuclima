@@ -42,7 +42,28 @@ main p{color:#4a5568;margin-bottom:.9rem;max-width:800px}
 .fichas{list-style:none;margin:.6rem 0 0}
 .fichas li{padding:.5rem 0 .5rem 1.5rem;position:relative;color:#4a5568;font-size:.95rem}
 .fichas li:before{content:"";position:absolute;left:0;top:1.05rem;width:7px;height:7px;border-radius:50%;background:#FF8000}
-.tabla-caja{overflow-x:auto;margin:1.2rem 0 0;border:1px solid #e4e8ee;border-radius:12px}
+.selector{background:#f8f9fa;border-left:3px solid #FF8000;border-radius:12px;padding:1.5rem 1.7rem;margin:1.6rem 0 1rem}
+.selector h3{color:#004080;font-size:1.1rem;font-weight:700;margin:0 0 .3rem}
+.sel-ayuda{font-size:.9rem;color:#5a6b80;margin-bottom:1rem}
+.sel-fila{display:flex;gap:.7rem;flex-wrap:wrap;align-items:center}
+.sel-fila input,.sel-fila select{padding:.7rem .9rem;border:1.5px solid #c3ccd8;border-radius:8px;font-size:.95rem;font-family:inherit;background:#fff;color:#1a2b42;outline:none}
+.sel-fila input{width:130px}
+.sel-fila input:focus,.sel-fila select:focus{border-color:#FF8000}
+.sel-fila button{padding:.72rem 1.5rem;background:#FF8000;color:#fff;border:0;border-radius:8px;font-weight:600;font-size:.92rem;cursor:pointer;font-family:inherit}
+.sel-fila button:hover{background:#E67000}
+#resultado{margin-top:1.1rem}
+#resultado .ficha{background:#fff;border:1px solid #dbe3ec;border-radius:10px;padding:1.1rem 1.3rem}
+#resultado .mod{font-size:1.4rem;font-weight:700;color:#004080;letter-spacing:-.5px}
+#resultado dl{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.5rem 1.4rem;margin-top:.8rem}
+#resultado dt{font-size:.72rem;text-transform:uppercase;letter-spacing:.8px;color:#8a94a3;font-weight:600}
+#resultado dd{font-size:.95rem;color:#1a2b42;font-weight:500;margin-bottom:.4rem}
+#resultado .nota{font-size:.85rem;color:#5a6b80;margin-top:.9rem}
+#resultado .aviso-rojo{color:#a3402d;font-size:.92rem}
+.tabla-caja{margin:1rem 0 0;border:1px solid #e4e8ee;border-radius:12px}
+.tabla-caja summary{cursor:pointer;padding:.9rem 1.2rem;font-weight:600;color:#004080;font-size:.93rem;list-style-position:inside}
+.tabla-caja summary:hover{background:#f8f9fa}
+.tabla-caja[open] summary{border-bottom:1px solid #e4e8ee}
+.tabla-caja table{display:block;overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:.88rem;min-width:640px}
 caption{text-align:left;padding:1rem 1.2rem .4rem;font-size:.85rem;color:#5a6b80}
 th{background:#004080;color:#fff;font-weight:600;text-align:left;padding:.7rem .9rem;font-size:.82rem;white-space:nowrap}
@@ -114,7 +135,23 @@ footer p{margin:.5rem 0;opacity:.9}
     <img src="img/chillers/trane-cgam.jpg" alt="Chiller Trane serie CGAM condensado por aire instalado en Ecuador" loading="lazy">
   </div>
 
-  <div class="tabla-caja">
+  <div class="selector">
+    <h3>Encontrá tu modelo</h3>
+    <p class="sel-ayuda">Ingresá la capacidad que necesitás y te decimos qué CGAM la cubre.</p>
+    <div class="sel-fila">
+      <input type="number" id="cap" min="1" step="1" placeholder="Ej. 150" aria-label="Capacidad requerida">
+      <select id="uni" aria-label="Unidad">
+        <option value="kw">kW</option>
+        <option value="tr">Toneladas de refrigeración</option>
+        <option value="btu">BTU/h</option>
+      </select>
+      <button type="button" id="btnSel">Buscar modelo</button>
+    </div>
+    <div id="resultado" role="status"></div>
+  </div>
+
+  <details class="tabla-caja">
+    <summary>Ver los 19 modelos de la serie CGAM</summary>
     <table>
       <caption>Los 19 modelos de la serie CGAM. Dimensiones en alto × ancho × profundidad.</caption>
       <thead><tr><th>Modelo</th><th>Pot. frigorífica (kW)</th><th>Pot. eléctrica frío (W)</th><th>Dimensiones (mm)</th><th>Peso (kg)</th></tr></thead>
@@ -140,7 +177,7 @@ footer p{margin:.5rem 0;opacity:.9}
         <tr><td>CGAM170</td><td>460,5</td><td>156,2</td><td>2344 × 2273 × 5145</td><td>4214</td></tr>
       </tbody>
     </table>
-  </div>
+  </details>
 
   <h2>Serie RTAC — tornillo de gran capacidad</h2>
   <div class="serie">
@@ -185,5 +222,35 @@ footer p{margin:.5rem 0;opacity:.9}
 
 <a id="waFab" href="https://wa.me/593980420996?text=Deseo%20informaci%C3%B3n%20de%20chillers%20Trane" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp" title="Escríbenos por WhatsApp"><svg width="31" height="31" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413"/></svg></a>
 
+<script>
+(function(){
+var M=[["CGAM20",55.5,20.4,"2140 × 1280 × 3340",1381],["CGAM23",63.2,22.1,"2140 × 1280 × 3340",1399],["CGAM26",69.8,25.2,"2140 × 1280 × 3340",1402],["CGAM30",79.8,29.7,"2140 × 1280 × 3340",1503],["CGAM35",91.4,34.3,"2140 × 1280 × 3340",1532],["CGAM39",110.1,39.7,"2145 × 1280 × 4254",1730],["CGAM45",122.1,44.3,"2145 × 1280 × 4254",1789],["CGAM50",133.8,50.4,"2145 × 1280 × 4254",1848],["CGAM60",159.7,58.7,"2150 × 2266 × 3271",2450],["CGAM70",186.8,67.9,"2150 × 2266 × 3271",2492],["CGAM80",222.1,78.7,"2150 × 2266 × 4185",2752],["CGAM90",249,87.9,"2344 × 2273 × 4185",2885],["CGAM100",274.5,100.5,"2344 × 2273 × 4185",3002],["CGAM110",296.7,106.8,"2344 × 2273 × 3647",3104],["CGAM120",327.2,110.6,"2344 × 2273 × 3647",3307],["CGAM140",380.9,130.7,"2344 × 2273 × 4230",3794],["CGAM150",407.4,143.5,"2344 × 2273 × 4230",3822],["CGAM160",434.2,151.5,"2344 × 2273 × 4230",3939],["CGAM170",460.5,156.2,"2344 × 2273 × 5145",4214]];
+
+function buscar(){
+  var v=parseFloat(document.getElementById('cap').value);
+  var u=document.getElementById('uni').value;
+  var out=document.getElementById('resultado');
+  if(!v||v<=0){out.innerHTML='<p class="aviso-rojo">Ingresá una capacidad para continuar.</p>';return}
+  var kw = u==='tr' ? v*3.51685 : u==='btu' ? v/3412.14 : v;
+  var m=null;
+  for(var i=0;i<M.length;i++){ if(M[i][1]>=kw){ m=M[i]; break } }
+  if(!m){
+    out.innerHTML='<div class="ficha"><p>La capacidad solicitada supera al mayor modelo de la serie CGAM, el <strong>CGAM170</strong> de 460,5 kW.</p>'+
+      '<p class="nota">Para ese rango corresponde la serie <strong>RTAC</strong> o un <strong>CenTraVac</strong>, o bien varios equipos en paralelo. Escribinos y lo resolvemos.</p></div>';
+    return;
+  }
+  var holgura=((m[1]-kw)/kw*100);
+  out.innerHTML='<div class="ficha"><div class="mod">'+m[0]+'</div>'+
+    '<dl><dt>Potencia frigorífica</dt><dd>'+m[1].toFixed(1).replace('.',',')+' kW &nbsp;·&nbsp; '+(m[1]/3.51685).toFixed(1).replace('.',',')+' TR</dd>'+
+    '<dt>Potencia eléctrica</dt><dd>'+String(m[2]).replace('.',',')+' W</dd>'+
+    '<dt>Dimensiones (Al × An × Pr)</dt><dd>'+m[3]+' mm</dd>'+
+    '<dt>Peso</dt><dd>'+m[4]+' kg</dd></dl>'+
+    '<p class="nota">Cubre los '+kw.toFixed(1).replace('.',',')+' kW pedidos con un '+holgura.toFixed(0)+' % de holgura. '+
+    '<strong>Este resultado es orientativo:</strong> la capacidad de catálogo se mide en condiciones nominales, y la altitud del sitio, la temperatura de diseño y el tipo de fluido cambian el desempeño real. Confirmalo con nosotros antes de comprar.</p></div>';
+}
+document.getElementById('btnSel').addEventListener('click',buscar);
+document.getElementById('cap').addEventListener('keydown',function(e){if(e.key==='Enter')buscar()});
+})();
+</script>
 </body>
 </html>
