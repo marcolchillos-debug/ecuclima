@@ -29,10 +29,23 @@ nav a{color:#fff;text-decoration:none;font-size:.85rem;font-weight:500;opacity:.
 nav a:hover{opacity:1;color:#FF8000}
 nav a.nav-wa{color:#25D366;display:inline-flex;align-items:center}
 #menuBtn{display:none;background:0;border:0;color:#fff;font-size:1.5rem;cursor:pointer}
-.tapa{background:linear-gradient(135deg,#004080 0%,#003050 100%);color:#fff;padding:3rem 2rem 2.6rem;text-align:center}
+.tapa{background:linear-gradient(135deg,#004080 0%,#003050 100%);color:#fff;padding:2.6rem 2rem 2.2rem;text-align:center;position:relative;overflow:hidden;min-height:230px;display:flex;flex-direction:column;justify-content:center}
+.tapa>*{position:relative;z-index:3}
 .tapa .mig{font-size:.72rem;text-transform:uppercase;letter-spacing:4px;color:#FFA24D;font-weight:600;margin-bottom:.7rem}
 .tapa h1{font-size:2.1rem;font-weight:700;letter-spacing:-1px;line-height:1.15}
 .tapa .oficial{margin-top:.9rem;font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#FF8000}
+.tapa .circuito{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
+.tapa .logo-ecu{position:absolute;top:1.3rem;right:4%;height:82px;width:auto;z-index:4;filter:drop-shadow(0 8px 22px rgba(0,0,0,.4))}
+.tapa .logo-trane-enlace{position:absolute;bottom:1.3rem;left:4%;z-index:4;line-height:0;transition:transform .3s}
+.tapa .logo-trane-enlace:hover{transform:scale(1.06)}
+.tapa .logo-trane{height:76px;width:auto;opacity:.95;filter:drop-shadow(0 3px 10px rgba(0,0,0,.35))}
+@keyframes fluir{to{stroke-dashoffset:-92}}
+@keyframes girar{to{transform:rotate(360deg)}}
+.flujo-cal{animation:fluir 2.1s linear infinite}
+.flujo-fri{animation:fluir 2.7s linear infinite}
+.giro{transform-box:view-box;transform-origin:600px 120px;animation:girar 3.4s linear infinite}
+@media(prefers-reduced-motion:reduce){.flujo-cal,.flujo-fri,.giro{animation:none}}
+@media(max-width:768px){.tapa .logo-ecu{height:54px;top:.9rem}.tapa .logo-trane{height:46px}.tapa{min-height:200px}}
 main{max-width:1000px;margin:0 auto;padding:3rem 2rem 4rem}
 .intro{font-size:1.05rem;color:#3d4a5c;margin-bottom:2.5rem;max-width:780px}
 h2{color:#004080;font-size:1.45rem;font-weight:700;margin:2.8rem 0 .4rem;letter-spacing:-.4px}
@@ -113,6 +126,9 @@ footer p{margin:.5rem 0;opacity:.9}
 </header>
 
 <section class="tapa">
+  <svg class="circuito" viewBox="0 0 1200 420" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke-linecap="round"><path d="M-40 132 H300 Q340 132 340 172 V210 H500" stroke="rgba(255,138,60,.28)" stroke-width="13"/><path d="M-40 132 H300 Q340 132 340 172 V210 H500" stroke="#FF8A3C" stroke-width="5" stroke-dasharray="16 30" class="flujo-cal"/><path d="M700 210 H860 Q900 210 900 250 V300 H1240" stroke="rgba(120,200,255,.30)" stroke-width="13"/><path d="M700 210 H860 Q900 210 900 250 V300 H1240" stroke="#8AD6FF" stroke-width="5" stroke-dasharray="16 30" class="flujo-fri"/><rect x="500" y="150" width="200" height="120" rx="10" fill="rgba(255,255,255,.05)" stroke="rgba(180,220,255,.45)" stroke-width="2.5"/><path d="M524 178 h152 M524 200 h152 M524 222 h152 M524 244 h152" stroke="rgba(180,220,255,.30)" stroke-width="3"/><circle cx="600" cy="120" r="17" fill="none" stroke="rgba(180,220,255,.40)" stroke-width="2.5"/><path d="M600 137 V150" stroke="rgba(180,220,255,.40)" stroke-width="2.5"/><circle cx="600" cy="120" r="9" fill="none" stroke="rgba(180,220,255,.55)" stroke-width="2" class="giro"/></g><text x="150" y="112" fill="rgba(255,170,110,.55)" font-size="19" font-family="system-ui,sans-serif" font-weight="600">RETORNO</text><text x="1010" y="282" fill="rgba(150,215,255,.55)" font-size="19" font-family="system-ui,sans-serif" font-weight="600" text-anchor="end">AGUA FRÍA</text></svg>
+  <img class="logo-ecu" src="logo-ecuclima.png" alt="Ecuclima — refrigeración industrial Ecuador" width="82" height="99">
+  <a class="logo-trane-enlace" href="marcas-refrigeracion-industrial.html" title="Trane — distribuidor autorizado"><img class="logo-trane" src="img/marcas/trane.png" alt="Trane — distribuidor autorizado en Ecuador" loading="lazy"></a>
   <p class="mig">Ingeniería de soluciones</p>
   <h1>Chillers Trane en Ecuador</h1>
   <p class="oficial">✓ Distribuidor autorizado</p>
