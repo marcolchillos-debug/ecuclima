@@ -189,3 +189,28 @@ anterior, es la caché del navegador: `Ctrl + Shift + R`.
       servidor
 - [ ] Danfoss, Sanhua, Trane y Emerson no tienen ningún producto cargado.
       Sus tarjetas llevan al buscador y caen en el mensaje de consulta
+
+---
+
+## Reglas que toda página nueva debe cumplir
+
+**El encabezado se mantiene visible al desplazar.** Va con
+`position: sticky; top: 0` y un `z-index` alto. El visitante debe poder
+volver al menú desde cualquier punto de la página, sin subir hasta arriba.
+
+**Nunca usar `overflow-x: hidden` en `html` o `body`.** Rompe el
+encabezado fijo: al ocultar el desbordamiento el navegador crea un
+contenedor de desplazamiento propio y `position: sticky` deja de
+funcionar. Para contener el ancho se usa **`overflow-x: clip`**, que
+recorta igual pero no crea ese contenedor.
+
+Ese error ya ocurrió una vez: se agregó `hidden` para corregir un
+desborde de texto en móvil y se llevó por delante el encabezado de las
+trece páginas sin que se notara hasta días después.
+
+**Texto justificado con guionado automático** en párrafos, listas y
+fichas. Los títulos, las celdas de tabla y el pie quedan fuera:
+justificar un título de dos palabras lo separa hasta los márgenes.
+
+**Español neutro, tratamiento de usted.** Sin voseo ni modismos
+regionales. El cliente es industrial ecuatoriano.
