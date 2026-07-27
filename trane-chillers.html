@@ -45,7 +45,17 @@ nav a.nav-wa{color:#25D366;display:inline-flex;align-items:center}
 .flujo-fri{animation:fluir 2.7s linear infinite}
 .giro{transform-box:view-box;transform-origin:600px 120px;animation:girar 3.4s linear infinite}
 @media(prefers-reduced-motion:reduce){.flujo-cal,.flujo-fri,.giro{animation:none}}
-@media(max-width:768px){.tapa .logo-ecu{height:54px;top:.9rem}.tapa .logo-trane{height:34px}.tapa .logo-trane-enlace{padding:.6rem .85rem;border-radius:8px}.tapa{min-height:200px}}
+@media(max-width:900px){.tapa .logo-ecu{height:60px;top:1rem;right:3%}.tapa .logo-trane{height:40px}.tapa .logo-trane-enlace{padding:.6rem .9rem}}
+@media(max-width:768px){
+ .tapa{min-height:auto;padding:1.9rem 1.2rem 1.7rem}
+ .tapa .logo-ecu{display:none}
+ .tapa .circuito{opacity:.4}
+ .tapa .mig{font-size:.6rem;letter-spacing:2.5px;margin-bottom:.5rem}
+ .tapa h1{font-size:1.45rem;letter-spacing:-.5px}
+ .tapa .oficial{font-size:.65rem;margin-top:.55rem}
+ .tapa .logo-trane-enlace{position:static;display:inline-block;margin:1.2rem auto 0;padding:.6rem 1rem;border-radius:9px}
+ .tapa .logo-trane{height:34px}
+}
 main{max-width:1000px;margin:0 auto;padding:3rem 2rem 4rem}
 .intro{font-size:1.05rem;color:#3d4a5c;margin-bottom:2.5rem;max-width:780px}
 h2{color:#004080;font-size:1.45rem;font-weight:700;margin:2.8rem 0 .4rem;letter-spacing:-.4px}
