@@ -33,6 +33,8 @@ Redirect 301 /quienes-somos                             https://ecuclima.com/qui
 Redirect 301 /ubicacion                                 https://ecuclima.com/ubicacion.html
 Redirect 301 /tienda                                    https://ecuclima.com/partes.html
 Redirect 301 /cart                                      https://ecuclima.com/partes.html
+Redirect 301 /sanlua-productos-refrigeracion-industrial https://ecuclima.com/sanhua.html
+Redirect 301 /full-gauge-productos-refrigeracion        https://ecuclima.com/full-gauge.html
 
 #  Cualquier otra direccion va a la portada
-RedirectMatch 301 ^/(?!trane-chillers|repuestos-trane|compresores-bitzer|valvulas-industriales|swep-heat-exchangers-info|cuartos-frios-inema|maquinas-hielo-comerciales-industriales|marcas-refrigeracion-industrial|quienes-somos|ubicacion|tienda|cart).*$  https://ecuclima.com/
+RedirectMatch 301 ^/(?!trane-chillers|repuestos-trane|compresores-bitzer|valvulas-industriales|swep-heat-exchangers-info|cuartos-frios-inema|maquinas-hielo-comerciales-industriales|marcas-refrigeracion-industrial|quienes-somos|ubicacion|tienda|cart|sanlua-productos-refrigeracion-industrial|full-gauge-productos-refrigeracion).*$  https://ecuclima.com/
