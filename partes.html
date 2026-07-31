@@ -269,14 +269,14 @@ function pintar(){
     const stock = bajoPedido
       ? '<span class="stock pedido">Bajo pedido</span>'
       : '<span class="stock hay">' + p.s + ' en stock</span>';
-    return '<article class="parte">' +
+    const abre = p.id ? " onclick=\"location.href='producto.html?id=" + p.id + "'\" style=\"cursor:pointer\"" : "";
+    return '<article class="parte"' + abre + '>' +
       '<div class="parte-foto"><img src="img/productos/' + p.f + '" alt="' + escAttr(p.n) + '" loading="lazy" onerror="this.style.display=\'none\'"></div>' +
       '<div class="parte-cuerpo">' +
         '<p class="parte-cat">' + p.c + '</p>' +
         '<h3>' + p.n + '</h3>' +
         '<div class="parte-pie">' + precio + stock + '</div>' +
-        (p.id ? '<a href="producto.html?id=' + p.id + '" class="btn-consulta" style="display:block;text-align:center;text-decoration:none;background:0;border:1.5px solid #FF8000;color:#FF8000;margin-bottom:0.5rem">Ver ficha completa</a>' : '') +
-        '<button class="btn-consulta" data-n="' + escAttr(p.n) + '">Consultar</button>' +
+        '<button class="btn-consulta" data-n="' + escAttr(p.n) + '" onclick="event.stopPropagation()">Consultar</button>' +
       '</div></article>';
   }).join("");
 
