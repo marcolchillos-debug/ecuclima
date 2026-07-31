@@ -240,15 +240,24 @@ if (!f) {
     minis.style.display = "none";
   }
 
+  const SIN_PRECIO = ["Carel","Bitzer"];
+  const ocultarPrecio = SIN_PRECIO.indexOf(f.marca) !== -1;
   const precioBox = document.getElementById("precioBox");
-  if (f.precio) {
-    precioBox.innerHTML = '<div class="precio">$' + f.precio.toFixed(2) + (f.iva ? ' <small>+ IVA</small>' : ' <small>IVA incluido</small>') + '</div>';
-  } else {
-    precioBox.innerHTML = '<div class="precio pedido">Bajo pedido — cotización directa</div>';
-  }
   const stockBox = document.getElementById("stockBox");
-  if (f.stock) { stockBox.className = "stock hay"; stockBox.textContent = "✓ Disponible (" + f.stock + ")"; }
-  else { stockBox.className = "stock pedido"; stockBox.textContent = "⏳ Bajo pedido"; }
+  if (ocultarPrecio) {
+    precioBox.innerHTML = '';
+    stockBox.style.fontSize = "1.05rem"; stockBox.style.padding = ".5rem 1rem";
+    if (f.stock) { stockBox.className = "stock hay"; stockBox.textContent = "✓ En stock (" + f.stock + ") — cotizar precio"; }
+    else { stockBox.className = "stock pedido"; stockBox.textContent = "⏳ Bajo pedido — cotizar precio"; }
+  } else {
+    if (f.precio) {
+      precioBox.innerHTML = '<div class="precio">$' + f.precio.toFixed(2) + (f.iva ? ' <small>+ IVA</small>' : ' <small>IVA incluido</small>') + '</div>';
+    } else {
+      precioBox.innerHTML = '<div class="precio pedido">Bajo pedido — cotización directa</div>';
+    }
+    if (f.stock) { stockBox.className = "stock hay"; stockBox.textContent = "✓ Disponible (" + f.stock + ")"; }
+    else { stockBox.className = "stock pedido"; stockBox.textContent = "⏳ Bajo pedido"; }
+  }
 
   document.getElementById("btnWa").href = "https://wa.me/593980420996?text=" + encodeURIComponent("Deseo cotizar: " + f.nombre + " (SKU " + f.sku + ")");
 
