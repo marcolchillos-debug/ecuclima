@@ -149,9 +149,9 @@ html,body{overflow-x:clip;max-width:100vw}*{min-width:0}img,table,iframe{max-wid
 
 <script>
 const PRODUCTOS = [
-  {n:"E2V35 CAREL Válvula de expansión electrónica E2V35BS100",c:"Válvulas CAREL",p:252.90,iva:true,s:2,f:"e2v35-carel.jpg"},
-  {n:"E2V18 Válvula de expansión electrónica E2V18SSF10",c:"Válvulas CAREL",p:151.30,iva:true,s:2,f:"e2v18-carel.jpg"},
-  {n:"E3V-65 Válvula de expansión electrónica E3V65SWS00",c:"Válvulas CAREL",p:560.00,iva:true,s:2,f:"e3v65-carel.jpg"},
+  {n:"E2V35 CAREL Válvula de expansión electrónica E2V35BS100",c:"Válvulas CAREL",p:252.90,iva:true,s:2,f:"e2v35-carel.jpg",id:"e2v35-carel"},
+  {n:"E2V18 Válvula de expansión electrónica E2V18SSF10",c:"Válvulas CAREL",p:151.30,iva:true,s:2,f:"e2v18-carel.jpg",id:"e2v18-carel"},
+  {n:"E3V-65 Válvula de expansión electrónica E3V65SWS00",c:"Válvulas CAREL",p:560.00,iva:true,s:2,f:"e3v65-carel.jpg",id:"e3v65-carel"},
   {n:"E5V-A5 Válvula de expansión electrónica 35-35 E5VA5AST00",c:"Válvulas CAREL",p:1034.70,iva:true,s:2,f:"e5va5-carel.jpg"},
   {n:"E5V-A2 Válvula de expansión electrónica E5VA2AST00",c:"Válvulas CAREL",p:1004.50,iva:true,s:2,f:"e5va2-carel.jpg"},
   {n:"Válvula de expansión electrónica E4V95BST00",c:"Válvulas CAREL",p:759.00,iva:true,s:1,f:"e4v95-carel.jpg"},
@@ -275,6 +275,7 @@ function pintar(){
         '<p class="parte-cat">' + p.c + '</p>' +
         '<h3>' + p.n + '</h3>' +
         '<div class="parte-pie">' + precio + stock + '</div>' +
+        (p.id ? '<a href="producto.html?id=' + p.id + '" class="btn-consulta" style="display:block;text-align:center;text-decoration:none;background:0;border:1.5px solid #FF8000;color:#FF8000;margin-bottom:0.5rem">Ver ficha completa</a>' : '') +
         '<button class="btn-consulta" data-n="' + escAttr(p.n) + '">Consultar</button>' +
       '</div></article>';
   }).join("");
