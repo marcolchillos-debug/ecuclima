@@ -21,6 +21,7 @@ ecuclima-sitio-web/
 ├── maquinas-hielo-comerciales-industriales.html
 ├── marcas-refrigeracion-industrial.html
 ├── quienes-somos.html · repuestos-trane.html · ubicacion.html
+├── sanhua.html · full-gauge.html
 ├── CNAME               El dominio propio, lo lee GitHub Pages
 ├── .htaccess           Redirecciones 301, solo si el sitio pasa a Bluehost
 ├── favicon-32/180/512.png
@@ -193,7 +194,7 @@ anterior, es la caché del navegador: `Ctrl + Shift + R`.
 - [ ] Las seis tarjetas de «Repuestos en stock» de la portada muestran
       emoji en vez de fotos reales, aunque las 27 fotos ya están en el
       servidor
-- [ ] Danfoss, Sanhua y Emerson no tienen ningún producto cargado.
+- [ ] Danfoss y Emerson no tienen ningún producto cargado.
       Sus tarjetas llevan al buscador y caen en el mensaje de consulta
 
 ---
