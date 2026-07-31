@@ -261,22 +261,33 @@ function pintar(){
     return;
   }
 
+  const SIN_PRECIO = ["Válvulas CAREL","Controladores","Repuestos BITZER","Compresores"];
   document.getElementById("rejilla").innerHTML = lista.map(p => {
     const bajoPedido = p.p === null;
-    const precio = bajoPedido
-      ? '<div class="precio pedido">Precio bajo consulta</div>'
-      : '<div class="precio">$' + p.p.toFixed(2) + (p.iva ? '<small>+ IVA</small>' : '<small>IVA incluido</small>') + '</div>';
-    const stock = bajoPedido
-      ? '<span class="stock pedido">Bajo pedido</span>'
-      : '<span class="stock hay">' + p.s + ' en stock</span>';
+    const ocultarPrecio = SIN_PRECIO.indexOf(p.c) !== -1;
+    let precio, stock;
+    if (ocultarPrecio) {
+      precio = '';
+      stock = bajoPedido
+        ? '<span class="stock pedido" style="font-size:0.95rem;padding:0.4rem 0.8rem">Bajo pedido</span>'
+        : '<span class="stock hay" style="font-size:0.95rem;padding:0.4rem 0.8rem">✓ En stock (' + p.s + ')</span>';
+    } else {
+      precio = bajoPedido
+        ? '<div class="precio pedido">Precio bajo consulta</div>'
+        : '<div class="precio">$' + p.p.toFixed(2) + (p.iva ? '<small>+ IVA</small>' : '<small>IVA incluido</small>') + '</div>';
+      stock = bajoPedido
+        ? '<span class="stock pedido">Bajo pedido</span>'
+        : '<span class="stock hay">' + p.s + ' en stock</span>';
+    }
     const abre = p.id ? " onclick=\"location.href='producto.html?id=" + p.id + "'\" style=\"cursor:pointer\"" : "";
+    const boton = ocultarPrecio ? "Cotizar por WhatsApp" : "Consultar";
     return '<article class="parte"' + abre + '>' +
       '<div class="parte-foto"><img src="img/productos/' + p.f + '" alt="' + escAttr(p.n) + '" loading="lazy" onerror="this.style.display=\'none\'"></div>' +
       '<div class="parte-cuerpo">' +
         '<p class="parte-cat">' + p.c + '</p>' +
         '<h3>' + p.n + '</h3>' +
         '<div class="parte-pie">' + precio + stock + '</div>' +
-        '<button class="btn-consulta" data-n="' + escAttr(p.n) + '" onclick="event.stopPropagation()">Consultar</button>' +
+        '<button class="btn-consulta" data-n="' + escAttr(p.n) + '" onclick="event.stopPropagation()">' + boton + '</button>' +
       '</div></article>';
   }).join("");
 
