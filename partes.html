@@ -261,10 +261,12 @@ function pintar(){
     return;
   }
 
-  const SIN_PRECIO = ["Válvulas CAREL","Controladores","Repuestos BITZER","Compresores"];
+  // Regla general: no se muestra precio de ningun producto.
+  // Para excepciones futuras, agregar aqui la categoria que SI debe mostrar precio.
+  const CON_PRECIO = [];
   document.getElementById("rejilla").innerHTML = lista.map(p => {
     const bajoPedido = p.p === null;
-    const ocultarPrecio = SIN_PRECIO.indexOf(p.c) !== -1;
+    const ocultarPrecio = CON_PRECIO.indexOf(p.c) === -1;
     let precio, stock;
     if (ocultarPrecio) {
       precio = '';

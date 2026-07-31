@@ -240,8 +240,10 @@ if (!f) {
     minis.style.display = "none";
   }
 
-  const SIN_PRECIO = ["Carel","Bitzer"];
-  const ocultarPrecio = SIN_PRECIO.indexOf(f.marca) !== -1;
+  // Regla general: no se muestra precio de ninguna marca.
+  // Para excepciones futuras, agregar aqui la marca que SI debe mostrar precio.
+  const CON_PRECIO = [];
+  const ocultarPrecio = CON_PRECIO.indexOf(f.marca) === -1;
   const precioBox = document.getElementById("precioBox");
   const stockBox = document.getElementById("stockBox");
   if (ocultarPrecio) {
