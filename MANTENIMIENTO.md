@@ -3,7 +3,7 @@
 Sitio estático publicado en GitHub Pages desde la rama `main`.
 Cada `push` a `main` republica el sitio en 1–3 minutos.
 
-- **En línea:** https://marcolchillos-debug.github.io/ecuclima
+- **En línea:** https://ecuclima.com  (dominio propio, con certificado)
 - **Repositorio:** https://github.com/marcolchillos-debug/ecuclima
 
 ---
@@ -15,6 +15,15 @@ ecuclima-sitio-web/
 ├── index.html          Portada
 ├── partes.html         Buscador de repuestos
 ├── calculador.html     Calculadora de carga térmica
+├── trane-chillers.html         Chillers Trane, con selector de modelo
+├── compresores-bitzer.html     · valvulas-industriales.html
+├── swep-heat-exchangers-info.html · cuartos-frios-inema.html
+├── maquinas-hielo-comerciales-industriales.html
+├── marcas-refrigeracion-industrial.html
+├── quienes-somos.html · repuestos-trane.html · ubicacion.html
+├── CNAME               El dominio propio, lo lee GitHub Pages
+├── .htaccess           Redirecciones 301, solo si el sitio pasa a Bluehost
+├── favicon-32/180/512.png
 ├── datos.js            Base de datos del calculador (no editar a mano)
 ├── sitemap.xml         Lista de páginas para Google
 ├── robots.txt          Permisos de rastreo
@@ -59,8 +68,8 @@ Toda página necesita, sin excepción:
 marcas y clientes van como texto HTML junto al logo, nunca solo dibujados en
 el PNG.
 
-Al cambiar de dominio hay que actualizar la dirección base en tres lugares:
-los `canonical` de las tres páginas, el `sitemap.xml` y el JSON-LD.
+Al cambiar de dominio hay que actualizar la dirección base en los `canonical`
+de las trece páginas, el `sitemap.xml`, el `robots.txt` y el JSON-LD.
 
 ---
 
@@ -124,7 +133,7 @@ su regla.
 ### Cambiar los datos de contacto
 
 El teléfono `+593 98 042 0996` y el correo `info@ecuclima.com` aparecen en
-la ventana de chat, el pie de página y el JSON-LD de las tres páginas.
+la ventana de chat, el pie de página y el JSON-LD de las trece páginas.
 Conviene buscar y reemplazar en todo el proyecto para no dejar ninguno
 desactualizado.
 
@@ -181,13 +190,10 @@ anterior, es la caché del navegador: `Ctrl + Shift + R`.
       Sin esto Google puede tardar semanas en descubrir la página
 - [ ] Crear el perfil de Google Business. Para búsquedas locales del tipo
       «repuestos refrigeración Quito» pesa más que todo el trabajo técnico
-- [ ] Dominio propio. `marcolchillos-debug.github.io` no transmite marca ni
-      confianza, y Google favorece los dominios propios. Es la mejora
-      individual más grande que queda por hacer
 - [ ] Las seis tarjetas de «Repuestos en stock» de la portada muestran
       emoji en vez de fotos reales, aunque las 27 fotos ya están en el
       servidor
-- [ ] Danfoss, Sanhua, Trane y Emerson no tienen ningún producto cargado.
+- [ ] Danfoss, Sanhua y Emerson no tienen ningún producto cargado.
       Sus tarjetas llevan al buscador y caen en el mensaje de consulta
 
 ---
