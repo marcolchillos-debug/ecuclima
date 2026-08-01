@@ -551,6 +551,7 @@ function pintarFiltros(){
   document.querySelectorAll(".chip").forEach(b => {
     b.addEventListener("click", () => {
       categoriaActiva = b.dataset.cat;
+      document.getElementById("q").value = "";
       pintarFiltros();
       pintar();
     });
