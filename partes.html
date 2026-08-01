@@ -51,31 +51,26 @@ nav a.nav-wa:hover{color:#1EBE5A;opacity:1}
   header h1 img{height:32px}
 }
 
-.buscador{background:linear-gradient(135deg,#004080 0%,#003050 100%);color:#fff;padding:2.2rem 2.5rem;display:grid;grid-template-columns:1.15fr 1fr;gap:1.5rem;align-items:center;max-width:1200px;margin:0 auto;text-align:left}
+.buscador{background:linear-gradient(135deg,#004080 0%,#003050 100%);color:#fff;padding:1.6rem 2.5rem 1.8rem;max-width:1200px;margin:0 auto;text-align:center;position:relative;overflow:hidden}
 .buscador .kicker{font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:4px;color:#FFA24D;margin-bottom:0.6rem}
 .buscador h2{font-size:1.85rem;font-weight:700;letter-spacing:-1px;margin-bottom:0.35rem}
 .buscador p{font-size:0.88rem;opacity:0.85;margin-bottom:1.3rem}
-.search-box{max-width:480px;position:relative}
+.search-box{max-width:480px;position:relative;margin:0 auto}
 .search-box input{width:100%;padding:0.9rem 1.1rem 0.9rem 2.8rem;font-size:0.95rem;border:2px solid transparent;border-radius:10px;font-family:inherit;outline:none;transition:border-color 0.25s}
 .search-box input:focus{border-color:#FF8000}
 .search-box .ico{position:absolute;left:1rem;top:50%;transform:translateY(-50%);font-size:1rem;opacity:0.45}
-.buscador-collage{position:relative;height:170px}
-.buscador-collage img{position:absolute;border-radius:8px;object-fit:cover;box-shadow:0 10px 22px rgba(0,10,30,.35);border:2.5px solid rgba(255,255,255,.9)}
-.buscador-collage img:nth-child(1){width:86px;height:86px;top:0;left:14px;transform:rotate(-7deg);z-index:3}
-.buscador-collage img:nth-child(2){width:70px;height:70px;top:2px;right:0;transform:rotate(6deg);z-index:2}
-.buscador-collage img:nth-child(3){width:78px;height:78px;bottom:2px;left:0;transform:rotate(5deg);z-index:2}
-.buscador-collage img:nth-child(4){width:62px;height:62px;bottom:0;right:24px;transform:rotate(-8deg);z-index:1}
-.buscador-collage img:nth-child(5){width:56px;height:56px;top:56px;left:98px;transform:rotate(-3deg);z-index:4}
+.lado-icono{position:absolute;top:18px;width:64px;height:64px;border-radius:10px;background:#fff;padding:6px;box-shadow:0 10px 24px rgba(0,10,30,.4);opacity:0;transform:rotate(-10deg) scale(.7);transition:opacity .7s ease,transform .7s ease;pointer-events:none}
+.lado-icono img{width:100%;height:100%;object-fit:contain;display:block}
+.lado-icono.izq{left:6%}
+.lado-icono.der{right:6%}
+.lado-icono.mostrar{opacity:1;transform:rotate(-6deg) scale(1)}
+.lado-icono.der.mostrar{transform:rotate(6deg) scale(1)}
 @media(max-width:768px){
-  .buscador{grid-template-columns:1fr;padding:1.6rem 1.4rem;gap:0.6rem;text-align:center}
+  .buscador{padding:1.6rem 1.4rem 1.8rem}
   .buscador h2{font-size:1.5rem}
-  .search-box{margin:0 auto}
-  .buscador-collage{height:118px;width:100%;max-width:280px;margin:0 auto}
-  .buscador-collage img:nth-child(1){width:60px;height:60px;left:6px}
-  .buscador-collage img:nth-child(2){width:50px;height:50px}
-  .buscador-collage img:nth-child(3){width:54px;height:54px}
-  .buscador-collage img:nth-child(4){width:44px;height:44px;right:10px}
-  .buscador-collage img:nth-child(5){width:40px;height:40px;top:40px;left:64px}
+  .lado-icono{width:44px;height:44px;top:8px}
+  .lado-icono.izq{left:3%}
+  .lado-icono.der{right:3%}
 }
 
 .filtros{max-width:1200px;margin:2rem auto 0;padding:0 2rem;display:flex;gap:0.6rem;flex-wrap:wrap;justify-content:center}
@@ -147,13 +142,8 @@ html,body{overflow-x:clip;max-width:100vw}*{min-width:0}img,table,iframe{max-wid
       <input type="search" id="q" placeholder="Buscar por nombre, código o marca — ej. E2V35, SWEP, compresor" autocomplete="off">
     </div>
   </div>
-  <div class="buscador-collage" aria-hidden="true">
-    <img src="img/productos/compresor-bitzer-hs53-hs85-thumb.jpg" alt="" loading="lazy">
-    <img src="img/productos/swep-2ton-b8thx301p-thumb.jpg" alt="" loading="lazy">
-    <img src="img/productos/e2v35-carel-thumb.jpg" alt="" loading="lazy">
-    <img src="img/productos/controlador-temperatura-mt-512e-2hp-fullgauge-thumb.jpg" alt="" loading="lazy">
-    <img src="img/productos/valvula-solenoide-1-2-sanhua-thumb.jpg" alt="" loading="lazy">
-  </div>
+  <div class="lado-icono izq" id="ladoIzq" aria-hidden="true"><img id="ladoIzqImg" src="" alt=""></div>
+  <div class="lado-icono der" id="ladoDer" aria-hidden="true"><img id="ladoDerImg" src="" alt=""></div>
 </section>
 
 <div class="filtros" id="filtros"></div>
@@ -415,6 +405,27 @@ if (qUrl) document.getElementById("q").value = qUrl;
 
 pintarFiltros();
 pintar();
+
+(function(){
+  var fotos = ["compresor-bitzer-hs53-hs85","swep-2ton-b8thx301p","e2v35-carel","controlador-temperatura-mt-512e-2hp-fullgauge","valvula-solenoide-1-2-sanhua","swep-30ton-v200thx80","plato-valvula-bitzer","visor-3-8-solar-sanhua","pantalla-evdis00es0-carel","maquina-hielo-snowkey-15tr"];
+  function ciclar(elWrap, elImg, offset){
+    var i = offset;
+    function paso(){
+      elWrap.classList.remove("mostrar");
+      setTimeout(function(){
+        i = (i + 2) % fotos.length;
+        elImg.src = "img/productos/" + fotos[i] + "-thumb.jpg";
+        elImg.onerror = function(){ elImg.src = "img/productos/" + fotos[i] + ".jpg"; };
+        elWrap.classList.add("mostrar");
+      }, 700);
+    }
+    elImg.src = "img/productos/" + fotos[i] + "-thumb.jpg";
+    setTimeout(function(){ elWrap.classList.add("mostrar"); }, 300);
+    setInterval(paso, 3400);
+  }
+  ciclar(document.getElementById("ladoIzq"), document.getElementById("ladoIzqImg"), 0);
+  ciclar(document.getElementById("ladoDer"), document.getElementById("ladoDerImg"), 1);
+})();
 </script>
 </body>
 </html>
