@@ -221,3 +221,22 @@ justificar un título de dos palabras lo separa hasta los márgenes.
 
 **Español neutro, tratamiento de usted.** Sin voseo ni modismos
 regionales. El cliente es industrial ecuatoriano.
+
+**Google Analytics 4 en toda página nueva.** Justo después de
+`<meta charset="UTF-8">` (o `utf-8`, según el archivo) va siempre:
+
+```html
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-259W73642D"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-259W73642D');
+</script>
+```
+
+Va también en las páginas de redirección (las que mandan a una URL
+nueva), colocado antes del `location.replace(...)`: así se cuenta la
+visita aunque la persona nunca vea la página, y con eso se sabe cuánto
+tráfico siguen trayendo los links viejos indexados en Google.
