@@ -59,7 +59,7 @@ nav a.nav-wa:hover{color:#1EBE5A;opacity:1}
 .search-box input{width:100%;padding:0.9rem 1.1rem 0.9rem 2.8rem;font-size:0.95rem;border:2px solid transparent;border-radius:10px;font-family:inherit;outline:none;transition:border-color 0.25s}
 .search-box input:focus{border-color:#FF8000}
 .search-box .ico{position:absolute;left:1rem;top:50%;transform:translateY(-50%);font-size:1rem;opacity:0.45}
-.lado-icono{position:absolute;top:18px;width:64px;height:64px;border-radius:10px;background:#fff;padding:6px;box-shadow:0 10px 24px rgba(0,10,30,.4);opacity:0;transform:rotate(-10deg) scale(.7);transition:opacity .7s ease,transform .7s ease;pointer-events:none}
+.lado-icono{position:absolute;top:18px;width:64px;height:64px;border-radius:10px;background:#fff;padding:6px;box-shadow:0 10px 24px rgba(0,10,30,.4);opacity:0;transform:rotate(-10deg) scale(.7);transition:opacity 1.4s ease,transform 1.4s ease;pointer-events:none}
 .lado-icono img{width:100%;height:100%;object-fit:contain;display:block}
 .lado-icono.izq{left:6%}
 .lado-icono.der{right:6%}
@@ -407,21 +407,42 @@ pintarFiltros();
 pintar();
 
 (function(){
-  var fotos = ["compresor-bitzer-hs53-hs85","swep-2ton-b8thx301p","e2v35-carel","controlador-temperatura-mt-512e-2hp-fullgauge","valvula-solenoide-1-2-sanhua","swep-30ton-v200thx80","plato-valvula-bitzer","visor-3-8-solar-sanhua","pantalla-evdis00es0-carel","maquina-hielo-snowkey-15tr"];
+  var fotos = [
+    "img/productos/compresor-bitzer-hs53-hs85-thumb.jpg",
+    "img/marcas/bitzer.png",
+    "img/productos/swep-2ton-b8thx301p-thumb.jpg",
+    "img/marcas/swep.png",
+    "img/productos/e2v35-carel-thumb.jpg",
+    "img/marcas/carel.png",
+    "img/productos/controlador-temperatura-mt-512e-2hp-fullgauge-thumb.jpg",
+    "img/marcas/danfoss.png",
+    "img/productos/valvula-solenoide-1-2-sanhua-thumb.jpg",
+    "img/marcas/sanhua.png",
+    "img/productos/swep-30ton-v200thx80-thumb.jpg",
+    "img/marcas/trane.png",
+    "img/productos/plato-valvula-bitzer-thumb.jpg",
+    "img/marcas/emerson.png",
+    "img/productos/visor-3-8-solar-sanhua-thumb.jpg",
+    "img/marcas/snowkey.png",
+    "img/productos/pantalla-evdis00es0-carel-thumb.jpg",
+    "img/productos/maquina-hielo-snowkey-15tr-thumb.jpg"
+  ];
+  function esLogo(src){ return src.indexOf("img/marcas/") === 0; }
   function ciclar(elWrap, elImg, offset){
     var i = offset;
     function paso(){
       elWrap.classList.remove("mostrar");
       setTimeout(function(){
         i = (i + 2) % fotos.length;
-        elImg.src = "img/productos/" + fotos[i] + "-thumb.jpg";
-        elImg.onerror = function(){ elImg.src = "img/productos/" + fotos[i] + ".jpg"; };
+        elImg.src = fotos[i];
+        elImg.style.objectFit = esLogo(fotos[i]) ? "contain" : "contain";
+        elWrap.style.background = esLogo(fotos[i]) ? "#fff" : "#fff";
         elWrap.classList.add("mostrar");
-      }, 700);
+      }, 1400);
     }
-    elImg.src = "img/productos/" + fotos[i] + "-thumb.jpg";
+    elImg.src = fotos[i];
     setTimeout(function(){ elWrap.classList.add("mostrar"); }, 300);
-    setInterval(paso, 3400);
+    setInterval(paso, 6800);
   }
   ciclar(document.getElementById("ladoIzq"), document.getElementById("ladoIzqImg"), 0);
   ciclar(document.getElementById("ladoDer"), document.getElementById("ladoDerImg"), 1);
