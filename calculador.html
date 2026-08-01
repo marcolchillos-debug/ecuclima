@@ -187,6 +187,21 @@ mark{background:var(--wa);color:#04121e;border-radius:2px}
 .gsteps li:last-child{margin-bottom:0}
 .gsteps b{color:var(--tx)}
 .gsteps i{font-style:normal;color:var(--ac);font-weight:600}
+.flujo{display:flex;align-items:stretch;flex-wrap:wrap;gap:8px;margin-top:14px}
+.flujo-paso{background:var(--panel2);border:1.5px solid var(--line);border-radius:12px;padding:14px 16px;min-width:150px;flex:1 1 150px;display:flex;flex-direction:column;gap:4px}
+.flujo-paso.destacado{background:var(--ac);border-color:var(--ac)}
+.flujo-paso.destacado .ftit,.flujo-paso.destacado .fdesc{color:#fff}
+.flujo-paso.destacado .fdesc{opacity:.88}
+.fnum{width:26px;height:26px;border-radius:50%;background:var(--ac);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px}
+.flujo-paso.destacado .fnum{background:#fff;color:var(--ac)}
+.ftit{font-weight:700;font-size:15px;color:var(--tx);margin-top:4px}
+.fdesc{font-size:12px;color:var(--tx2)}
+.flujo-flecha{display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--tx2);padding:0 2px}
+.flujo-extra{margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
+.fx-tit{font-size:12px;color:var(--tx2);font-weight:600}
+.flujo-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.fchip{background:var(--bg);border:1px solid var(--line);border-radius:20px;padding:6px 12px;font-size:11.5px;color:var(--tx2)}
+@media(max-width:700px){.flujo{flex-direction:column}.flujo-flecha{transform:rotate(90deg);padding:2px 0}}
 #descargo{margin:26px 0 8px;padding:14px 16px;border:1px solid var(--line);border-left:3px solid var(--br2);
   border-radius:0 8px 8px 0;background:var(--panel);color:var(--tx2);font-size:11.5px;line-height:1.6}
 #descargo b{color:var(--tx)}
@@ -329,6 +344,31 @@ document.getElementById('msgInput').addEventListener('input',limpiarError);
 
 <!-- ============ GUIA DE USO ============ -->
 <section id="s-guia" class="on">
+  <div class="card">
+    <h2>El camino corto: 4 pasos, en orden</h2>
+    <p class="gp">Las pestañas de arriba van en secuencia. Se llena una, se pasa a la siguiente, y el
+      cálculo completo aparece recién en la última. Si entras directo a una pestaña de en medio vas a
+      ver campos vacíos — es normal, faltan los pasos de antes.</p>
+    <div class="flujo">
+      <div class="flujo-paso"><span class="fnum">1</span><span class="ftit">Cámara</span><span class="fdesc">Medidas, ciudad y temperaturas</span></div>
+      <div class="flujo-flecha">→</div>
+      <div class="flujo-paso"><span class="fnum">2</span><span class="ftit">Productos</span><span class="fdesc">Qué guarda y cuánto entra por día</span></div>
+      <div class="flujo-flecha">→</div>
+      <div class="flujo-paso"><span class="fnum">3</span><span class="ftit">Cargas internas</span><span class="fdesc">Luces, motores, personas, puertas</span></div>
+      <div class="flujo-flecha">→</div>
+      <div class="flujo-paso destacado"><span class="fnum">4</span><span class="ftit">Resultados</span><span class="fdesc">Acá sale el cálculo completo</span></div>
+    </div>
+    <div class="flujo-extra">
+      <span class="fx-tit">Estas otras pestañas existen pero no son parte de la secuencia — se usan aparte, cuando hacen falta:</span>
+      <div class="flujo-chips">
+        <span class="fchip">Dimensionar — si todavía no sabes las medidas de la cámara</span>
+        <span class="fchip">Energía y CO₂ — detalle de consumo y comparador de panel</span>
+        <span class="fchip">Catálogo — todas las tablas para consultar</span>
+        <span class="fchip">Manual — la guía completa del cálculo</span>
+      </div>
+    </div>
+  </div>
+
   <div class="card">
     <h2>Empieza por aquí</h2>
     <p class="gp">Esta herramienta calcula la <b>carga térmica</b> de una cámara de refrigeración: cuánto
