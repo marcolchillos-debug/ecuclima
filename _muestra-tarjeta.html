@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Opciones — productos especiales</title>
+<style>
+*{box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#F8F9FA;color:#1A1A1A;margin:0;padding:1.6rem}
+h1{color:#004080;font-size:1.25rem;margin:0 0 .3rem}
+h2{color:#004080;font-size:1rem;margin:2.2rem 0 .2rem;border-top:2px solid #e3e8ef;padding-top:1.2rem}
+.nota{color:#5a6b80;font-size:.83rem;margin:0 0 1rem;line-height:1.5}
+.rejilla{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;max-width:1060px}
+@media(max-width:900px){.rejilla{grid-template-columns:repeat(2,1fr)}}
+.card{background:#fff;border:1px solid #e3e8ef;border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
+.card .img{background:#f1f4f8;height:130px;display:flex;align-items:center;justify-content:center}
+.card .img img{max-width:70%;max-height:70%}
+.cuerpo{padding:.9rem;display:flex;flex-direction:column;flex:1}
+.cat{color:#FF8000;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.nom{font-weight:600;margin:.4rem 0 .6rem;line-height:1.35;font-size:.9rem;flex:1}
+.stock{display:inline-block;background:#e8f5ec;color:#1c7a3e;border-radius:6px;padding:.3rem .6rem;font-size:.8rem;font-weight:600;align-self:flex-start}
+.btn{display:block;width:100%;background:#FF8000;color:#fff;border:0;border-radius:8px;padding:.7rem;font-weight:700;font-size:.85rem;margin-top:.7rem;cursor:pointer;font-family:inherit}
+.tit{font-weight:600;margin:.4rem 0 .5rem;line-height:1.35;font-size:.9rem;color:#004080;flex:1}
+.sub{color:#5a6b80;font-size:.8rem;line-height:1.45;margin:0 0 .6rem}
+
+.cab{height:130px;display:flex;align-items:center;justify-content:center;background:#004080}
+.cab img{max-width:58%;max-height:72%}
+.inte{background:linear-gradient(135deg,#004080,#0059b3);color:#fff;font-size:3.2rem;font-weight:800;line-height:1}
+.d-logo{border:2px dashed #FF8000}
+.d-int{border:2px solid #004080}
+
+/* 2 - par unido */
+.par{grid-column:span 2;background:#fff;border:2px dashed #FF8000;border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
+.par .cabdoble{height:130px;display:flex}
+.par .cabdoble>div{flex:1;display:flex;align-items:center;justify-content:center;background:#004080}
+.par .cabdoble>div:last-child{background:linear-gradient(135deg,#0059b3,#0072e6);color:#fff;font-size:3rem;font-weight:800}
+.par .cabdoble img{max-width:62%;max-height:70%}
+
+/* 3 - horizontal */
+.horiz{grid-column:span 4;background:#fff;border:2px solid #004080;border-radius:12px;display:flex;align-items:center;gap:1.2rem;padding:1.2rem 1.4rem;flex-wrap:wrap}
+.horiz .iconos{display:flex;align-items:center;gap:.8rem}
+.horiz .cajita{width:74px;height:74px;border-radius:10px;background:#004080;display:flex;align-items:center;justify-content:center}
+.horiz .cajita img{max-width:74%}
+.horiz .cajita.q{background:linear-gradient(135deg,#0059b3,#0072e6);color:#fff;font-size:2.3rem;font-weight:800}
+.horiz .txt{flex:1;min-width:230px}
+.horiz .txt strong{display:block;color:#004080;font-size:1rem;margin-bottom:.25rem}
+.horiz .txt span{color:#5a6b80;font-size:.85rem;line-height:1.5}
+.horiz button{background:#FF8000;color:#fff;border:0;border-radius:8px;padding:.8rem 1.4rem;font-weight:700;font-size:.88rem;cursor:pointer;font-family:inherit;white-space:nowrap}
+
+/* 4 - banda azul */
+.banda{grid-column:span 4;background:#004080;color:#fff;border-radius:12px;padding:1.4rem 1.6rem;display:flex;align-items:center;gap:1.2rem;flex-wrap:wrap}
+.banda .iconos{display:flex;align-items:center;gap:.7rem}
+.banda .cajita{width:66px;height:66px;border-radius:10px;background:#fff;display:flex;align-items:center;justify-content:center}
+.banda .cajita img{max-width:76%}
+.banda .cajita.q{background:#FF8000;color:#fff;font-size:2.1rem;font-weight:800}
+.banda .txt{flex:1;min-width:230px}
+.banda .txt strong{display:block;font-size:1rem;margin-bottom:.25rem}
+.banda .txt span{font-size:.85rem;opacity:.87;line-height:1.5}
+.banda button{background:#FF8000;color:#fff;border:0;border-radius:8px;padding:.8rem 1.4rem;font-weight:700;font-size:.88rem;cursor:pointer;font-family:inherit;white-space:nowrap}
+</style>
+</head>
+<body>
+
+<h1>Productos especiales — cuatro maneras de poner el logo y la interrogación juntos</h1>
+<p class="nota">Texto en todas: <b>«Permítanos encontrar su producto por usted en nuestra tienda. Contáctenos.»</b><br>
+Las dos primeras tarjetas de cada fila son productos reales, para ver el contraste.</p>
+
+<h2>Opción 1 — dos tarjetas separadas, una al lado de la otra</h2>
+<p class="nota">Ocupan dos lugares de la rejilla. Cada una con su mensaje: el logo invita, la interrogación explica.</p>
+<div class="rejilla">
+  <div class="card"><div class="img"><img src="img/productos/swep-3ton-b80hx20.jpg" alt=""></div>
+    <div class="cuerpo"><div class="cat">Intercambiadores SWEP</div><div class="nom">Intercambiador SWEP 3 Ton B80Hx20</div><span class="stock">✓ En stock (2)</span><button class="btn">Cotizar por WhatsApp</button></div></div>
+  <div class="card"><div class="img"><img src="img/productos/swep-5ton-b80hx26.jpg" alt=""></div>
+    <div class="cuerpo"><div class="cat">Intercambiadores SWEP</div><div class="nom">Intercambiador SWEP 5 Ton B80Hx26</div><span class="stock">✓ En stock (1)</span><button class="btn">Cotizar por WhatsApp</button></div></div>
+  <div class="card d-logo"><div class="cab"><img src="logo-ecuclima.png" alt="Ecuclima"></div>
+    <div class="cuerpo"><div class="cat">Productos especiales</div><div class="tit">Permítanos encontrar su producto por usted en nuestra tienda</div><button class="btn">Contáctenos</button></div></div>
+  <div class="card d-int"><div class="cab inte">?</div>
+    <div class="cuerpo"><div class="cat">Fuera de catálogo</div><div class="tit">¿No encuentra lo que busca?</div><p class="sub">Importamos bajo pedido y trabajamos más marcas de las que alcanzamos a publicar.</p><button class="btn">Contáctenos</button></div></div>
+</div>
+
+<h2>Opción 2 — una sola tarjeta doble, logo e interrogación compartiendo cabecera</h2>
+<p class="nota">Ocupa el mismo espacio que dos productos, pero es una sola pieza: el mensaje no se parte en dos.</p>
+<div class="rejilla">
+  <div class="card"><div class="img"><img src="img/productos/controlador-evd4-carel.jpg" alt=""></div>
+    <div class="cuerpo"><div class="cat">CAREL</div><div class="nom">Controlador de válvula EVD4 CAREL</div><span class="stock">✓ En stock (3)</span><button class="btn">Cotizar por WhatsApp</button></div></div>
+  <div class="card"><div class="img"><img src="img/productos/pantalla-evdis00es0-carel.jpg" alt=""></div>
+    <div class="cuerpo"><div class="cat">CAREL</div><div class="nom">Pantalla display EVDIS00ES0 CAREL</div><span class="stock">✓ En stock (2)</span><button class="btn">Cotizar por WhatsApp</button></div></div>
+  <div class="par">
+    <div class="cabdoble"><div><img src="logo-ecuclima.png" alt="Ecuclima"></div><div>?</div></div>
+    <div class="cuerpo"><div class="cat">Productos especiales</div><div class="tit">Permítanos encontrar su producto por usted en nuestra tienda</div><p class="sub">Importamos bajo pedido y trabajamos más marcas y referencias de las que alcanzamos a publicar.</p><button class="btn">Contáctenos</button></div></div>
+</div>
+
+<h2>Opción 3 — barra horizontal blanca, debajo de los resultados</h2>
+<p class="nota">Cruza todo el ancho. No compite con los productos y en el celular se apila sola.</p>
+<div class="rejilla">
+  <div class="horiz">
+    <div class="iconos"><div class="cajita"><img src="logo-ecuclima.png" alt="Ecuclima"></div><div class="cajita q">?</div></div>
+    <div class="txt"><strong>Permítanos encontrar su producto por usted en nuestra tienda</strong><span>Importamos bajo pedido y trabajamos más marcas y referencias de las que alcanzamos a publicar.</span></div>
+    <button>Contáctenos</button>
+  </div>
+</div>
+
+<h2>Opción 4 — banda azul, la más visible</h2>
+<p class="nota">El azul de la marca corta el listado y obliga a mirar. La mejor para cuando la búsqueda no encuentra nada.</p>
+<div class="rejilla">
+  <div class="banda">
+    <div class="iconos"><div class="cajita"><img src="logo-ecuclima.png" alt="Ecuclima"></div><div class="cajita q">?</div></div>
+    <div class="txt"><strong>Permítanos encontrar su producto por usted en nuestra tienda</strong><span>Importamos bajo pedido y trabajamos más marcas y referencias de las que alcanzamos a publicar.</span></div>
+    <button>Contáctenos</button>
+  </div>
+</div>
+
+</body>
+</html>
