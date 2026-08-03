@@ -77,6 +77,10 @@ nav a.nav-wa:hover{color:#1EBE5A;opacity:1}
 
 .filtros{display:none}
 .filtro-select-wrap{display:block;max-width:600px;margin:2rem auto 0;padding:0 2rem}
+.filtro-fila{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.filtro-fila>div{min-width:0}
+#wrapTipo[hidden]{display:none}
+@media(max-width:600px){.filtro-fila{grid-template-columns:1fr}}
 .filtro-select-wrap label{display:block;font-size:0.78rem;font-weight:600;color:#5a6b80;margin-bottom:0.4rem}
 .filtro-select-wrap select{width:100%;padding:0.85rem 1rem;border:1.5px solid #d8dee6;border-radius:10px;background:#fff;color:#004080;font-weight:600;font-size:0.92rem;font-family:inherit;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FF8000' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center;background-size:18px}
 .chip{padding:0.5rem 1.1rem;border:1.5px solid #d8dee6;background:#fff;border-radius:20px;font-size:0.82rem;font-weight:500;color:#4a5568;cursor:pointer;transition:all 0.25s;font-family:inherit}
@@ -151,7 +155,12 @@ html,body{overflow-x:clip;max-width:100vw}*{min-width:0}img,table,iframe{max-wid
   <div class="lado-icono der" id="ladoDer" aria-hidden="true"><img id="ladoDerImg" src="" alt=""></div>
 </section>
 
-<div class="filtro-select-wrap"><label for="filtroSelect">Filtrar por categoría</label><select id="filtroSelect"></select></div>
+<div class="filtro-select-wrap">
+  <div class="filtro-fila">
+    <div><label for="filtroMarca">Marca</label><select id="filtroMarca"></select></div>
+    <div id="wrapTipo"><label for="filtroTipo">Tipo de pieza</label><select id="filtroTipo"></select></div>
+  </div>
+</div>
 <div class="filtros" id="filtros"></div>
 <p class="conteo" id="conteo"></p>
 <div class="rejilla" id="rejilla"></div>
@@ -538,7 +547,41 @@ const PRODUCTOS = [
 ];
 
 const WHATSAPP = "593980420996";
-let categoriaActiva = "Todas";
+let marcaActiva = "Todas";
+let tipoActivo  = "Todos";
+
+// La marca se deduce del sufijo del id (...-bitzer, ...-sanhua) y del nombre.
+// Asi no hay que tocar el inventario para tener el filtro por marca.
+const MARCAS = [
+  ["BITZER", /bitzer/],     ["Sanhua", /sanhua/],   ["CAREL", /carel/],
+  ["Full Gauge", /full[ -]?gauge/], ["Trane", /trane/], ["Siemens", /siemens/],
+  ["Danfoss", /danfoss/],   ["SWEP", /swep/]
+  // Sporlan (2), Hansen (2) y Emerson (1) no se listan aparte: una marca con uno
+  // o dos articulos no merece su propia entrada. Caen en "Otras marcas".
+];
+function marcaDe(p){
+  const t = normalizar(p.n + " " + p.c + " " + (p.id || ""));
+  for (var i=0; i<MARCAS.length; i++) if (MARCAS[i][1].test(t)) return MARCAS[i][0];
+  return "Otras marcas";
+}
+
+// El tipo sale del nombre. El orden importa: lo mas especifico primero, porque
+// "plato de valvula" tambien contiene "valvula" y un transductor no es un filtro.
+function tipoDe(p){
+  const n = normalizar(p.n).trim();
+  if (/^compresor/.test(n)) return "Compresores";
+  if (/plato de valvula|plato para valvula|kit plato/.test(n)) return "Platos de válvula";
+  if (/senso|transduct|sonda/.test(n)) return "Sensores";
+  if (/empaque|gskt|junta|o-?ring|anillo|sello/.test(n)) return "Empaques y juntas";
+  if (/piston|biela|buje|brg|descargador|cigueñal|cigueniar/.test(n)) return "Pistón, biela y bujes";
+  if (/intercambiador/.test(n)) return "Intercambiadores";
+  if (/valvula|llave de paso|llave de servicio|solenoide|expansion|visor|filtro|presostato|bobina/.test(n)) return "Válvulas y filtros";
+  if (/control|modulo|rele|contactor|breaker|bornera|cable|capacitor|triac|display|pantalla|termostato|termometro/.test(n)) return "Controles y eléctrico";
+  if (/tuberia|codo|tee |union|niple|abrazadera|manguera|pvc|anclaje/.test(n)) return "Tubería y conexiones";
+  if (/aceite|refrigerante|resistencia|calorflex/.test(n)) return "Aceites y resistencias";
+  if (/aislante|poliuretano|espuma|panel/.test(n)) return "Aislamiento";
+  return "Otros repuestos";
+}
 
 function normalizar(s){
   return s.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase();
@@ -548,28 +591,51 @@ function escAttr(s){
   return s.replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");
 }
 
-function pintarFiltros(){
-  const cats = ["Todas", ...new Set(PRODUCTOS.map(p => p.c))];
-  document.getElementById("filtros").innerHTML = cats.map(c =>
-    '<button class="chip' + (c === categoriaActiva ? ' on' : '') + '" data-cat="' + c + '">' + c + '</button>'
-  ).join("");
-  document.querySelectorAll(".chip").forEach(b => {
-    b.addEventListener("click", () => {
-      categoriaActiva = b.dataset.cat;
-      document.getElementById("q").value = "";
-      pintarFiltros();
-      pintar();
-    });
-  });
+function opciones(pares, activo){
+  return pares.map(function(par){
+    return '<option value="' + escAttr(par[0]) + '"' + (par[0] === activo ? ' selected' : '') +
+           '>' + par[0] + ' (' + par[1] + ')</option>';
+  }).join("");
+}
 
-  const sel = document.getElementById("filtroSelect");
-  sel.innerHTML = cats.map(c =>
-    '<option value="' + c + '"' + (c === categoriaActiva ? ' selected' : '') + '>' + c + '</option>'
-  ).join("");
-  sel.onchange = () => {
-    categoriaActiva = sel.value;
+function pintarFiltros(){
+  const sm = document.getElementById("filtroMarca");
+  const st = document.getElementById("filtroTipo");
+
+  // Nivel 1: marca, ordenada por cantidad para que lo que mas hay quede arriba.
+  const porMarca = {};
+  PRODUCTOS.forEach(function(p){ const m = marcaDe(p); porMarca[m] = (porMarca[m] || 0) + 1; });
+  const marcas = Object.keys(porMarca).sort(function(a,b){
+    if (a === "Otras marcas") return 1;
+    if (b === "Otras marcas") return -1;
+    return porMarca[b] - porMarca[a];
+  }).map(function(m){ return [m, porMarca[m]]; });
+  sm.innerHTML = '<option value="Todas">Todas las marcas (' + PRODUCTOS.length + ')</option>' +
+                 opciones(marcas, marcaActiva);
+
+  // Nivel 2: tipo dentro de la marca elegida.
+  const base = PRODUCTOS.filter(function(p){ return marcaActiva === "Todas" || marcaDe(p) === marcaActiva; });
+  const porTipo = {};
+  base.forEach(function(p){ const t = tipoDe(p); porTipo[t] = (porTipo[t] || 0) + 1; });
+  const tipos = Object.keys(porTipo).sort(function(a,b){ return porTipo[b] - porTipo[a]; })
+                      .map(function(t){ return [t, porTipo[t]]; });
+
+  // Se oculta cuando no aporta: si casi todo cae en un mismo tipo, el submenu
+  // sobra. Sanhua es el caso: 47 de sus 50 son valvulas y filtros.
+  const aporta = tipos.length > 1 && tipos[0][1] < base.length * 0.9;
+  document.getElementById("wrapTipo").hidden = !aporta;
+  if (!aporta || !porTipo[tipoActivo]) tipoActivo = "Todos";
+  st.innerHTML = '<option value="Todos">Todos los tipos (' + base.length + ')</option>' +
+                 opciones(tipos, tipoActivo);
+
+  sm.onchange = function(){
+    marcaActiva = sm.value; tipoActivo = "Todos";
     document.getElementById("q").value = "";
-    pintarFiltros();
+    pintarFiltros(); pintar();
+  };
+  st.onchange = function(){
+    tipoActivo = st.value;
+    document.getElementById("q").value = "";
     pintar();
   };
 }
@@ -577,7 +643,8 @@ function pintarFiltros(){
 function pintar(){
   const q = normalizar(document.getElementById("q").value.trim());
   const lista = PRODUCTOS.filter(p => {
-    const okCat = categoriaActiva === "Todas" || p.c === categoriaActiva;
+    const okCat = (marcaActiva === "Todas" || marcaDe(p) === marcaActiva) &&
+                  (tipoActivo  === "Todos" || tipoDe(p)  === tipoActivo);
     // Se busca tambien en el id, que arrastra el codigo EC del inventario:
     // el recuadro promete "por nombre, codigo o marca" y el codigo no se buscaba.
     const okQ = !q || normalizar(p.n + " " + p.c + " " + (p.id || "")).includes(q);
@@ -718,8 +785,8 @@ document.getElementById("msgInput").addEventListener("input", limpiarError);
 // devuelve cero aunque la parte exista en otra categoria.
 document.getElementById("q").addEventListener("input", function(){
   const escribiendo = this.value.trim() !== "";
-  if (escribiendo && categoriaActiva !== "Todas"){
-    categoriaActiva = "Todas";
+  if (escribiendo && (marcaActiva !== "Todas" || tipoActivo !== "Todos")){
+    marcaActiva = "Todas"; tipoActivo = "Todos";
     pintarFiltros();
   }
   pintar();
