@@ -106,6 +106,9 @@ nav a.nav-wa:hover{color:#1EBE5A;opacity:1}
 .stock.pedido{background:#fdf0e3;color:#8a4b0b}
 .btn-consulta{width:100%;padding:0.7rem;background:#FF8000;color:#fff;border:0;border-radius:7px;font-weight:600;font-size:0.85rem;cursor:pointer;font-family:inherit;transition:background 0.25s}
 .btn-consulta:hover{background:#E67000}
+.parte-foto{position:relative}
+.cod-foto{position:absolute;top:8px;left:8px;background:rgba(0,64,128,.92);color:#fff;font-size:0.7rem;font-weight:700;letter-spacing:0.04em;padding:0.25rem 0.5rem;border-radius:5px;z-index:2}
+.cod-info{display:block;color:#5a6b80;font-size:0.75rem;font-weight:600;letter-spacing:0.04em;margin:0.15rem 0 0.35rem}
 .esp-barra{grid-column:1/-1;background:#fff;border:2px solid #004080;border-radius:12px;display:flex;align-items:center;gap:1.2rem;padding:1.2rem 1.4rem;flex-wrap:wrap;margin-top:0.4rem}
 .esp-ic{display:flex;align-items:center;gap:0.8rem}
 .esp-caja{width:74px;height:74px;border-radius:10px;background:#004080;display:flex;align-items:center;justify-content:center;flex:none}
@@ -593,6 +596,13 @@ function marcasDe(p){
 // Barra de productos especiales. Va al final de los resultados y tambien cuando
 // la busqueda no encuentra nada. Si el cliente escribio algo, se nombra: leer su
 // propia busqueda de vuelta es lo que convierte la barra en una invitacion real.
+// Codigo de inventario de Ecuclima. Vive al principio del id ("ec03585-...").
+// Cinco productos del catalogo no lo traen; en esos no se muestra nada.
+function codigoDe(p){
+  const m = (p.id || "").match(/^ec(\d+)/i);
+  return m ? "EC" + m[1] : "";
+}
+
 function barraEspecial(buscado){
   const q = (buscado || "").trim();
   const tit = q
@@ -760,18 +770,25 @@ function pintar(){
     }
     const abre = p.id ? " onclick=\"location.href='producto.html?id=" + p.id + "'\" style=\"cursor:pointer\"" : "";
     const boton = ocultarPrecio ? "Cotizar por WhatsApp" : "Consultar";
+    const cod = codigoDe(p);
     return '<article class="parte"' + abre + '>' +
-      '<div class="parte-foto"><img src="img/productos/' + p.f + '" alt="' + escAttr(p.n) + '" loading="lazy" onerror="this.style.display=\'none\'"></div>' +
+      '<div class="parte-foto">' +
+        (cod ? '<span class="cod-foto">' + cod + '</span>' : '') +
+        '<img src="img/productos/' + p.f + '" alt="' + escAttr(p.n) + '" loading="lazy" onerror="this.style.display=\'none\'"></div>' +
       '<div class="parte-cuerpo">' +
         '<p class="parte-cat">' + p.c + '</p>' +
         '<h3>' + p.n + '</h3>' +
+        (cod ? '<span class="cod-info">Código ' + cod + '</span>' : '') +
         '<div class="parte-pie">' + precio + stock + '</div>' +
-        '<button class="btn-consulta" data-n="' + escAttr(p.n) + '" onclick="event.stopPropagation()">' + boton + '</button>' +
+        '<button class="btn-consulta" data-n="' + escAttr(p.n) + '" data-cod="' + cod + '" onclick="event.stopPropagation()">' + boton + '</button>' +
       '</div></article>';
   }).join("") + barraEspecial(document.getElementById("q").value);
 
   document.querySelectorAll(".btn-consulta[data-n]").forEach(b => {
-    b.addEventListener("click", () => abrirChat("Hola Ecuclima, quiero consultar por: " + b.dataset.n));
+    b.addEventListener("click", () => abrirChat(
+      "Hola Ecuclima, quiero consultar por: " + b.dataset.n +
+      (b.dataset.cod ? " (código " + b.dataset.cod + ")" : "")
+    ));
   });
   ligarEspecial();
 }
