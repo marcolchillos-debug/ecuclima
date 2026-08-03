@@ -106,6 +106,17 @@ nav a.nav-wa:hover{color:#1EBE5A;opacity:1}
 .stock.pedido{background:#fdf0e3;color:#8a4b0b}
 .btn-consulta{width:100%;padding:0.7rem;background:#FF8000;color:#fff;border:0;border-radius:7px;font-weight:600;font-size:0.85rem;cursor:pointer;font-family:inherit;transition:background 0.25s}
 .btn-consulta:hover{background:#E67000}
+.esp-barra{grid-column:1/-1;background:#fff;border:2px solid #004080;border-radius:12px;display:flex;align-items:center;gap:1.2rem;padding:1.2rem 1.4rem;flex-wrap:wrap;margin-top:0.4rem}
+.esp-ic{display:flex;align-items:center;gap:0.8rem}
+.esp-caja{width:74px;height:74px;border-radius:10px;background:#004080;display:flex;align-items:center;justify-content:center;flex:none}
+.esp-caja img{max-width:74%}
+.esp-caja.q{background:linear-gradient(135deg,#0059b3,#0072e6);color:#fff;font-size:2.3rem;font-weight:800;line-height:1}
+.esp-txt{flex:1;min-width:230px}
+.esp-txt strong{display:block;color:#004080;font-size:1rem;margin-bottom:0.25rem;line-height:1.35}
+.esp-txt span{color:#5a6b80;font-size:0.85rem;line-height:1.5}
+.esp-btn{background:#FF8000;color:#fff;border:0;border-radius:8px;padding:0.8rem 1.4rem;font-weight:700;font-size:0.88rem;cursor:pointer;font-family:inherit;white-space:nowrap;transition:background 0.25s}
+.esp-btn:hover{background:#E67000}
+@media(max-width:600px){.esp-barra{padding:1.1rem}.esp-btn{width:100%}}
 
 .vacio{grid-column:1/-1;text-align:center;padding:4rem 1rem;color:#8a94a3}
 .vacio strong{display:block;font-size:1.1rem;color:#4a5568;margin-bottom:0.5rem;font-weight:600}
@@ -579,6 +590,36 @@ function marcasDe(p){
 // Articulos que se despachan por medida (metro, kilo, litro, rollo) y no por
 // pieza. Ahi el numero del inventario no son unidades y confunde, asi que se
 // muestra solo "En stock" sin cantidad.
+// Barra de productos especiales. Va al final de los resultados y tambien cuando
+// la busqueda no encuentra nada. Si el cliente escribio algo, se nombra: leer su
+// propia busqueda de vuelta es lo que convierte la barra en una invitacion real.
+function barraEspecial(buscado){
+  const q = (buscado || "").trim();
+  const tit = q
+    ? 'Permítanos encontrar «' + escAttr(q) + '» por usted en nuestra tienda'
+    : 'Permítanos encontrar su producto por usted en nuestra tienda';
+  return '<div class="esp-barra">' +
+      '<div class="esp-ic">' +
+        '<div class="esp-caja"><img src="logo-ecuclima.png" alt="Ecuclima"></div>' +
+        '<div class="esp-caja q">?</div>' +
+      '</div>' +
+      '<div class="esp-txt"><strong>' + tit + '</strong>' +
+      '<span>Importamos bajo pedido y trabajamos más marcas y referencias de las que alcanzamos a publicar.</span></div>' +
+      '<button class="esp-btn" data-esp="' + escAttr(q) + '">Contáctenos</button>' +
+    '</div>';
+}
+
+function ligarEspecial(){
+  document.querySelectorAll(".esp-btn").forEach(function(b){
+    b.onclick = function(){
+      const t = (this.dataset.esp || "").trim();
+      abrirChat(t
+        ? "Hola Ecuclima, busco: " + t + ". ¿Pueden conseguirlo?"
+        : "Hola Ecuclima, busco un producto que no está en el catálogo.");
+    };
+  });
+}
+
 function porMedida(p){
   const n = normalizar(p.n);
   // Piezas armadas que se cuentan aunque el nombre mencione cable o manguera.
@@ -690,12 +731,10 @@ function pintar(){
   if (lista.length === 0){
     const buscado = document.getElementById("q").value.trim();
     document.getElementById("rejilla").innerHTML =
-      '<div class="vacio"><strong>No tenemos “' + buscado + '” publicado en este momento</strong>' +
-      'Trabajamos con más marcas y referencias de las que alcanzamos a listar. Escríbanos y se lo conseguimos.<br><br>' +
-      '<button class="btn-consulta" style="max-width:280px" data-vacio="' + escAttr(buscado) + '">Consultar disponibilidad</button></div>';
-    document.querySelector(".btn-consulta[data-vacio]").addEventListener("click", function(){
-      abrirChat("Hola Ecuclima, ¿tienen disponibilidad de: " + this.dataset.vacio + "?");
-    });
+      '<div class="vacio"><strong>No tenemos “' + escAttr(buscado) + '” publicado en este momento</strong>' +
+      'Eso no quiere decir que no se lo podamos conseguir.</div>' +
+      barraEspecial(buscado);
+    ligarEspecial();
     return;
   }
 
@@ -729,11 +768,12 @@ function pintar(){
         '<div class="parte-pie">' + precio + stock + '</div>' +
         '<button class="btn-consulta" data-n="' + escAttr(p.n) + '" onclick="event.stopPropagation()">' + boton + '</button>' +
       '</div></article>';
-  }).join("");
+  }).join("") + barraEspecial(document.getElementById("q").value);
 
   document.querySelectorAll(".btn-consulta[data-n]").forEach(b => {
     b.addEventListener("click", () => abrirChat("Hola Ecuclima, quiero consultar por: " + b.dataset.n));
   });
+  ligarEspecial();
 }
 
 function toggleMenu(){ document.getElementById("navMenu").classList.toggle("active"); }
