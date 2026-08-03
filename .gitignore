@@ -1,2 +1,12 @@
 index.html.bak
 *.bak
+
+# Panel de analítica interno — NO debe publicarse en el sitio.
+# Contiene datos de GA4 y, sobre todo, la clave de la cuenta de servicio.
+_analitica/
+_flujo-visitantes.html
+credenciales.json
+*.credentials.json
+
+# Maquetas y borradores de trabajo: no se publican en el sitio.
+_*.html
