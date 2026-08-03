@@ -38,11 +38,13 @@ main{max-width:1100px;margin:0 auto;padding:1.2rem 2rem 4rem}
 .galeria-marco{height:340px;display:flex;align-items:center;justify-content:center;background:#fff;position:relative}
 .galeria-marco img{max-width:100%;max-height:100%;object-fit:contain;padding:1.5rem;transition:transform .3s}
 .galeria-marco:hover img{transform:scale(1.12)}
-.nav-piezas{display:flex;align-items:center;justify-content:center;gap:1rem;padding:.9rem .8rem 1.1rem;border-top:1px solid #eef1f5}
-.salto{width:44px;height:44px;flex:none;display:flex;align-items:center;justify-content:center;font-size:1.7rem;line-height:1;border:1.5px solid #e2e8f0;border-radius:50%;color:#004080;background:#fff;text-decoration:none;cursor:pointer;transition:border-color .2s,background .2s,color .2s}
+.barra-piezas{position:sticky;z-index:90;display:flex;align-items:center;justify-content:center;gap:1rem;background:#fff;border-bottom:1px solid #e2e8f0;box-shadow:0 2px 8px rgba(0,0,0,.05);padding:.5rem 1rem}
+.salto{width:38px;height:38px;flex:none;display:flex;align-items:center;justify-content:center;font-size:1.5rem;line-height:1;border:1.5px solid #e2e8f0;border-radius:50%;color:#004080;background:#fff;text-decoration:none;cursor:pointer;transition:border-color .2s,background .2s,color .2s}
 .salto:hover{border-color:#FF8000;background:#FF8000;color:#fff}
 .salto[hidden]{visibility:hidden;display:flex}
-.salto-nombre{font-size:.78rem;color:#8a94a3;text-align:center;max-width:210px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.barra-txt{min-width:0;text-align:center;line-height:1.25}
+.barra-txt b{display:block;font-size:.82rem;font-weight:600;color:#004080;max-width:min(46vw,420px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.barra-txt small{display:block;font-size:.68rem;color:#8a94a3}
 .cod-foto{position:absolute;top:12px;left:12px;background:rgba(0,64,128,.92);color:#fff;font-size:.8rem;font-weight:700;letter-spacing:.05em;padding:.35rem .7rem;border-radius:6px;z-index:2}
 .cod-foto:empty{display:none}
 .galeria-miniaturas{display:flex;gap:.5rem;padding:.8rem;overflow-x:auto}
@@ -121,6 +123,16 @@ html,body{overflow-x:clip;max-width:100vw}img,table{max-width:100%}
 </header>
 
 <button id="volverTab" onclick="volverAlCatalogo()">← Volver al catálogo</button>
+<!-- Barra fija para recorrer el catalogo. Va pegada bajo el encabezado y no se
+     mueve al bajar por las especificaciones: pasar de una pieza a la siguiente
+     no deberia obligar a volver arriba ni al listado. El desplazamiento superior
+     se calcula en JS contra la altura real del encabezado. -->
+<nav class="barra-piezas" id="barraPiezas">
+  <a class="salto" id="saltoAnt" title="">‹</a>
+  <span class="barra-txt"><b id="saltoNombre"></b><small id="saltoPos"></small></span>
+  <a class="salto" id="saltoSig" title="">›</a>
+</nav>
+
 <p class="miga">
   <a href="index.html">Inicio</a> › <a href="partes.html">Repuestos</a> › <span id="migaCat">Producto</span>
 </p>
@@ -130,13 +142,6 @@ html,body{overflow-x:clip;max-width:100vw}img,table{max-width:100%}
     <div class="galeria">
       <div class="galeria-marco"><span class="cod-foto" id="codFoto"></span><img id="imgPrincipal" src="" alt=""></div>
       <div class="galeria-miniaturas" id="miniaturas"></div>
-      <!-- Pasar de una pieza a otra sin volver al listado y elegir de nuevo.
-           Va bajo la foto, que es donde se mira al comparar repuestos. -->
-      <nav class="nav-piezas" id="navPiezas">
-        <a class="salto" id="saltoAnt" title="">‹</a>
-        <span class="salto-nombre" id="saltoNombre"></span>
-        <a class="salto" id="saltoSig" title="">›</a>
-      </nav>
     </div>
     <div class="info">
       <div class="info-marca"><img id="marcaLogo" src="" alt="" onerror="this.style.display='none'"><span id="marcaNombre"></span></div>
@@ -174,7 +179,7 @@ html,body{overflow-x:clip;max-width:100vw}img,table{max-width:100%}
   <p><strong>ECUCLIMA</strong> — Refrigeración industrial en Ecuador</p>
   <p>Conocoto, Quito | Lunes a viernes de 8:30 a 17:30 | Emergencias 24/7</p>
   <p style="margin-top:1rem"><a href="mailto:info@ecuclima.com">info@ecuclima.com</a> | <a href="tel:+593980420996">+593 98 042 0996</a> | <a href="https://www.tiktok.com/@ecuclima_2025_ec" target="_blank" rel="noopener">TikTok</a></p>
-  <p style="margin-top:2rem;font-size:.85rem;opacity:.7">&copy; 2026 Ecuclima. Todos los derechos reservados.</p><p style="margin-top:0.6rem;font-size:0.72rem;opacity:0.45">Versión <!--SELLO-->03/08/2026 11:32<!--/SELLO--></p>
+  <p style="margin-top:2rem;font-size:.85rem;opacity:.7">&copy; 2026 Ecuclima. Todos los derechos reservados.</p><p style="margin-top:0.6rem;font-size:0.72rem;opacity:0.45">Versión <!--SELLO-->03/08/2026 11:40<!--/SELLO--></p>
 </footer>
 
 <a id="waFab" href="https://wa.me/593980420996" target="_blank" rel="noopener" aria-label="WhatsApp"><svg width="31" height="31" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413"/></svg></a>
@@ -619,8 +624,19 @@ if (!f) {
     a.href = "producto.html?id=" + encodeURIComponent(k);
     a.title = par[2] + ": " + FICHAS[k].nombre;
   });
-  document.getElementById("saltoNombre").textContent =
-    pos >= 0 ? (pos + 1) + " de " + claves.length : "";
+  document.getElementById("saltoNombre").textContent = f.nombre;
+  document.getElementById("saltoPos").textContent =
+    pos >= 0 ? "Pieza " + (pos + 1) + " de " + claves.length : "";
+
+  // La barra se pega justo debajo del encabezado, que es fijo y de alto variable
+  // segun el ancho de pantalla. Se mide en vivo en vez de fijar un valor.
+  const cab = document.querySelector("header");
+  const ubicarBarra = () => {
+    const h = cab ? cab.offsetHeight : 0;
+    document.getElementById("barraPiezas").style.top = h + "px";
+  };
+  ubicarBarra();
+  window.addEventListener("resize", ubicarBarra);
   document.getElementById("pDescripcion").textContent = f.descripcion;
 
   const imgP = document.getElementById("imgPrincipal");
