@@ -559,10 +559,19 @@ const MARCAS = [
   // Sporlan (2), Hansen (2) y Emerson (1) no se listan aparte: una marca con uno
   // o dos articulos no merece su propia entrada. Caen en "Otras marcas".
 ];
-function marcaDe(p){
-  const t = normalizar(p.n + " " + p.c + " " + (p.id || ""));
-  for (var i=0; i<MARCAS.length; i++) if (MARCAS[i][1].test(t)) return MARCAS[i][0];
-  return "Otras marcas";
+// Piezas que sirven a mas de una marca y el nombre no lo dice. Van por codigo EC.
+// Corregir tambien en el inventario de origen: ver CORRECCIONES-INVENTARIO.md.
+const MULTIMARCA = {
+  "ec02452": ["BITZER", "Danfoss"]   // KIT base de descargador Bitzer con bobina Danfoss
+};
+
+function marcasDe(p){
+  const id = (p.id || "").toLowerCase();
+  for (var cod in MULTIMARCA) if (id.indexOf(cod) === 0) return MULTIMARCA[cod];
+  const t = normalizar(p.n + " " + p.c + " " + id);
+  const r = [];
+  for (var i=0; i<MARCAS.length; i++) if (MARCAS[i][1].test(t)) r.push(MARCAS[i][0]);
+  return r.length ? r : ["Otras marcas"];
 }
 
 // El tipo sale del nombre. El orden importa: lo mas especifico primero, porque
@@ -575,7 +584,14 @@ function tipoDe(p){
   if (/empaque|gskt|junta|o-?ring|anillo|sello/.test(n)) return "Empaques y juntas";
   if (/piston|biela|buje|brg|descargador|cigueñal|cigueniar/.test(n)) return "Pistón, biela y bujes";
   if (/intercambiador/.test(n)) return "Intercambiadores";
-  if (/valvula|llave de paso|llave de servicio|solenoide|expansion|visor|filtro|presostato|bobina/.test(n)) return "Válvulas y filtros";
+  if (/solenoide|mdf-a/.test(n)) return "Válvulas solenoide";
+  if (/expansion|termostatica|e2v|e3v|e4v|e5v/.test(n)) return "Válvulas de expansión";
+  if (/filtro|deshidratador|secador/.test(n)) return "Filtros y deshidratadores";
+  if (/llave de paso|llave de servicio|valvula de servicio|valvula de paso|tipo bola/.test(n)) return "Llaves de paso y servicio";
+  if (/visor/.test(n)) return "Visores";
+  if (/presostato|switch de presion/.test(n)) return "Presostatos";
+  if (/bobina/.test(n)) return "Bobinas";
+  if (/valvula|regulador/.test(n)) return "Otras válvulas";
   if (/control|modulo|rele|contactor|breaker|bornera|cable|capacitor|triac|display|pantalla|termostato|termometro/.test(n)) return "Controles y eléctrico";
   if (/tuberia|codo|tee |union|niple|abrazadera|manguera|pvc|anclaje/.test(n)) return "Tubería y conexiones";
   if (/aceite|refrigerante|resistencia|calorflex/.test(n)) return "Aceites y resistencias";
@@ -604,7 +620,11 @@ function pintarFiltros(){
 
   // Nivel 1: marca, ordenada por cantidad para que lo que mas hay quede arriba.
   const porMarca = {};
-  PRODUCTOS.forEach(function(p){ const m = marcaDe(p); porMarca[m] = (porMarca[m] || 0) + 1; });
+  // Una pieza multimarca suma en cada una de sus marcas, por eso los conteos
+  // por marca pueden sumar mas que los 355 del catalogo.
+  PRODUCTOS.forEach(function(p){
+    marcasDe(p).forEach(function(m){ porMarca[m] = (porMarca[m] || 0) + 1; });
+  });
   const marcas = Object.keys(porMarca).sort(function(a,b){
     if (a === "Otras marcas") return 1;
     if (b === "Otras marcas") return -1;
@@ -614,7 +634,9 @@ function pintarFiltros(){
                  opciones(marcas, marcaActiva);
 
   // Nivel 2: tipo dentro de la marca elegida.
-  const base = PRODUCTOS.filter(function(p){ return marcaActiva === "Todas" || marcaDe(p) === marcaActiva; });
+  const base = PRODUCTOS.filter(function(p){
+    return marcaActiva === "Todas" || marcasDe(p).indexOf(marcaActiva) >= 0;
+  });
   const porTipo = {};
   base.forEach(function(p){ const t = tipoDe(p); porTipo[t] = (porTipo[t] || 0) + 1; });
   const tipos = Object.keys(porTipo).sort(function(a,b){ return porTipo[b] - porTipo[a]; })
@@ -643,7 +665,7 @@ function pintarFiltros(){
 function pintar(){
   const q = normalizar(document.getElementById("q").value.trim());
   const lista = PRODUCTOS.filter(p => {
-    const okCat = (marcaActiva === "Todas" || marcaDe(p) === marcaActiva) &&
+    const okCat = (marcaActiva === "Todas" || marcasDe(p).indexOf(marcaActiva) >= 0) &&
                   (tipoActivo  === "Todos" || tipoDe(p)  === tipoActivo);
     // Se busca tambien en el id, que arrastra el codigo EC del inventario:
     // el recuadro promete "por nombre, codigo o marca" y el codigo no se buscaba.
