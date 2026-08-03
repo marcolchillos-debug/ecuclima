@@ -576,6 +576,16 @@ function marcasDe(p){
 
 // El tipo sale del nombre. El orden importa: lo mas especifico primero, porque
 // "plato de valvula" tambien contiene "valvula" y un transductor no es un filtro.
+// Articulos que se despachan por medida (metro, kilo, litro, rollo) y no por
+// pieza. Ahi el numero del inventario no son unidades y confunde, asi que se
+// muestra solo "En stock" sin cantidad.
+function porMedida(p){
+  const n = normalizar(p.n);
+  // Piezas armadas que se cuentan aunque el nombre mencione cable o manguera.
+  if (/\bkit\b|terminal|empalme|conector|puntera|juego/.test(n)) return false;
+  return /\[metro\]|tuberia flexible|tubo de cobre|\bcanaleta\b|manguera refflex|cable awg|w\/m|por metro|x metro|a granel/.test(n);
+}
+
 function tipoDe(p){
   const n = normalizar(p.n).trim();
   if (/^compresor/.test(n)) return "Compresores";
@@ -699,15 +709,15 @@ function pintar(){
     if (ocultarPrecio) {
       precio = '';
       stock = bajoPedido
-        ? '<span class="stock pedido" style="font-size:0.95rem;padding:0.4rem 0.8rem">Bajo pedido</span>'
-        : '<span class="stock hay" style="font-size:0.95rem;padding:0.4rem 0.8rem">✓ En stock (' + p.s + ')</span>';
+        ? '<span class="stock pedido" style="font-size:0.95rem;padding:0.4rem 0.8rem">Consultar stock</span>'
+        : '<span class="stock hay" style="font-size:0.95rem;padding:0.4rem 0.8rem">✓ En stock' + (porMedida(p) ? '' : ' (' + p.s + ')') + '</span>';
     } else {
       precio = bajoPedido
         ? '<div class="precio pedido">Precio bajo consulta</div>'
         : '<div class="precio">$' + p.p.toFixed(2) + (p.iva ? '<small>+ IVA</small>' : '<small>IVA incluido</small>') + '</div>';
       stock = bajoPedido
-        ? '<span class="stock pedido">Bajo pedido</span>'
-        : '<span class="stock hay">' + p.s + ' en stock</span>';
+        ? '<span class="stock pedido">Consultar stock</span>'
+        : '<span class="stock hay">' + (porMedida(p) ? 'En stock' : p.s + ' en stock') + '</span>';
     }
     const abre = p.id ? " onclick=\"location.href='producto.html?id=" + p.id + "'\" style=\"cursor:pointer\"" : "";
     const boton = ocultarPrecio ? "Cotizar por WhatsApp" : "Consultar";
