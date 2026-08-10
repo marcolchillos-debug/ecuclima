@@ -80,6 +80,27 @@ main p{color:#4a5568;margin-bottom:.9rem;max-width:800px}
 .preguntas summary:hover{background:#f8f9fa}
 .preguntas details p{padding:0 1.3rem 1.1rem;margin:0;font-size:.92rem;color:#4a5568;max-width:none}
 
+/* Vitrina de repuestos reales en stock: reemplaza las fotos genericas del
+   chiller completo (que no mostraban la pieza) por fotos verdaderas de cada
+   parte, tomadas del mismo catalogo que usa partes.html. */
+.piezas-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:1.1rem;margin:1.2rem 0 1rem}
+.pieza{background:#fff;border:1px solid #e4e8ee;border-radius:12px;overflow:hidden;text-decoration:none;display:block;transition:all .3s;cursor:pointer}
+.pieza:hover{transform:translateY(-4px);box-shadow:0 10px 28px rgba(0,64,128,.12);border-color:#FF8000}
+.pieza-foto{height:150px;background:#0d0d0d;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.pieza-foto img{width:100%;height:100%;object-fit:contain}
+.pieza-info{padding:.8rem .95rem}
+.pieza-cat{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:#FF8000;margin-bottom:.3rem;display:block}
+.pieza-nombre{font-size:.85rem;font-weight:600;color:#1a2b42;line-height:1.35;display:block;margin-bottom:.4rem}
+.pieza-precio{font-size:.85rem;font-weight:700;color:#004080}
+.pieza-precio.consultar{color:#8a94a3;font-weight:600;font-size:.8rem}
+@media(max-width:768px){.piezas-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.8rem}.pieza-foto{height:120px}}
+
+/* Pestana lateral fija a repuestos en stock: acceso directo desde cualquier
+   punto de la pagina, igual que en trane-chillers.html. */
+#repuestosTab{position:fixed;left:0;top:50%;transform:translateY(-50%);background:#004080;color:#fff;border:0;border-radius:0 10px 10px 0;padding:.9rem .6rem;font-weight:700;font-size:0.875rem;cursor:pointer;z-index:900;box-shadow:3px 0 12px rgba(0,0,0,.2);writing-mode:vertical-rl;text-orientation:mixed;display:flex;align-items:center;gap:.4rem;text-decoration:none;transition:background .25s}
+#repuestosTab:hover{background:#FF8000}
+@media(max-width:768px){#repuestosTab{padding:.7rem .45rem;font-size:0.8125rem}}
+
 .acciones{margin-top:2.6rem;display:flex;gap:1rem;flex-wrap:wrap}
 .btn{padding:.85rem 1.8rem;border:0;border-radius:8px;font-weight:600;font-size:.92rem;cursor:pointer;text-decoration:none;display:inline-block;font-family:inherit;transition:.3s}
 .btn-primary{background:#FF8000;color:#fff}
@@ -174,30 +195,43 @@ html,body{overflow-x:clip;max-width:100vw}*{min-width:0}img,table,iframe{max-wid
   <p>La diferencia entre un repuesto original y uno equivalente no siempre es visible a simple vista, pero se manifiesta en la planilla eléctrica, en la frecuencia de fallas y en la vida útil del equipo. Un rodamiento con tolerancia diferente, una válvula solenoide con bobina de menor aislamiento o una tarjeta de control sin el firmware correcto pueden hacer que un chiller Trane de alta eficiencia opere como un equipo de gama baja. En refrigeración industrial, lo barato sale caro cuando la parada de planta cuesta más que el repuesto.</p>
 
   <h2>Compresores y partes mecánicas</h2>
-  <div class="serie">
-    <div>
-      <p>El compresor es el corazón del chiller y el componente más costoso de reemplazar. Manejamos compresores completos Trane para las series <strong>CGAM, RTAC</strong> y <strong>CenTraVac</strong>, junto con kits de servicio que prolongan la vida útil del equipo existente sin necesidad de reemplazo total.</p>
-      <ul class="fichas">
-        <li>Compresores completos: tornillos semiherméticos de accionamiento directo para CGAM y RTAC, y compresores centrífugos para CenTraVac, entregados con aceite de carga inicial, juntas y manual de instalación.</li>
-        <li>Kits de servicio: sellos de eje, rodamientos, placas de válvula de succión y descarga, bujes de deslizamiento para mantenimiento preventivo de compresores de tornillo.</li>
-        <li>Válvulas y reguladores: válvulas de seguridad, de presión diferencial, reguladores de caudal y válvulas de retención con especificaciones exactas para cada modelo de chiller.</li>
-      </ul>
-    </div>
-    <img src="img/chillers/trane-rtac.jpg" alt="Chiller Trane serie RTAC, referencia para repuestos de compresor" loading="lazy">
-  </div>
+  <p>El compresor es el corazón del chiller y el componente más costoso de reemplazar. Manejamos compresores completos Trane para las series <strong>CGAM, RTAC</strong> y <strong>CenTraVac</strong>, junto con kits de servicio que prolongan la vida útil del equipo existente sin necesidad de reemplazo total.</p>
+  <ul class="fichas">
+    <li>Compresores completos: tornillos semiherméticos de accionamiento directo para CGAM y RTAC, y compresores centrífugos para CenTraVac, entregados con aceite de carga inicial, juntas y manual de instalación.</li>
+    <li>Kits de servicio: sellos de eje, rodamientos, placas de válvula de succión y descarga, bujes de deslizamiento para mantenimiento preventivo de compresores de tornillo.</li>
+    <li>Válvulas y reguladores: válvulas de seguridad, de presión diferencial, reguladores de caudal y válvulas de retención con especificaciones exactas para cada modelo de chiller.</li>
+  </ul>
 
   <h2>Controles, tarjetas y electrónica</h2>
-  <div class="serie">
-    <div>
-      <p>Los chillers modernos dependen de controladores programables que gestionan desde la secuencia de arranque hasta el diagnóstico de fallas. Cuando una tarjeta de control falla, el equipo se detiene completamente, y cada hora de parada representa pérdida de producto o interrupción de procesos críticos.</p>
-      <ul class="fichas">
-        <li>Tarjetas de control: módulos de control de compresor, tarjetas de interfaz de operador, y módulos de expansión de entradas/salidas para integración a BMS.</li>
-        <li>Sensores: temperatura de agua de entrada y salida, presión de refrigerante de alta y baja, y posición de válvula de inlet guide vane en compresores centrífugos.</li>
-        <li>Interfaces de operador: pantallas táctiles de reemplazo y módulos de comunicación BACnet/IP para integración a sistemas de gestión de edificios.</li>
-      </ul>
-    </div>
-    <img src="img/chillers/trane-cgam.jpg" alt="Chiller Trane serie CGAM, referencia para repuestos de control y electrónica" loading="lazy">
+  <p>Los chillers modernos dependen de controladores programables que gestionan desde la secuencia de arranque hasta el diagnóstico de fallas. Cuando una tarjeta de control falla, el equipo se detiene completamente, y cada hora de parada representa pérdida de producto o interrupción de procesos críticos.</p>
+  <ul class="fichas">
+    <li>Tarjetas de control: módulos de control de compresor, tarjetas de interfaz de operador, y módulos de expansión de entradas/salidas para integración a BMS.</li>
+    <li>Sensores: temperatura de agua de entrada y salida, presión de refrigerante de alta y baja, y posición de válvula de inlet guide vane en compresores centrífugos.</li>
+    <li>Interfaces de operador: pantallas táctiles de reemplazo y módulos de comunicación BACnet/IP para integración a sistemas de gestión de edificios.</li>
+  </ul>
+
+  <h2>Repuestos Trane en stock ahora mismo</h2>
+  <p>Esto no es catálogo genérico de fábrica: son las piezas que tenemos físicamente en bodega en Quito, con foto real de cada una. Toque cualquiera para ver la ficha completa y comprar.</p>
+  <div class="piezas-grid">
+    <a class="pieza" href="producto.html?id=ec03832-dual-placa-de-entrada-binaria-de-alto-trane"><div class="pieza-foto"><img src="img/productos/ec03832-dual-placa-de-entrada-binaria-de-alto-trane.jpg" alt="Placa de entrada binaria de alto voltaje - repuesto Trane" loading="lazy"></div><div class="pieza-info"><span class="pieza-cat">Compresores y repuestos</span><span class="pieza-nombre">Placa de entrada binaria de alto voltaje</span><span class="pieza-precio">$137,41</span></div></a>
+    <a class="pieza" href="producto.html?id=ec03825-salida-triac-doble-con-enchufe-servicio-trane"><div class="pieza-foto"><img src="img/productos/ec03825-salida-triac-doble-con-enchufe-servicio-trane.jpg" alt="Salida triac doble con enchufe de servicio - repuesto Trane" loading="lazy"></div><div class="pieza-info"><span class="pieza-cat">Compresores y repuestos</span><span class="pieza-nombre">Salida triac doble con enchufe, servicio</span><span class="pieza-precio">$482,63</span></div></a>
+    <a class="pieza" href="producto.html?id=ec02818-sensor-de-temperatura-de-respuesta-rapida-fast-trane"><div class="pieza-foto"><img src="img/productos/ec02818-sensor-de-temperatura-de-respuesta-rapida-fast-trane.jpg" alt="Sensor de temperatura de respuesta rápida - repuesto Trane" loading="lazy"></div><div class="pieza-info"><span class="pieza-cat">Sensores</span><span class="pieza-nombre">Sensor de temperatura de respuesta rápida</span><span class="pieza-precio">$326,17</span></div></a>
+    <a class="pieza" href="producto.html?id=ec03006-sensor-de-flujo-de-dispersi-on-t-trane"><div class="pieza-foto"><img src="img/productos/ec03006-sensor-de-flujo-de-dispersi-on-t-trane.jpg" alt="Sensor de flujo de dispersión térmica - repuesto Trane" loading="lazy"></div><div class="pieza-info"><span class="pieza-cat">Sensores</span><span class="pieza-nombre">Sensor de flujo de dispersión térmica</span><span class="pieza-precio">$595,50</span></div></a>
+    <a class="pieza" href="producto.html?id=ec02820-transductor-sensor-de-presion-nptf-700psia-coneccion-trane-servicefirst-oem"><div class="pieza-foto"><img src="img/productos/ec02820-transductor-sensor-de-presion-nptf-700psia-coneccion-trane-servicefirst-oem.jpg" alt="Transductor sensor de presión NPTF 700PSIA - repuesto Trane" loading="lazy"></div><div class="pieza-info"><span class="pieza-cat">Sensores</span><span class="pieza-nombre">Transductor/sensor de presión NPTF 700PSIA</span><span class="pieza-precio">$409,85</span></div></a>
+    <a class="pieza" href="producto.html?id=ec02821-transductor-sensor-de-presion-700psi-coneccion-1-trane"><div class="pieza-foto"><img src="img/productos/ec02821-transductor-sensor-de-presion-700psi-coneccion-1-trane.jpg" alt="Transductor sensor de presión 700PSI - repuesto Trane" loading="lazy"></div><div class="pieza-info"><span class="pieza-cat">Sensores</span><span class="pieza-nombre">Transductor/sensor de presión 700PSI 1/4"</span><span class="pieza-precio">$415,59</span></div></a>
+    <a class="pieza" href="producto.html?id=ec03729-sensor-de-temperatura-carrier-trane"><div class="pieza-foto"><img src="img/productos/ec03729-sensor-de-temperatura-carrier-trane.jpg" alt="Sensor de temperatura - repuesto Trane" loading="lazy"></div><div class="pieza-info"><span class="pieza-cat">Sensores</span><span class="pieza-nombre">Sensor de temperatura</span><span class="pieza-precio">$147,54</span></div></a>
+    <a class="pieza" href="producto.html?id=ec02817-sensor-temperature-sensor-overmolded-programming-required-sensor-trane"><div class="pieza-foto"><img src="img/productos/ec02817-sensor-temperature-sensor-overmolded-programming-required-sensor-trane.jpg" alt="Sensor de temperatura de agua sobremoldeado - repuesto Trane" loading="lazy"></div><div class="pieza-info"><span class="pieza-cat">Sensores</span><span class="pieza-nombre">Sensor de temperatura de agua, sobremoldeado</span><span class="pieza-precio">$318,12</span></div></a>
+    <a class="pieza" href="producto.html?id=ec03827-td7-display-trane"><div class="pieza-foto"><img src="img/productos/ec03827-td7-display-trane.jpg" alt="TD7 Display - repuesto Trane" loading="lazy"></div><div class="pieza-info"><span class="pieza-cat">Controles y electrónica</span><span class="pieza-nombre">TD7 Display</span><span class="pieza-precio">$3.403,83</span></div></a>
+    <a class="pieza" href="producto.html?id=ec03719-plug-12-position-conector-para-modulo-posici-trane"><div class="pieza-foto"><img src="img/productos/ec03719-plug-12-position-conector-para-modulo-posici-trane.jpg" alt="Plug 12 position, conector para módulo - repuesto Trane" loading="lazy"></div><div class="pieza-info"><span class="pieza-cat">Componentes eléctricos</span><span class="pieza-nombre">Plug 12 position, conector para módulo</span><span class="pieza-precio">$1.350,74</span></div></a>
+    <a class="pieza" href="producto.html?id=ec03826-salida-de-rel-doble-con-conectores-enchufables-trane"><div class="pieza-foto"><img src="img/productos/ec03826-salida-de-rel-doble-con-conectores-enchufables-trane.jpg" alt="Salida de relé doble con conectores enchufables - repuesto Trane" loading="lazy"></div><div class="pieza-info"><span class="pieza-cat">Componentes eléctricos</span><span class="pieza-nombre">Salida de relé doble, conectores enchufables</span><span class="pieza-precio">$244,49</span></div></a>
+    <a class="pieza" href="producto.html?id=ec03649-cable-de-empalme-1-macho-a-1-trane"><div class="pieza-foto"><img src="img/productos/ec03649-cable-de-empalme-1-macho-a-1-trane.jpg" alt="Cable de empalme macho a hembra - repuesto Trane" loading="lazy"></div><div class="pieza-info"><span class="pieza-cat">Componentes eléctricos</span><span class="pieza-nombre">Cable de empalme, 1 macho a 1 hembra, 200cm</span><span class="pieza-precio">$280,01</span></div></a>
+    <a class="pieza" href="producto.html?id=ec03112-alambre-cable-para-sensor-de-flujo-para-trane"><div class="pieza-foto"><img src="img/productos/ec03112-alambre-cable-para-sensor-de-flujo-para-trane.jpg" alt="Alambre para sensor de flujo unidades CGAM - repuesto Trane" loading="lazy"></div><div class="pieza-info"><span class="pieza-cat">Componentes eléctricos</span><span class="pieza-nombre">Alambre para sensor de flujo, unidades CGAM</span><span class="pieza-precio">$77,70</span></div></a>
+    <a class="pieza" href="producto.html?id=ec03849-valvula-rotalock-trane"><div class="pieza-foto"><img src="img/productos/ec03849-valvula-rotalock-trane.jpg" alt="Válvula rotalock - repuesto Trane" loading="lazy"></div><div class="pieza-info"><span class="pieza-cat">Válvulas y reguladores</span><span class="pieza-nombre">Válvula rotalock</span><span class="pieza-precio">$62,46</span></div></a>
+    <a class="pieza" href="producto.html?id=ec02823-kit-filtro-linea-de-liquido-con-empaque-trane"><div class="pieza-foto"><img src="img/productos/ec02823-kit-filtro-linea-de-liquido-con-empaque-trane.jpg" alt="Kit filtro línea de líquido con empaque - repuesto Trane" loading="lazy"></div><div class="pieza-info"><span class="pieza-cat">Válvulas y reguladores</span><span class="pieza-nombre">Kit filtro línea de líquido con empaque</span><span class="pieza-precio">$117,60</span></div></a>
+    <a class="pieza" href="producto.html?id=ec02819-presostato-de-cartucho-de-alta-presi-n-trane"><div class="pieza-foto"><img src="img/productos/ec02819-presostato-de-cartucho-de-alta-presi-n-trane.jpg" alt="Presostato de cartucho de alta presión - repuesto Trane" loading="lazy"></div><div class="pieza-info"><span class="pieza-cat">Válvulas y reguladores</span><span class="pieza-nombre">Presostato de cartucho de alta presión</span><span class="pieza-precio consultar">Consultar</span></div></a>
+    <a class="pieza" href="producto.html?id=ec03546-kit-de-analisis-de-aceite-trane"><div class="pieza-foto"><img src="img/productos/ec03546-kit-de-analisis-de-aceite-trane.jpg" alt="Kit de análisis de aceite - repuesto Trane" loading="lazy"></div><div class="pieza-info"><span class="pieza-cat">Refrigerantes y lubricantes</span><span class="pieza-nombre">Kit de análisis de aceite</span><span class="pieza-precio">$28,06</span></div></a>
   </div>
+  <p class="cat-link" style="margin:.8rem 0 0"><a href="partes.html?q=Trane" style="color:#004080;font-weight:600;font-size:.9rem;text-decoration:none">Ver los 17 repuestos Trane en el catálogo completo →</a></p>
 
   <h2>Servicio técnico y taller de reparación</h2>
   <p>Más allá del repuesto, ofrecemos mantenimiento preventivo y correctivo con cobertura nacional. Nuestro taller en Quito está equipado para reparar compresores de tornillo Trane, realinear rotores, rectificar carcasas y rebobinar motores. Cada reparación incluye prueba de hermeticidad con helio, balanceo dinámico y puesta en marcha con monitoreo de parámetros operativos.</p>
@@ -242,6 +276,8 @@ html,body{overflow-x:clip;max-width:100vw}*{min-width:0}img,table,iframe{max-wid
   <p style="margin-top:1rem"><a href="mailto:info@ecuclima.com">info@ecuclima.com</a> | <a href="tel:+593980420996">+593 98 042 0996</a> | <a href="https://www.tiktok.com/@ecuclima_2025_ec" target="_blank" rel="noopener">TikTok</a></p>
   <p style="margin-top:2rem;font-size:0.875rem;opacity:.7">&copy; 2026 Ecuclima. Todos los derechos reservados.</p>
 </footer>
+
+<a id="repuestosTab" href="partes.html?q=Trane">Repuestos Trane →</a>
 
 <a id="waFab" href="https://wa.me/593980420996?text=Deseo%20informaci%C3%B3n%20de%20repuestos%20Trane" target="_blank" rel="noopener" aria-label="Escríbanos por WhatsApp" title="Escríbanos por WhatsApp"><svg width="31" height="31" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413"/></svg></a>
 

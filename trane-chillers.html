@@ -74,8 +74,9 @@ main p{color:#4a5568;margin-bottom:.9rem;max-width:800px}
 .fichas{list-style:none;margin:.6rem 0 0}
 .fichas li{padding:.5rem 0 .5rem 1.5rem;position:relative;color:#4a5568;font-size:.95rem}
 .fichas li:before{content:"";position:absolute;left:0;top:1.05rem;width:7px;height:7px;border-radius:50%;background:#FF8000}
-.selector{background:#f8f9fa;border-left:3px solid #FF8000;border-radius:12px;padding:1.5rem 1.7rem;margin:1.6rem 0 1rem}
-.selector h3{color:#004080;font-size:1.1rem;font-weight:700;margin:0 0 .3rem}
+.selector{background:linear-gradient(135deg,#eef4fb 0%,#e2ecf9 100%);border:2px solid #cddcf0;border-left:5px solid #FF8000;border-radius:14px;padding:1.7rem 1.8rem;margin:1.8rem 0 1.2rem;box-shadow:0 8px 26px rgba(0,64,128,.12)}
+.selector .sel-eyebrow{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;color:#FF8000;margin:0 0 .5rem;display:flex;align-items:center;gap:.4rem}
+.selector h3{color:#004080;font-size:1.15rem;font-weight:700;margin:0 0 .3rem}
 .sel-ayuda{font-size:.9rem;color:#5a6b80;margin-bottom:1rem}
 .sel-fila{display:flex;gap:.7rem;flex-wrap:wrap;align-items:center}
 .sel-fila input,.sel-fila select{padding:.7rem .9rem;border:1.5px solid #c3ccd8;border-radius:8px;font-size:1rem;font-family:inherit;background:#fff;color:#1a2b42;outline:none}
@@ -103,6 +104,59 @@ td{padding:.6rem .9rem;border-top:1px solid #eef1f5;color:#3d4a5c}
 tbody tr:nth-child(even){background:#fafbfd}
 tbody tr:hover{background:#fff6ec}
 td:first-child{font-weight:600;color:#004080}
+/* Pestanas por serie: CGAM, RTAC, CenTraVac. Mismo patron que el calculador de
+   camaras, para no repetir parrafos largos por cada serie. */
+.tabs-nav{display:flex;gap:.3rem;border-bottom:2px solid #e4e8ee;margin:0;flex-wrap:wrap}
+.tabs-nav button{background:none;border:0;padding:.9rem 1.4rem;font-family:inherit;font-size:.95rem;font-weight:700;color:#5a6b80;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:.2s;border-radius:8px 8px 0 0}
+.tabs-nav button:hover{color:#004080;background:#f8f9fa}
+.tabs-nav button.on{color:#004080;border-bottom-color:#FF8000}
+.tabs-nav .rango{display:block;font-size:.75rem;font-weight:500;color:#8a94a3;margin-top:.15rem}
+.tab-panel{display:none;padding-top:1.7rem}
+.tab-panel.on{display:block}
+.mini-fichas{list-style:none;margin:0 0 1.2rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.6rem}
+.mini-fichas li{background:#f8f9fa;border-radius:10px;padding:.8rem 1rem;font-size:.875rem;color:#3d4a5c}
+.mini-fichas strong{display:block;color:#004080;font-size:.95rem;margin-bottom:.15rem}
+.tab-panel .serie{margin-top:0}
+.tabla-caja tbody tr{cursor:pointer}
+.serie-tag{display:inline-block;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#8a94a3;background:#eef1f5;padding:.2rem .55rem;border-radius:20px;vertical-align:middle;margin-left:.5rem}
+.cat-link{margin-top:.9rem!important}
+.cat-link a{color:#004080;font-weight:600;font-size:.9rem;text-decoration:none}
+.cat-link a:hover{text-decoration:underline}
+
+/* Fotos reales de instalaciones, arriba de todo: rodean el texto de
+   introduccion para que la pagina no arranque en seco con puro parrafo. */
+.hero-fotos{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;margin:0 0 2rem}
+.hero-fotos .hf-item{border-radius:10px;overflow:hidden;height:150px;box-shadow:0 4px 14px rgba(0,64,128,.14)}
+.hero-fotos img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s}
+.hero-fotos .hf-item:hover img{transform:scale(1.06)}
+@media(max-width:768px){.hero-fotos{grid-template-columns:repeat(2,1fr);gap:.5rem;margin-bottom:1.6rem}.hero-fotos .hf-item{height:110px}}
+
+/* Miniatura de cada serie en su pestana: ayuda a reconocer el equipo de un
+   vistazo, sin tener que leer el nombre tecnico primero. */
+.tabs-nav button{display:flex;align-items:center;gap:.7rem;text-align:left}
+.tabs-nav .tab-thumb{width:50px;height:50px;border-radius:9px;object-fit:cover;flex:none;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.tabs-nav .tab-label{display:flex;flex-direction:column}
+.tabs-nav .rango{margin-top:.1rem}
+@media(max-width:520px){.tabs-nav .tab-thumb{width:40px;height:40px}}
+@media(max-width:520px){.tabs-nav button{padding:.7rem .8rem}.tabs-nav .tab-thumb{width:28px;height:28px}}
+
+/* Pestana lateral fija a repuestos Trane: acceso directo sin bajar hasta el
+   boton del final de la pagina. */
+#repuestosTab{position:fixed;left:0;top:50%;transform:translateY(-50%);background:#004080;color:#fff;border:0;border-radius:0 10px 10px 0;padding:.9rem .6rem;font-weight:700;font-size:0.875rem;cursor:pointer;z-index:900;box-shadow:3px 0 12px rgba(0,0,0,.2);writing-mode:vertical-rl;text-orientation:mixed;display:flex;align-items:center;gap:.4rem;text-decoration:none;transition:background .25s}
+#repuestosTab:hover{background:#FF8000}
+@media(max-width:768px){#repuestosTab{padding:.7rem .45rem;font-size:0.8125rem}}
+
+/* En celular, las tablas de modelos mostraban 5-6 columnas apretadas: se
+   volvian ilegibles. Se ocultan las columnas secundarias (el dato completo
+   sigue disponible al tocar la fila, que abre la ficha) y se deja solo lo
+   esencial para identificar el modelo de un vistazo. */
+@media(max-width:768px){
+  .tabla-caja table{min-width:0;font-size:.82rem}
+  .tabla-caja th,.tabla-caja td{padding:.55rem .5rem;white-space:nowrap}
+  #tblCgam td:nth-child(4),#panel-cgam th:nth-child(4){display:none}
+  #tblRtac td:nth-child(2),#tblRtac td:nth-child(4),#tblRtac td:nth-child(6),#panel-rtac th:nth-child(2),#panel-rtac th:nth-child(4),#panel-rtac th:nth-child(6){display:none}
+  #tblCtv td:nth-child(4),#tblCtv td:nth-child(5),#panel-centravac th:nth-child(4),#panel-centravac th:nth-child(5){display:none}
+}
 .aviso{background:#f8f9fa;border-left:3px solid #FF8000;border-radius:12px;padding:1.4rem 1.6rem;margin:2.2rem 0}
 .aviso p{margin:0;color:#4a5568;font-size:.95rem}
 .acciones{margin-top:2.6rem;display:flex;gap:1rem;flex-wrap:wrap}
@@ -184,25 +238,19 @@ html,body{overflow-x:clip;max-width:100vw}*{min-width:0}img,table,iframe{max-wid
 </section>
 
 <main>
-  <p class="intro">Un chiller enfría líquido para procesos que no admiten interrupciones. Somos distribuidor autorizado Trane en Ecuador: seleccionamos el equipo según la carga real, lo instalamos, lo ponemos en marcha y lo mantenemos, con repuesto original y taller propio en Quito.</p>
-
-  <h2>Serie CGAM — condensada por aire</h2>
-  <div class="serie">
-    <div>
-      <p>Enfriadora de líquido condensada por aire, de <strong>55,5 a 460,5 kW</strong> de potencia frigorífica. Es la línea más usada en climatización de edificios y en procesos industriales de capacidad media.</p>
-      <ul class="fichas">
-        <li>Compresor de tornillo semihermético de accionamiento directo y baja velocidad, con solo cuatro piezas móviles y motor enfriado por gas de aspiración.</li>
-        <li>Evaporador de película húmeda por difusión de refrigerante: mayor COP y carga de refrigerante reducida.</li>
-        <li>Panel de arranque estrella-triángulo montado y probado en fábrica.</li>
-        <li>Instalación en espacio limitado: requiere 1,2 m de espacio lateral para mantenimiento.</li>
-      </ul>
-    </div>
-    <img src="img/chillers/trane-cgam.jpg" alt="Chiller Trane serie CGAM condensado por aire instalado en Ecuador" loading="lazy">
+  <div class="hero-fotos">
+    <div class="hf-item"><img src="img/chillers/trane-rtaf-hero.jpg" alt="Chiller Trane RTAF condensado por aire" loading="lazy" width="900" height="675"></div>
+    <div class="hf-item"><img src="img/chiller-trane-sintesis-prime-exterior.jpg" alt="Chiller Trane Sintesis en exterior de planta" loading="lazy" width="480" height="640"></div>
+    <div class="hf-item"><img src="img/chillers/trane-acr-hero.jpg" alt="Chiller Trane ACR condensado por aire" loading="lazy" width="900" height="675"></div>
+    <div class="hf-item"><img src="img/tecnico-ecuclima-chiller-climaveneta.jpg" alt="Técnico de Ecuclima junto a chiller instalado" loading="lazy" width="600" height="338"></div>
   </div>
 
+  <p class="intro">Un chiller enfría líquido para procesos que no admiten interrupciones. Somos distribuidor autorizado Trane en Ecuador: seleccionamos el equipo según la carga real, lo instalamos, lo ponemos en marcha y lo mantenemos, con repuesto original y taller propio en Quito.</p>
+
   <div class="selector" id="selector-chillers">
+    <p class="sel-eyebrow">🧮 Calculadora</p>
     <h3>Encuentre su modelo</h3>
-    <p class="sel-ayuda">Ingrese la capacidad que necesita y le indicamos qué CGAM la cubre.</p>
+    <p class="sel-ayuda">Ingrese la capacidad que necesita: le decimos qué serie y qué modelo la cubre, entre CGAM, RTAC y CenTraVac.</p>
     <div class="sel-fila">
       <input type="number" id="cap" min="1" step="1" placeholder="Ej. 150" aria-label="Capacidad requerida">
       <select id="uni" aria-label="Unidad">
@@ -215,50 +263,65 @@ html,body{overflow-x:clip;max-width:100vw}*{min-width:0}img,table,iframe{max-wid
     <div id="resultado" role="status"></div>
   </div>
 
-  <details class="tabla-caja">
-    <summary>Ver los 19 modelos de la serie CGAM</summary>
-    <table>
-      <caption>Los 19 modelos de la serie CGAM. Dimensiones en alto × ancho × profundidad.</caption>
-      <thead><tr><th>Modelo</th><th>Pot. frigorífica (kW)</th><th>Pot. eléctrica frío (W)</th><th>Dimensiones (mm)</th><th>Peso (kg)</th></tr></thead>
-      <tbody>
-        <tr><td>CGAM20</td><td>55,5</td><td>20,4</td><td>2140 × 1280 × 3340</td><td>1381</td></tr>
-        <tr><td>CGAM23</td><td>63,2</td><td>22,1</td><td>2140 × 1280 × 3340</td><td>1399</td></tr>
-        <tr><td>CGAM26</td><td>69,8</td><td>25,2</td><td>2140 × 1280 × 3340</td><td>1402</td></tr>
-        <tr><td>CGAM30</td><td>79,8</td><td>29,7</td><td>2140 × 1280 × 3340</td><td>1503</td></tr>
-        <tr><td>CGAM35</td><td>91,4</td><td>34,3</td><td>2140 × 1280 × 3340</td><td>1532</td></tr>
-        <tr><td>CGAM39</td><td>110,1</td><td>39,7</td><td>2145 × 1280 × 4254</td><td>1730</td></tr>
-        <tr><td>CGAM45</td><td>122,1</td><td>44,3</td><td>2145 × 1280 × 4254</td><td>1789</td></tr>
-        <tr><td>CGAM50</td><td>133,8</td><td>50,4</td><td>2145 × 1280 × 4254</td><td>1848</td></tr>
-        <tr><td>CGAM60</td><td>159,7</td><td>58,7</td><td>2150 × 2266 × 3271</td><td>2450</td></tr>
-        <tr><td>CGAM70</td><td>186,8</td><td>67,9</td><td>2150 × 2266 × 3271</td><td>2492</td></tr>
-        <tr><td>CGAM80</td><td>222,1</td><td>78,7</td><td>2150 × 2266 × 4185</td><td>2752</td></tr>
-        <tr><td>CGAM90</td><td>249</td><td>87,9</td><td>2344 × 2273 × 4185</td><td>2885</td></tr>
-        <tr><td>CGAM100</td><td>274,5</td><td>100,5</td><td>2344 × 2273 × 4185</td><td>3002</td></tr>
-        <tr><td>CGAM110</td><td>296,7</td><td>106,8</td><td>2344 × 2273 × 3647</td><td>3104</td></tr>
-        <tr><td>CGAM120</td><td>327,2</td><td>110,6</td><td>2344 × 2273 × 3647</td><td>3307</td></tr>
-        <tr><td>CGAM140</td><td>380,9</td><td>130,7</td><td>2344 × 2273 × 4230</td><td>3794</td></tr>
-        <tr><td>CGAM150</td><td>407,4</td><td>143,5</td><td>2344 × 2273 × 4230</td><td>3822</td></tr>
-        <tr><td>CGAM160</td><td>434,2</td><td>151,5</td><td>2344 × 2273 × 4230</td><td>3939</td></tr>
-        <tr><td>CGAM170</td><td>460,5</td><td>156,2</td><td>2344 × 2273 × 5145</td><td>4214</td></tr>
-      </tbody>
-    </table>
-  </details>
-
-  <h2>Serie RTAC — tornillo de gran capacidad</h2>
-  <div class="serie">
-    <div>
-      <p>Enfriadora de tornillo condensada por aire, para capacidades superiores a la serie CGAM. Está pensada para plantas de proceso que necesitan operación continua durante todo el año.</p>
-      <ul class="fichas">
-        <li>Compresor con rotor helicoidal, de accionamiento directo.</li>
-        <li>Niveles de ruido notablemente menores que los enfriadores con compresor tipo scroll.</li>
-        <li>Control preciso de la temperatura de salida de agua, incluso trabajando a carga parcial.</li>
-      </ul>
-    </div>
-    <img src="img/chillers/trane-rtac.jpg" alt="Chiller Trane serie RTAC de tornillo condensado por aire" loading="lazy">
+  <div class="tabs-nav" role="tablist">
+    <button type="button" data-t="cgam" class="on" role="tab"><img class="tab-thumb" src="img/chillers/trane-cgam-thumb.jpg" alt="" loading="lazy"><span class="tab-label">CGAM<span class="rango">Aire · 55-460 kW</span></span></button>
+    <button type="button" data-t="rtac" role="tab"><img class="tab-thumb" src="img/chillers/trane-rtac-thumb.jpg" alt="" loading="lazy"><span class="tab-label">RTAC<span class="rango">Aire · 486-1.700 kW</span></span></button>
+    <button type="button" data-t="centravac" role="tab"><img class="tab-thumb" src="img/chillers/trane-centravac-thumb.jpg" alt="" loading="lazy"><span class="tab-label">CenTraVac<span class="rango">Agua · 420-13.900 kW</span></span></button>
   </div>
 
-  <h2>CenTraVac — gran tonelaje</h2>
-  <p>Enfriador centrífugo de gran tonelaje, para edificios industriales, centros de datos e instalaciones de educación superior. Es la línea que se elige cuando pesan a la vez la eficiencia energética, el nivel sonoro, la confiabilidad de mantenimiento, la precisión de control y el costo operativo sostenido en el tiempo.</p>
+  <div class="tab-panel on" id="panel-cgam">
+    <ul class="mini-fichas">
+      <li><strong>Compresor</strong>Tornillo semihermético, baja velocidad, 4 piezas móviles</li>
+      <li><strong>Evaporador</strong>Película húmeda por difusión: mayor COP, menos carga de refrigerante</li>
+      <li><strong>Instalación</strong>1,2 m de espacio lateral para mantenimiento</li>
+      <li><strong>Uso típico</strong>Climatización de edificios y procesos de capacidad media</li>
+    </ul>
+    <img src="img/chillers/trane-cgam.jpg" alt="Chiller Trane serie CGAM condensado por aire instalado en Ecuador" loading="lazy" style="width:100%;max-width:420px;border-radius:12px;border:1px solid #e4e8ee;margin-bottom:1.2rem;display:block">
+    <div class="tabla-caja">
+      <table>
+        <caption>Los 19 modelos de la serie CGAM. Toque un modelo para ver su ficha completa.</caption>
+        <thead><tr><th>Modelo</th><th>Pot. frigorífica (kW)</th><th>Pot. eléctrica (kW)</th><th>Dimensiones (mm)</th><th>Peso (kg)</th></tr></thead>
+        <tbody id="tblCgam"></tbody>
+      </table>
+    </div>
+    <p class="cat-link"><a href="https://www.trane.com/content/dam/Trane/Commercial/lar/Peru/Manuales/Chiller_CGAM/CG-PRC017J-EN_Catalog.pdf" target="_blank" rel="noopener">📄 Catálogo técnico completo CGAM (PDF, Trane) ↗</a></p>
+  </div>
+
+  <div class="tab-panel" id="panel-rtac">
+    <ul class="mini-fichas">
+      <li><strong>Compresor</strong>Tornillo helicoidal Series R, accionamiento directo</li>
+      <li><strong>Refrigerante</strong>R-134a, de 2 a 4 compresores según el tamaño</li>
+      <li><strong>Ambiente</strong>Opera de -18 °C a 46 °C; con opción hasta 51 °C</li>
+      <li><strong>Uso típico</strong>Procesos de operación continua todo el año</li>
+    </ul>
+    <img src="img/chillers/trane-rtac.jpg" alt="Chiller Trane serie RTAC de tornillo condensado por aire" loading="lazy" style="width:100%;max-width:420px;border-radius:12px;border:1px solid #e4e8ee;margin-bottom:1.2rem;display:block">
+    <div class="tabla-caja">
+      <table>
+        <caption>Los 13 tamaños de la serie RTAC, en condiciones AHRI (agua a 44 °F, ambiente a 95 °F). Toque un modelo para ver su ficha.</caption>
+        <thead><tr><th>Modelo</th><th>Capacidad (TR)</th><th>Capacidad (kW)</th><th>Pot. eléctrica (kW)</th><th>EER</th><th>Peso en op. (kg)</th></tr></thead>
+        <tbody id="tblRtac"></tbody>
+      </table>
+    </div>
+    <p class="cat-link"><a href="https://www.trane.com/content/dam/Trane/Commercial/lar/Peru/Manuales/Chiller_RTAC/RLC-PRC006M-EN_Catalog.pdf" target="_blank" rel="noopener">📄 Catálogo técnico completo RTAC (PDF, Trane) ↗</a></p>
+  </div>
+
+  <div class="tab-panel" id="panel-centravac">
+    <ul class="mini-fichas">
+      <li><strong>Compresor</strong>Centrífugo, un solo eje sobre cojinetes tipo turbina</li>
+      <li><strong>Refrigerante</strong>R-123 de baja presión: si hay fuga, entra aire, no sale gas</li>
+      <li><strong>En Ecuador</strong>60 Hz → series CVHE, CVHS, CVHF y CDHF</li>
+      <li><strong>Uso típico</strong>Edificios grandes, centros de datos, plantas industriales</li>
+    </ul>
+    <img src="img/chillers/trane-centravac.jpg" alt="Chiller Trane CenTraVac condensado por agua" loading="lazy" style="width:100%;max-width:420px;border-radius:12px;border:1px solid #e4e8ee;margin-bottom:1.2rem;display:block">
+    <div class="tabla-caja">
+      <table>
+        <caption>Las 7 familias CenTraVac por rango de capacidad. Equipo de ingeniería a medida: se cotiza según el sitio, no se elige por tabla.</caption>
+        <thead><tr><th>Serie</th><th>Capacidad (TR)</th><th>Capacidad (kW)</th><th>Frecuencia</th><th>Diseño</th></tr></thead>
+        <tbody id="tblCtv"></tbody>
+      </table>
+    </div>
+    <p class="cat-link"><a href="https://www.trane.com/content/dam/Trane/Commercial/lar/es/product-systems/comercial/Enfriadoras-de-liquido/Enfriadoras-condensadas-por-agua/compresor-centrifugo/SeriesSCenTraVac/Catalogo/Series%20S%20CenTraVac%20Cat%C3%A1logo%20(ingl%C3%A9s).pdf" target="_blank" rel="noopener">📄 Catálogo técnico completo CenTraVac (PDF, Trane) ↗</a></p>
+  </div>
 
   <h2>Cómo seleccionamos el equipo</h2>
   <p>La capacidad de catálogo se mide en condiciones nominales que casi nunca coinciden con la instalación real. En Ecuador entra además un factor que muchos cálculos ignoran: <strong>la altitud</strong>. A 2.500 metros el aire pesa un cuarto menos, y eso cambia el desempeño de un condensador enfriado por aire.</p>
@@ -285,36 +348,121 @@ html,body{overflow-x:clip;max-width:100vw}*{min-width:0}img,table,iframe{max-wid
   <p style="margin-top:2rem;font-size:0.875rem;opacity:.7">&copy; 2026 Ecuclima. Todos los derechos reservados.</p>
 </footer>
 
+<a id="repuestosTab" href="partes.html?q=Trane">Repuestos Trane →</a>
+
 <a id="waFab" href="https://wa.me/593980420996?text=Deseo%20informaci%C3%B3n%20de%20chillers%20Trane" target="_blank" rel="noopener" aria-label="Escríbanos por WhatsApp" title="Escríbanos por WhatsApp"><svg width="31" height="31" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413"/></svg></a>
 
 <script>
 (function(){
-var M=[["CGAM20",55.5,20.4,"2140 × 1280 × 3340",1381],["CGAM23",63.2,22.1,"2140 × 1280 × 3340",1399],["CGAM26",69.8,25.2,"2140 × 1280 × 3340",1402],["CGAM30",79.8,29.7,"2140 × 1280 × 3340",1503],["CGAM35",91.4,34.3,"2140 × 1280 × 3340",1532],["CGAM39",110.1,39.7,"2145 × 1280 × 4254",1730],["CGAM45",122.1,44.3,"2145 × 1280 × 4254",1789],["CGAM50",133.8,50.4,"2145 × 1280 × 4254",1848],["CGAM60",159.7,58.7,"2150 × 2266 × 3271",2450],["CGAM70",186.8,67.9,"2150 × 2266 × 3271",2492],["CGAM80",222.1,78.7,"2150 × 2266 × 4185",2752],["CGAM90",249,87.9,"2344 × 2273 × 4185",2885],["CGAM100",274.5,100.5,"2344 × 2273 × 4185",3002],["CGAM110",296.7,106.8,"2344 × 2273 × 3647",3104],["CGAM120",327.2,110.6,"2344 × 2273 × 3647",3307],["CGAM140",380.9,130.7,"2344 × 2273 × 4230",3794],["CGAM150",407.4,143.5,"2344 × 2273 × 4230",3822],["CGAM160",434.2,151.5,"2344 × 2273 × 4230",3939],["CGAM170",460.5,156.2,"2344 × 2273 × 5145",4214]];
+var TR_KW=3.51685;
+var CAT_CGAM="https://www.trane.com/content/dam/Trane/Commercial/lar/Peru/Manuales/Chiller_CGAM/CG-PRC017J-EN_Catalog.pdf";
+var CAT_RTAC="https://www.trane.com/content/dam/Trane/Commercial/lar/Peru/Manuales/Chiller_RTAC/RLC-PRC006M-EN_Catalog.pdf";
+var CAT_CTV="https://www.trane.com/content/dam/Trane/Commercial/lar/es/product-systems/comercial/Enfriadoras-de-liquido/Enfriadoras-condensadas-por-agua/compresor-centrifugo/SeriesSCenTraVac/Catalogo/Series%20S%20CenTraVac%20Cat%C3%A1logo%20(ingl%C3%A9s).pdf";
+
+// [Modelo, kW frigorificos, kW electricos, dimensiones mm, peso kg]
+var CGAM=[["CGAM20",55.5,20.4,"2140 × 1280 × 3340",1381],["CGAM23",63.2,22.1,"2140 × 1280 × 3340",1399],["CGAM26",69.8,25.2,"2140 × 1280 × 3340",1402],["CGAM30",79.8,29.7,"2140 × 1280 × 3340",1503],["CGAM35",91.4,34.3,"2140 × 1280 × 3340",1532],["CGAM39",110.1,39.7,"2145 × 1280 × 4254",1730],["CGAM45",122.1,44.3,"2145 × 1280 × 4254",1789],["CGAM50",133.8,50.4,"2145 × 1280 × 4254",1848],["CGAM60",159.7,58.7,"2150 × 2266 × 3271",2450],["CGAM70",186.8,67.9,"2150 × 2266 × 3271",2492],["CGAM80",222.1,78.7,"2150 × 2266 × 4185",2752],["CGAM90",249,87.9,"2344 × 2273 × 4185",2885],["CGAM100",274.5,100.5,"2344 × 2273 × 4185",3002],["CGAM110",296.7,106.8,"2344 × 2273 × 3647",3104],["CGAM120",327.2,110.6,"2344 × 2273 × 3647",3307],["CGAM140",380.9,130.7,"2344 × 2273 × 4230",3794],["CGAM150",407.4,143.5,"2344 × 2273 × 4230",3822],["CGAM160",434.2,151.5,"2344 × 2273 × 4230",3939],["CGAM170",460.5,156.2,"2344 × 2273 × 5145",4214]];
+
+// [Modelo, kW frigorificos, TR, kW electricos, EER, peso op. kg, compresores]
+// Capacidad y consumo en condiciones AHRI (agua sale a 44F/6.7C, ambiente 95F/35C).
+// Fuente: catalogo Trane RLC-PRC006M-EN.
+var RTAC=[["RTAC140",486.4,138.3,158.1,9.7,5056,2],["RTAC155",534.3,151.9,171.7,9.8,5056,2],["RTAC170",584.2,166.1,185.6,9.9,5088,2],["RTAC185",640.1,182.0,205.9,9.8,5851,2],["RTAC200",699.2,198.8,227.1,9.7,5984,2],["RTAC225",768.9,218.6,250.5,9.7,6788,2],["RTAC250",844.5,240.1,275.2,9.7,6890,3],["RTAC275",936.3,266.2,301.1,9.8,8929,3],["RTAC300",1051.5,299.0,343.9,9.7,9622,3],["RTAC350",1195.7,340.0,393.7,9.6,9981,4],["RTAC400",1411.5,401.3,462.1,9.7,11727,4],["RTAC450",1554.3,441.9,511.7,9.6,12425,4],["RTAC500",1701.9,483.9,562.4,9.6,12661,4]];
+
+// [Serie, TR minimo, TR maximo, frecuencia, diseno, aplica a 60Hz]
+// Equipo de ingenieria a medida: no tiene modelo fijo, se cotiza segun el sitio.
+// Fuente: catalogo Trane CTV-PRC007L-EN.
+var CTV=[["CVHE",120,500,"50/60 Hz","Un compresor, 3 etapas",true],["CVHS",180,390,"60 Hz","Un compresor, Serie S",true],["CVHF",325,2000,"60 Hz","Un compresor, 2 etapas",true],["CVHG",450,1300,"50 Hz","Un compresor, 3 etapas",false],["CVHL",400,1800,"50/60 Hz","Serie L",true],["CDHG",1200,2500,"50 Hz","Doble compresor",false],["CDHF",1500,3950,"60 Hz","Doble compresor",true]];
+
+function num(n,d){ d=d===undefined?1:d; return n.toFixed(d).replace('.',','); }
+
+function pintarTablas(){
+  document.getElementById('tblCgam').innerHTML=CGAM.map(function(m,i){
+    return '<tr data-serie="cgam" data-i="'+i+'"><td>'+m[0]+'</td><td>'+num(m[1])+'</td><td>'+num(m[2])+'</td><td>'+m[3]+'</td><td>'+m[4]+'</td></tr>';
+  }).join('');
+  document.getElementById('tblRtac').innerHTML=RTAC.map(function(m,i){
+    return '<tr data-serie="rtac" data-i="'+i+'"><td>'+m[0]+'</td><td>'+num(m[2])+'</td><td>'+num(m[1])+'</td><td>'+num(m[3])+'</td><td>'+m[4]+'</td><td>'+m[5]+'</td></tr>';
+  }).join('');
+  document.getElementById('tblCtv').innerHTML=CTV.map(function(f,i){
+    return '<tr data-serie="ctv" data-i="'+i+'"><td>'+f[0]+'</td><td>'+f[1]+' – '+f[2]+'</td><td>'+num(f[1]*TR_KW,0)+' – '+num(f[2]*TR_KW,0)+'</td><td>'+f[3]+'</td><td>'+f[4]+'</td></tr>';
+  }).join('');
+}
+
+function fichaCGAM(m,kwPedido){
+  var holgura=kwPedido?((m[1]-kwPedido)/kwPedido*100):null;
+  return '<div class="ficha"><div class="mod">'+m[0]+'<span class="serie-tag">CGAM · aire</span></div>'+
+    '<dl><dt>Potencia frigorífica</dt><dd>'+num(m[1])+' kW &nbsp;·&nbsp; '+num(m[1]/TR_KW)+' TR</dd>'+
+    '<dt>Potencia eléctrica</dt><dd>'+num(m[2])+' kW</dd>'+
+    '<dt>Dimensiones (Al × An × Pr)</dt><dd>'+m[3]+' mm</dd>'+
+    '<dt>Peso</dt><dd>'+m[4]+' kg</dd></dl>'+
+    '<p class="nota">'+(holgura!==null?('Cubre los '+num(kwPedido)+' kW pedidos con un '+holgura.toFixed(0)+' % de holgura. '):'')+
+    '<strong>Este resultado es orientativo:</strong> la capacidad de catálogo se mide en condiciones nominales, y la altitud del sitio, la temperatura de diseño y el tipo de fluido cambian el desempeño real. Confírmelo con nosotros antes de comprar.</p>'+
+    '<p class="cat-link"><a href="'+CAT_CGAM+'" target="_blank" rel="noopener">📄 Catálogo técnico CGAM (PDF, Trane) ↗</a></p></div>';
+}
+function fichaRTAC(m,kwPedido){
+  var holgura=kwPedido?((m[1]-kwPedido)/kwPedido*100):null;
+  return '<div class="ficha"><div class="mod">'+m[0]+'<span class="serie-tag">RTAC · aire, gran capacidad</span></div>'+
+    '<dl><dt>Capacidad (AHRI)</dt><dd>'+num(m[1])+' kW &nbsp;·&nbsp; '+num(m[2])+' TR</dd>'+
+    '<dt>Potencia eléctrica</dt><dd>'+num(m[3])+' kW &nbsp;·&nbsp; EER '+m[4]+'</dd>'+
+    '<dt>Compresores</dt><dd>'+m[6]+' de tornillo helicoidal</dd>'+
+    '<dt>Peso en operación</dt><dd>'+m[5]+' kg</dd></dl>'+
+    '<p class="nota">'+(holgura!==null?('Cubre los '+num(kwPedido)+' kW pedidos con un '+holgura.toFixed(0)+' % de holgura. '):'')+
+    '<strong>Este resultado es orientativo:</strong> capacidad en condiciones AHRI (agua a 44 °F, ambiente a 95 °F). La altitud y la temperatura de diseño del sitio cambian el desempeño real.</p>'+
+    '<p class="cat-link"><a href="'+CAT_RTAC+'" target="_blank" rel="noopener">📄 Catálogo técnico RTAC (PDF, Trane) ↗</a></p></div>';
+}
+function fichaCTV(f,kwPedido){
+  return '<div class="ficha"><div class="mod">'+f[0]+'<span class="serie-tag">CenTraVac · agua, gran tonelaje</span></div>'+
+    '<dl><dt>Rango de capacidad</dt><dd>'+f[1]+' – '+f[2]+' TR &nbsp;·&nbsp; '+num(f[1]*TR_KW,0)+' – '+num(f[2]*TR_KW,0)+' kW</dd>'+
+    '<dt>Frecuencia</dt><dd>'+f[3]+'</dd>'+
+    '<dt>Diseño</dt><dd>'+f[4]+', compresor centrífugo, refrigerante R-123</dd></dl>'+
+    '<p class="nota">Equipo de ingeniería a medida: no se selecciona por tabla'+(kwPedido?(', esta familia es solo un punto de partida para los '+num(kwPedido)+' kW pedidos'):'')+'. Le enviamos la memoria de cálculo con el modelo exacto tras revisar las condiciones del sitio.</p>'+
+    '<p class="cat-link"><a href="'+CAT_CTV+'" target="_blank" rel="noopener">📄 Catálogo técnico CenTraVac (PDF, Trane) ↗</a></p></div>';
+}
+
+function irAPestana(t){
+  document.querySelectorAll('.tabs-nav button').forEach(function(b){b.classList.toggle('on',b.dataset.t===t)});
+  document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.toggle('on',p.id==='panel-'+t)});
+}
 
 function buscar(){
   var v=parseFloat(document.getElementById('cap').value);
   var u=document.getElementById('uni').value;
   var out=document.getElementById('resultado');
   if(!v||v<=0){out.innerHTML='<p class="aviso-rojo">Ingrese una capacidad para continuar.</p>';return}
-  var kw = u==='tr' ? v*3.51685 : u==='btu' ? v/3412.14 : v;
-  var m=null;
-  for(var i=0;i<M.length;i++){ if(M[i][1]>=kw){ m=M[i]; break } }
-  if(!m){
-    out.innerHTML='<div class="ficha"><p>La capacidad solicitada supera al mayor modelo de la serie CGAM, el <strong>CGAM170</strong> de 460,5 kW.</p>'+
-      '<p class="nota">Para ese rango corresponde la serie <strong>RTAC</strong> o un <strong>CenTraVac</strong>, o bien varios equipos en paralelo. Escríbanos y lo resolvemos.</p></div>';
-    return;
-  }
-  var holgura=((m[1]-kw)/kw*100);
-  out.innerHTML='<div class="ficha"><div class="mod">'+m[0]+'</div>'+
-    '<dl><dt>Potencia frigorífica</dt><dd>'+m[1].toFixed(1).replace('.',',')+' kW &nbsp;·&nbsp; '+(m[1]/3.51685).toFixed(1).replace('.',',')+' TR</dd>'+
-    '<dt>Potencia eléctrica</dt><dd>'+String(m[2]).replace('.',',')+' W</dd>'+
-    '<dt>Dimensiones (Al × An × Pr)</dt><dd>'+m[3]+' mm</dd>'+
-    '<dt>Peso</dt><dd>'+m[4]+' kg</dd></dl>'+
-    '<p class="nota">Cubre los '+kw.toFixed(1).replace('.',',')+' kW pedidos con un '+holgura.toFixed(0)+' % de holgura. '+
-    '<strong>Este resultado es orientativo:</strong> la capacidad de catálogo se mide en condiciones nominales, y la altitud del sitio, la temperatura de diseño y el tipo de fluido cambian el desempeño real. Confírmelo con nosotros antes de comprar.</p></div>';
+  var kw = u==='tr' ? v*TR_KW : u==='btu' ? v/3412.14 : v;
+  var i,m;
+
+  for(i=0;i<CGAM.length;i++){ if(CGAM[i][1]>=kw){ m=CGAM[i]; break } }
+  if(m){ out.innerHTML=fichaCGAM(m,kw); irAPestana('cgam'); return }
+
+  for(i=0;i<RTAC.length;i++){ if(RTAC[i][1]>=kw){ m=RTAC[i]; break } }
+  if(m){ out.innerHTML=fichaRTAC(m,kw); irAPestana('rtac'); return }
+
+  var candidatas=CTV.filter(function(f){return f[5]}).sort(function(a,b){return a[2]-b[2]});
+  var f;
+  for(i=0;i<candidatas.length;i++){ if(candidatas[i][2]*TR_KW>=kw){ f=candidatas[i]; break } }
+  if(f){ out.innerHTML=fichaCTV(f,kw); irAPestana('centravac'); return }
+
+  out.innerHTML='<div class="ficha"><p>La capacidad solicitada (<strong>'+num(kw)+' kW</strong>) supera el mayor CenTraVac de catálogo estándar, el <strong>CDHF</strong> hasta 3.950 TR.</p><p class="nota">Para ese rango se diseñan varios equipos en paralelo. Escríbanos y lo resolvemos.</p></div>';
 }
+
 document.getElementById('btnSel').addEventListener('click',buscar);
 document.getElementById('cap').addEventListener('keydown',function(e){if(e.key==='Enter')buscar()});
+document.querySelectorAll('.tabs-nav button').forEach(function(b){
+  b.addEventListener('click',function(){ irAPestana(this.dataset.t) });
+});
+
+pintarTablas();
+
+['tblCgam','tblRtac','tblCtv'].forEach(function(id){
+  document.getElementById(id).addEventListener('click',function(e){
+    var tr=e.target.closest('tr'); if(!tr) return;
+    var serie=tr.getAttribute('data-serie'), idx=+tr.getAttribute('data-i');
+    var out=document.getElementById('resultado');
+    if(serie==='cgam') out.innerHTML=fichaCGAM(CGAM[idx]);
+    if(serie==='rtac') out.innerHTML=fichaRTAC(RTAC[idx]);
+    if(serie==='ctv') out.innerHTML=fichaCTV(CTV[idx]);
+    document.getElementById('selector-chillers').scrollIntoView({behavior:'smooth',block:'start'});
+  });
+});
 })();
 </script>
 </body>
