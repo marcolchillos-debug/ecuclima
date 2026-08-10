@@ -332,7 +332,7 @@ function abrirChat(msg){var m=document.getElementById('chatModal');m.style.displ
 function cerrarChat(){document.getElementById('chatModal').style.display='none';verFab(true)}
 function errorMsg(txt){var t=document.getElementById('msgInput');var e=document.getElementById('msgError');if(!e){e=document.createElement('p');e.id='msgError';e.style.cssText='color:#d93025;font-size:0.78rem;font-weight:500;margin:0.45rem 0 0';t.parentNode.insertBefore(e,t.nextSibling)}e.textContent=txt;t.style.borderColor='#d93025';t.focus()}
 function limpiarError(){var t=document.getElementById('msgInput');t.style.borderColor='#8b97a6';var e=document.getElementById('msgError');if(e)e.remove()}
-function enviarWhatsApp(){var m=document.getElementById('msgInput').value;if(!m.trim()){errorMsg('Escriba su consulta antes de enviar');return}limpiarError();window.open('https://wa.me/593980420996?text='+encodeURIComponent(m),'_blank');cerrarChat();document.getElementById('msgInput').value=''}
+function enviarWhatsApp(){var m=document.getElementById('msgInput').value;if(!m.trim()){errorMsg('Escriba su consulta antes de enviar');return}limpiarError();window.open('https://wa.me/593980420996?text='+encodeURIComponent('[Web] '+m),'_blank');cerrarChat();document.getElementById('msgInput').value=''}
 document.getElementById('msgInput').addEventListener('input',limpiarError);
 </script>
 
