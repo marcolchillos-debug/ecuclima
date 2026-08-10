@@ -108,14 +108,24 @@ td:first-child{font-weight:600;color:#004080}
    camaras, para no repetir parrafos largos por cada serie. */
 .tabs-nav{display:flex;gap:.3rem;border-bottom:2px solid #e4e8ee;margin:0;flex-wrap:wrap}
 .tabs-nav button{background:none;border:0;padding:.9rem 1.4rem;font-family:inherit;font-size:.95rem;font-weight:700;color:#5a6b80;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:.2s;border-radius:8px 8px 0 0}
-.tabs-nav button:hover{color:#004080;background:#f8f9fa}
+.tabs-nav button:hover{color:#004080;background:#f8f9fa;transform:translateY(-3px);box-shadow:0 6px 14px rgba(0,64,128,.14)}
+.tabs-nav button:hover .tab-thumb{transform:scale(1.08)}
 .tabs-nav button.on{color:#004080;border-bottom-color:#FF8000}
+.tabs-nav button:active{transform:translateY(-1px)}
+.tabs-nav button:focus-visible{outline:2px solid #FF8000;outline-offset:2px;border-radius:8px}
 .tabs-nav .rango{display:block;font-size:.75rem;font-weight:500;color:#8a94a3;margin-top:.15rem}
 .tab-panel{display:none;padding-top:1.7rem}
 .tab-panel.on{display:block}
+.tab-panel-tit{color:#004080;font-size:1.3rem;font-weight:700;margin:0 0 1rem;letter-spacing:-.3px}
+.tab-panel-tit span{display:block;font-size:.8rem;font-weight:600;color:#8a94a3;text-transform:none;letter-spacing:0;margin-top:.15rem}
 .mini-fichas{list-style:none;margin:0 0 1.2rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.6rem}
 .mini-fichas li{background:#f8f9fa;border-radius:10px;padding:.8rem 1rem;font-size:.875rem;color:#3d4a5c}
 .mini-fichas strong{display:block;color:#004080;font-size:.95rem;margin-bottom:.15rem}
+.mini-fichas .doc{background:#eef4fb;border:1px dashed #b9cde8;grid-column:span 2}
+.mini-fichas .doc-links{display:flex;flex-direction:column;gap:.3rem;margin-top:.35rem}
+.mini-fichas .doc-links a{color:#004080;text-decoration:underline;font-weight:600;font-size:.82rem;display:flex;align-items:center;gap:.35rem}
+.mini-fichas .doc-links a:hover{color:#FF8000}
+@media(max-width:520px){.mini-fichas .doc{grid-column:1/-1}}
 .tab-panel .serie{margin-top:0}
 .tabla-caja tbody tr{cursor:pointer}
 .serie-tag{display:inline-block;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#8a94a3;background:#eef1f5;padding:.2rem .55rem;border-radius:20px;vertical-align:middle;margin-left:.5rem}
@@ -134,7 +144,8 @@ td:first-child{font-weight:600;color:#004080}
 /* Miniatura de cada serie en su pestana: ayuda a reconocer el equipo de un
    vistazo, sin tener que leer el nombre tecnico primero. */
 .tabs-nav button{display:flex;align-items:center;gap:.7rem;text-align:left}
-.tabs-nav .tab-thumb{width:50px;height:50px;border-radius:9px;object-fit:cover;flex:none;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.tabs-nav .tab-thumb{width:50px;height:50px;border-radius:9px;object-fit:cover;flex:none;box-shadow:0 2px 8px rgba(0,0,0,.2);transition:transform .2s}
+.tabs-label{font-size:.95rem;font-weight:700;color:#004080;margin:1.8rem 0 .6rem}
 .tabs-nav .tab-label{display:flex;flex-direction:column}
 .tabs-nav .rango{margin-top:.1rem}
 @media(max-width:520px){.tabs-nav .tab-thumb{width:40px;height:40px}}
@@ -145,6 +156,11 @@ td:first-child{font-weight:600;color:#004080}
 #repuestosTab{position:fixed;left:0;top:50%;transform:translateY(-50%);background:#004080;color:#fff;border:0;border-radius:0 10px 10px 0;padding:.9rem .6rem;font-weight:700;font-size:0.875rem;cursor:pointer;z-index:900;box-shadow:3px 0 12px rgba(0,0,0,.2);writing-mode:vertical-rl;text-orientation:mixed;display:flex;align-items:center;gap:.4rem;text-decoration:none;transition:background .25s}
 #repuestosTab:hover{background:#FF8000}
 @media(max-width:768px){#repuestosTab{padding:.7rem .45rem;font-size:0.8125rem}}
+/* La pestana fija queda centrada verticalmente y se mueve con el scroll, asi
+   que en algun momento coincide con cualquier titulo. Se le da a main un
+   margen izquierdo minimo que la pestana nunca alcanza, en vez de perseguir
+   cada titulo que podria quedar debajo. */
+main{padding-left:max(2rem,52px)!important}
 
 /* En celular, las tablas de modelos mostraban 5-6 columnas apretadas: se
    volvian ilegibles. Se ocultan las columnas secundarias (el dato completo
@@ -263,18 +279,21 @@ html,body{overflow-x:clip;max-width:100vw}*{min-width:0}img,table,iframe{max-wid
     <div id="resultado" role="status"></div>
   </div>
 
+  <p class="tabs-label">Escoja el modelo de su chiller</p>
   <div class="tabs-nav" role="tablist">
-    <button type="button" data-t="cgam" class="on" role="tab"><img class="tab-thumb" src="img/chillers/trane-cgam-thumb.jpg" alt="" loading="lazy"><span class="tab-label">CGAM<span class="rango">Aire · 55-460 kW</span></span></button>
-    <button type="button" data-t="rtac" role="tab"><img class="tab-thumb" src="img/chillers/trane-rtac-thumb.jpg" alt="" loading="lazy"><span class="tab-label">RTAC<span class="rango">Aire · 486-1.700 kW</span></span></button>
-    <button type="button" data-t="centravac" role="tab"><img class="tab-thumb" src="img/chillers/trane-centravac-thumb.jpg" alt="" loading="lazy"><span class="tab-label">CenTraVac<span class="rango">Agua · 420-13.900 kW</span></span></button>
+    <button type="button" data-t="cgam" class="on" role="tab"><img class="tab-thumb" src="img/chillers/trane-cgam-thumb.jpg?v=2" alt="" loading="lazy"><span class="tab-label">CGAM<span class="rango">Aire · 55-460 kW</span></span></button>
+    <button type="button" data-t="rtac" role="tab"><img class="tab-thumb" src="img/chillers/trane-rtac-thumb.jpg?v=2" alt="" loading="lazy"><span class="tab-label">RTAC<span class="rango">Aire · 486-1.700 kW</span></span></button>
+    <button type="button" data-t="centravac" role="tab"><img class="tab-thumb" src="img/chillers/trane-centravac-thumb.jpg?v=2" alt="" loading="lazy"><span class="tab-label">CenTraVac<span class="rango">Agua · 420-13.900 kW</span></span></button>
   </div>
 
   <div class="tab-panel on" id="panel-cgam">
+    <h3 class="tab-panel-tit">CGAM<span>Chiller condensado por aire, 55 a 460 kW</span></h3>
     <ul class="mini-fichas">
       <li><strong>Compresor</strong>Tornillo semihermético, baja velocidad, 4 piezas móviles</li>
       <li><strong>Evaporador</strong>Película húmeda por difusión: mayor COP, menos carga de refrigerante</li>
       <li><strong>Instalación</strong>1,2 m de espacio lateral para mantenimiento</li>
       <li><strong>Uso típico</strong>Climatización de edificios y procesos de capacidad media</li>
+      <li class="doc"><strong>Documentación</strong><div class="doc-links"><a href="docs/trane/cgam-catalogo.pdf" target="_blank" rel="noopener">📄 Catálogo técnico .pdf</a><a href="docs/trane/cgam-folleto.pdf" target="_blank" rel="noopener">📋 Folleto comercial .pdf</a><a href="docs/trane/cgam-manual-instalacion.pdf" target="_blank" rel="noopener">🔧 Manual de instalación y mantenimiento .pdf</a></div></li>
     </ul>
     <img src="img/chillers/trane-cgam.jpg" alt="Chiller Trane serie CGAM condensado por aire instalado en Ecuador" loading="lazy" style="width:100%;max-width:420px;border-radius:12px;border:1px solid #e4e8ee;margin-bottom:1.2rem;display:block">
     <div class="tabla-caja">
@@ -284,15 +303,16 @@ html,body{overflow-x:clip;max-width:100vw}*{min-width:0}img,table,iframe{max-wid
         <tbody id="tblCgam"></tbody>
       </table>
     </div>
-    <p class="cat-link"><a href="https://www.trane.com/content/dam/Trane/Commercial/lar/Peru/Manuales/Chiller_CGAM/CG-PRC017J-EN_Catalog.pdf" target="_blank" rel="noopener">📄 Catálogo técnico completo CGAM (PDF, Trane) ↗</a></p>
   </div>
 
   <div class="tab-panel" id="panel-rtac">
+    <h3 class="tab-panel-tit">RTAC<span>Chiller de tornillo condensado por aire, gran capacidad</span></h3>
     <ul class="mini-fichas">
       <li><strong>Compresor</strong>Tornillo helicoidal Series R, accionamiento directo</li>
       <li><strong>Refrigerante</strong>R-134a, de 2 a 4 compresores según el tamaño</li>
       <li><strong>Ambiente</strong>Opera de -18 °C a 46 °C; con opción hasta 51 °C</li>
       <li><strong>Uso típico</strong>Procesos de operación continua todo el año</li>
+      <li class="doc"><strong>Documentación</strong><div class="doc-links"><a href="docs/trane/rtac-catalogo.pdf" target="_blank" rel="noopener">📄 Catálogo técnico .pdf</a><a href="docs/trane/rtac-folleto.pdf" target="_blank" rel="noopener">📋 Folleto comercial .pdf</a><a href="docs/trane/rtac-manual-instalacion.pdf" target="_blank" rel="noopener">🔧 Manual de instalación y mantenimiento .pdf</a></div></li>
     </ul>
     <img src="img/chillers/trane-rtac.jpg" alt="Chiller Trane serie RTAC de tornillo condensado por aire" loading="lazy" style="width:100%;max-width:420px;border-radius:12px;border:1px solid #e4e8ee;margin-bottom:1.2rem;display:block">
     <div class="tabla-caja">
@@ -302,17 +322,18 @@ html,body{overflow-x:clip;max-width:100vw}*{min-width:0}img,table,iframe{max-wid
         <tbody id="tblRtac"></tbody>
       </table>
     </div>
-    <p class="cat-link"><a href="https://www.trane.com/content/dam/Trane/Commercial/lar/Peru/Manuales/Chiller_RTAC/RLC-PRC006M-EN_Catalog.pdf" target="_blank" rel="noopener">📄 Catálogo técnico completo RTAC (PDF, Trane) ↗</a></p>
   </div>
 
   <div class="tab-panel" id="panel-centravac">
+    <h3 class="tab-panel-tit">CenTraVac<span>Chiller centrífugo condensado por agua, gran tonelaje</span></h3>
     <ul class="mini-fichas">
       <li><strong>Compresor</strong>Centrífugo, un solo eje sobre cojinetes tipo turbina</li>
       <li><strong>Refrigerante</strong>R-123 de baja presión: si hay fuga, entra aire, no sale gas</li>
       <li><strong>En Ecuador</strong>60 Hz → series CVHE, CVHS, CVHF y CDHF</li>
       <li><strong>Uso típico</strong>Edificios grandes, centros de datos, plantas industriales</li>
+      <li class="doc"><strong>Documentación</strong><div class="doc-links"><a href="docs/trane/centravac-catalogo.pdf" target="_blank" rel="noopener">📄 Catálogo técnico .pdf</a><a href="docs/trane/centravac-folleto.pdf" target="_blank" rel="noopener">📋 Folleto comercial .pdf</a><a href="docs/trane/centravac-manual-instalacion.pdf" target="_blank" rel="noopener">🔧 Manual de instalación y mantenimiento .pdf</a></div></li>
     </ul>
-    <img src="img/chillers/trane-centravac.jpg" alt="Chiller Trane CenTraVac condensado por agua" loading="lazy" style="width:100%;max-width:420px;border-radius:12px;border:1px solid #e4e8ee;margin-bottom:1.2rem;display:block">
+    <img src="img/chillers/trane-centravac.jpg?v=2" alt="Chiller Trane CenTraVac condensado por agua" loading="lazy" style="width:100%;max-width:420px;border-radius:12px;border:1px solid #e4e8ee;margin-bottom:1.2rem;display:block">
     <div class="tabla-caja">
       <table>
         <caption>Las 7 familias CenTraVac por rango de capacidad. Equipo de ingeniería a medida: se cotiza según el sitio, no se elige por tabla.</caption>
@@ -320,7 +341,6 @@ html,body{overflow-x:clip;max-width:100vw}*{min-width:0}img,table,iframe{max-wid
         <tbody id="tblCtv"></tbody>
       </table>
     </div>
-    <p class="cat-link"><a href="https://www.trane.com/content/dam/Trane/Commercial/lar/es/product-systems/comercial/Enfriadoras-de-liquido/Enfriadoras-condensadas-por-agua/compresor-centrifugo/SeriesSCenTraVac/Catalogo/Series%20S%20CenTraVac%20Cat%C3%A1logo%20(ingl%C3%A9s).pdf" target="_blank" rel="noopener">📄 Catálogo técnico completo CenTraVac (PDF, Trane) ↗</a></p>
   </div>
 
   <h2>Cómo seleccionamos el equipo</h2>
@@ -355,9 +375,9 @@ html,body{overflow-x:clip;max-width:100vw}*{min-width:0}img,table,iframe{max-wid
 <script>
 (function(){
 var TR_KW=3.51685;
-var CAT_CGAM="https://www.trane.com/content/dam/Trane/Commercial/lar/Peru/Manuales/Chiller_CGAM/CG-PRC017J-EN_Catalog.pdf";
-var CAT_RTAC="https://www.trane.com/content/dam/Trane/Commercial/lar/Peru/Manuales/Chiller_RTAC/RLC-PRC006M-EN_Catalog.pdf";
-var CAT_CTV="https://www.trane.com/content/dam/Trane/Commercial/lar/es/product-systems/comercial/Enfriadoras-de-liquido/Enfriadoras-condensadas-por-agua/compresor-centrifugo/SeriesSCenTraVac/Catalogo/Series%20S%20CenTraVac%20Cat%C3%A1logo%20(ingl%C3%A9s).pdf";
+var CAT_CGAM="docs/trane/cgam-catalogo.pdf";
+var CAT_RTAC="docs/trane/rtac-catalogo.pdf";
+var CAT_CTV="docs/trane/centravac-catalogo.pdf";
 
 // [Modelo, kW frigorificos, kW electricos, dimensiones mm, peso kg]
 var CGAM=[["CGAM20",55.5,20.4,"2140 × 1280 × 3340",1381],["CGAM23",63.2,22.1,"2140 × 1280 × 3340",1399],["CGAM26",69.8,25.2,"2140 × 1280 × 3340",1402],["CGAM30",79.8,29.7,"2140 × 1280 × 3340",1503],["CGAM35",91.4,34.3,"2140 × 1280 × 3340",1532],["CGAM39",110.1,39.7,"2145 × 1280 × 4254",1730],["CGAM45",122.1,44.3,"2145 × 1280 × 4254",1789],["CGAM50",133.8,50.4,"2145 × 1280 × 4254",1848],["CGAM60",159.7,58.7,"2150 × 2266 × 3271",2450],["CGAM70",186.8,67.9,"2150 × 2266 × 3271",2492],["CGAM80",222.1,78.7,"2150 × 2266 × 4185",2752],["CGAM90",249,87.9,"2344 × 2273 × 4185",2885],["CGAM100",274.5,100.5,"2344 × 2273 × 4185",3002],["CGAM110",296.7,106.8,"2344 × 2273 × 3647",3104],["CGAM120",327.2,110.6,"2344 × 2273 × 3647",3307],["CGAM140",380.9,130.7,"2344 × 2273 × 4230",3794],["CGAM150",407.4,143.5,"2344 × 2273 × 4230",3822],["CGAM160",434.2,151.5,"2344 × 2273 × 4230",3939],["CGAM170",460.5,156.2,"2344 × 2273 × 5145",4214]];
