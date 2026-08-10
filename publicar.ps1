@@ -57,7 +57,9 @@ if ($SoloSellar) { Write-Host "Solo se sello. No se subio nada." -ForegroundColo
 # 3. Confirmar y subir.
 # Los archivos que empiezan por "_" son borradores y maquetas de trabajo: no se
 # publican. Si se suben quedan accesibles en el sitio y Google puede indexarlos.
-git add -A -- "*.html" ":(exclude)_*.html"
+# Ademas de las paginas hay que subir las imagenes y los datos: si solo se suben
+# los .html, las fotos nuevas quedan en el disco y el sitio las muestra rotas.
+git add -A -- "*.html" "img" "docs" "*.js" "*.png" "*.jpg" "*.webp" "*.pdf" ":(exclude)_*.html"
 $hayCambios = git diff --cached --quiet; $hayCambios = ($LASTEXITCODE -ne 0)
 if (-not $hayCambios) {
   Write-Host "No hay cambios que publicar." -ForegroundColor Yellow
