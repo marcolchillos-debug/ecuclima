@@ -9,6 +9,30 @@
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
   gtag('config', 'G-259W73642D');
+  (function(){
+    function etiqueta(el){return (el.getAttribute('aria-label')||el.textContent||el.id||'').replace(/\s+/g,' ').trim().slice(0,80)}
+    document.addEventListener('click', function(e){
+      var el = e.target.closest('a,button');
+      if(!el || typeof gtag !== 'function') return;
+      var href = el.getAttribute('href') || '';
+      if (/wa\.me|api\.whatsapp\.com/i.test(href)) {
+        gtag('event','contacto_whatsapp',{texto_boton:etiqueta(el), pagina:location.pathname});
+      } else if (/^tel:/i.test(href)) {
+        gtag('event','click_telefono',{pagina:location.pathname});
+      } else if (/^mailto:/i.test(href)) {
+        gtag('event','click_correo',{pagina:location.pathname});
+      } else if (el.matches('.btn,button') && !/whatsapp/i.test(el.getAttribute('onclick')||'')) {
+        gtag('event','click_boton',{texto_boton:etiqueta(el), pagina:location.pathname});
+      }
+    }, true);
+    var _open = window.open;
+    window.open = function(url){
+      if (typeof url === 'string' && /wa\.me|api\.whatsapp\.com/i.test(url) && typeof gtag === 'function') {
+        gtag('event','contacto_whatsapp',{pagina:location.pathname, texto_boton:'chat'});
+      }
+      return _open.apply(window, arguments);
+    };
+  })();
 </script>
 <meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png"><link rel="apple-touch-icon" sizes="180x180" href="/favicon-180.png"><meta name="theme-color" content="#004080"><meta name="google-site-verification" content="DMykoKpMgfAMha6eA12LkzoFils0bgMjnfYtr0nkc1k">
 <title>Calculadora de carga térmica para cuartos fríos | Ecuclima</title>
@@ -251,7 +275,7 @@ html,body{overflow-x:clip;max-width:100vw}*{min-width:0}img,table,iframe{max-wid
 #ecuclimaBar nav{display:flex;gap:1.4rem;align-items:center;background:transparent;padding:0;border:0;position:static;z-index:auto;flex-wrap:nowrap}
 #ecuclimaBar nav a{color:#fff;text-decoration:none;font-size:0.875rem;font-weight:500;opacity:.95;transition:.3s}
 #ecuclimaBar nav a:hover{opacity:1;color:#FF8000}
-#ecuclimaBar #menuBtn{display:none;background:0;border:0;color:#fff;font-size:1.5rem;cursor:pointer;padding:0;line-height:1}
+#ecuclimaBar #menuBtn{display:none;background:0;border:0;color:#fff;font-size:1.5rem;cursor:pointer;padding:0;line-height:1}.menu-txt{font-size:.85rem}
 @media(max-width:760px){#ecuclimaBar #menuBtn{display:block;order:2}
 #ecuclimaBar nav{position:absolute;top:100%;left:0;right:0;background:#003060;flex-direction:column;align-items:stretch;gap:0;padding:.5rem 0;max-height:0;overflow:hidden;transition:max-height .3s;box-shadow:0 6px 18px rgba(0,0,0,.3)}
 #ecuclimaBar nav.active{max-height:420px}
@@ -263,8 +287,7 @@ html,body{overflow-x:clip;max-width:100vw}*{min-width:0}img,table,iframe{max-wid
 #ecuclimaBar .nav-drop-menu a{color:#004080;opacity:1;padding:.5rem .9rem;border-radius:6px;font-size:.88rem;font-weight:600;display:flex;align-items:center;gap:.6rem;border-bottom:0}
 .nav-drop-menu a img{width:26px;height:26px;object-fit:contain;flex-shrink:0}
 #ecuclimaBar .nav-drop-menu a:hover{background:#f4f6f9;color:#FF8000}
-#ecuclimaBar nav a.nav-actual{color:#FF8000;opacity:1;box-shadow:inset 0 -2px 0 #FF8000;cursor:default;pointer-events:none}
-@media(max-width:760px){.nav-drop{display:block;width:100%}.nav-drop-menu{display:none!important}
+#ecuclimaBar nav a.nav-actual{color:#FF8000;opacity:1;box-shadow:inset 0 -2px 0 #FF8000;cursor:default;pointer-events:none}@media(max-width:760px){.nav-drop{display:block;width:100%}.nav-drop-menu{display:none!important}
 #ecuclimaBar nav a.nav-actual{box-shadow:none;background:rgba(255,128,0,.14)}}
 #nav{position:sticky;top:58px;z-index:500;background:var(--bg,#fff);box-shadow:0 2px 8px rgba(0,0,0,.06)}
 #waFab{position:fixed;bottom:22px;right:22px;width:56px;height:56px;border-radius:50%;background:#25D366;color:#fff;border:0;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:9500;box-shadow:0 6px 20px rgba(0,0,0,.28);transition:transform .25s,box-shadow .25s;padding:0}
@@ -305,7 +328,7 @@ html,body{overflow-x:clip;max-width:100vw}*{min-width:0}img,table,iframe{max-wid
     <img src="logo-ecuclima.png" alt="ECUCLIMA" style="height:30px"> ECUCLIMA
   </a>
   <span style="flex:1"></span>
-  <button id="menuBtn" onclick="document.getElementById('navMenu').classList.toggle('active')" aria-label="Menú">&#9776;</button>
+  <button id="menuBtn" onclick="document.getElementById('navMenu').classList.toggle('active')" aria-label="Menú"><span class="menu-txt">Menú</span>&#9776;</button>
   <nav id="navMenu"><a href="index.html">Inicio</a><a href="partes.html">Productos</a><a href="trane-chillers.html">Chillers</a><div class="nav-drop"><a href="marcas-refrigeracion-industrial.html" class="nav-drop-btn">Marcas <span aria-hidden="true">&#9662;</span></a><div class="nav-drop-menu"><a href="trane-chillers.html"><img src="img/marcas/trane.png" alt="" loading="lazy">Trane</a><a href="compresores-bitzer.html"><img src="img/marcas/bitzer.png" alt="" loading="lazy">Bitzer</a><a href="valvulas-industriales.html"><img src="img/marcas/carel.png" alt="" loading="lazy">Carel</a><a href="swep-heat-exchangers-info.html"><img src="img/marcas/swep.png" alt="" loading="lazy">Swep</a><a href="sanhua.html"><img src="img/marcas/sanhua.png" alt="" loading="lazy">Sanhua</a><a href="marcas-refrigeracion-industrial.html"><img src="img/marcas/emerson.png" alt="" loading="lazy">Emerson Copeland</a><a href="maquinas-hielo-comerciales-industriales.html"><img src="img/marcas/snowkey.png" alt="" loading="lazy">Snowkey</a><a href="marcas-refrigeracion-industrial.html"><img src="img/marcas/danfoss.png" alt="" loading="lazy">Danfoss</a></div></div><div class="nav-drop calc-drop"><a href="calculador.html" class="nav-drop-btn nav-actual">Calculador <span aria-hidden="true">&#9662;</span></a><div class="nav-drop-menu"><a href="calculador.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 3v18"/><path d="M8 9v3"/><path d="M16 9v3"/></svg>Cámaras frigoríficas</a><a href="trane-chillers.html#selector-chillers"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v20"/><path d="M2 12h20"/><path d="M5 5l14 14"/><path d="M19 5L5 19"/></svg>Selector de chillers</a><a href="calculador.html#catalogo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M9 10v10"/></svg>Listado de cargas</a></div></div><a href="quienes-somos.html">Quiénes somos</a></nav>
   <a href="javascript:void(0)" onclick="abrirChat()" aria-label="Escríbanos por WhatsApp" title="Escríbanos por WhatsApp" style="color:#25D366;text-decoration:none;display:inline-flex;align-items:center"><svg width="23" height="23" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413"/></svg></a>
 </div>
@@ -314,7 +337,7 @@ html,body{overflow-x:clip;max-width:100vw}*{min-width:0}img,table,iframe{max-wid
 <div id="chatModal" style="display:none;position:fixed;bottom:0;right:0;width:100%;max-width:400px;height:500px;background:#fff;border-radius:12px 12px 0 0;box-shadow:0 -4px 20px rgba(0,0,0,0.2);z-index:10000;flex-direction:column;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif">
   <div style="background:#004080;color:#fff;padding:1rem;font-weight:600;display:flex;justify-content:space-between;align-items:center">💬 Escriba su mensaje<button onclick="cerrarChat()" style="background:0;border:0;color:#fff;font-size:1.5rem;cursor:pointer">×</button></div>
   <div style="display:flex;border-bottom:1px solid #e8ecf1">
-    <a href="tel:+593980420996" onclick="copiarContacto('+593 98 042 0996')" style="flex:1;padding:0.7rem 0.5rem;text-align:center;text-decoration:none;color:#004080;font-size:0.875rem;font-weight:600;border-right:1px solid #e8ecf1"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:0 auto 3px"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>098 042 0996</a>
+    <a href="tel:+593959805696" onclick="copiarContacto('+593 95 980 5696')" style="flex:1;padding:0.7rem 0.5rem;text-align:center;text-decoration:none;color:#004080;font-size:0.875rem;font-weight:600;border-right:1px solid #e8ecf1"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:0 auto 3px"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>095 980 5696</a>
     <a href="mailto:info@ecuclima.com" onclick="copiarContacto('info@ecuclima.com')" style="flex:1;padding:0.7rem 0.5rem;text-align:center;text-decoration:none;color:#004080;font-size:0.875rem;font-weight:600"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:0 auto 3px"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Correo</a>
   </div>
   <div style="flex:1;overflow-y:auto;padding:1rem"><p style="color:#666;font-size:0.9rem">Hola! ¿En qué podemos ayudarle?</p></div>
@@ -332,7 +355,7 @@ function abrirChat(msg){var m=document.getElementById('chatModal');m.style.displ
 function cerrarChat(){document.getElementById('chatModal').style.display='none';verFab(true)}
 function errorMsg(txt){var t=document.getElementById('msgInput');var e=document.getElementById('msgError');if(!e){e=document.createElement('p');e.id='msgError';e.style.cssText='color:#d93025;font-size:0.78rem;font-weight:500;margin:0.45rem 0 0';t.parentNode.insertBefore(e,t.nextSibling)}e.textContent=txt;t.style.borderColor='#d93025';t.focus()}
 function limpiarError(){var t=document.getElementById('msgInput');t.style.borderColor='#8b97a6';var e=document.getElementById('msgError');if(e)e.remove()}
-function enviarWhatsApp(){var m=document.getElementById('msgInput').value;if(!m.trim()){errorMsg('Escriba su consulta antes de enviar');return}limpiarError();window.open('https://wa.me/593980420996?text='+encodeURIComponent('[Web] '+m),'_blank');cerrarChat();document.getElementById('msgInput').value=''}
+function enviarWhatsApp(){var m=document.getElementById('msgInput').value;if(!m.trim()){errorMsg('Escriba su consulta antes de enviar');return}limpiarError();window.open('https://wa.me/593959805696?text='+encodeURIComponent('[Web] '+m),'_blank');cerrarChat();document.getElementById('msgInput').value=''}
 document.getElementById('msgInput').addEventListener('input',limpiarError);
 </script>
 
@@ -976,7 +999,7 @@ if(typeof CF==='undefined' || !CF || !Object.keys(CF).length){
    +'<b>«Calculo camaras de frio.html»</b>, que lleva todo adentro y se abre con doble clic. '
    +'Se distinguen por el peso: este pesa unos 88 KB y el completo, cerca de 280 KB.</p>'
    +'<p style="margin:0;color:#5a6b80;font-size:14px">ECUCLIMA · Refrigeración Industrial · '
-   +'info@ecuclima.com · +593 98 042 0996</p></div>';
+   +'info@ecuclima.com · +593 95 980 5696</p></div>';
   throw new Error('datos.js no se cargó');
 }
 
@@ -2417,7 +2440,7 @@ try{
   box.innerHTML='<b>La aplicación no pudo iniciar.</b><br>Si la abriste desde el visor interno de WhatsApp '
     +'o del correo, guárdala primero y ábrela con Chrome o Safari. Si el problema sigue, avísanos con este '
     +'detalle: <code style="font-size:14px">'+String(err&&err.message||err).replace(/</g,'&lt;')+'</code>'
-    +'<br><br>ECUCLIMA · info@ecuclima.com · +593 98 042 0996';
+    +'<br><br>ECUCLIMA · info@ecuclima.com · +593 95 980 5696';
   document.querySelector('main').prepend(box);
 }
 </script>
