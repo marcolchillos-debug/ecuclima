@@ -54,10 +54,10 @@ p{opacity:.92;line-height:1.6}
   if (typeof gtag === 'function') {
     gtag('event','pagina_no_encontrada',{ruta:location.pathname, llevado_a:destino||'ninguno'});
   }
-  if (destino) {
-    document.getElementById('aviso').textContent = 'Esta página se mudó. Le llevamos a la sección correcta…';
-    setTimeout(function(){ location.replace(destino); }, 900);
-  }
+  /* Directo, sin pantalla intermedia. El texto y los botones de abajo solo se
+     llegan a ver si no reconocimos la direccion, o si el navegador tiene el
+     JavaScript apagado. */
+  if (destino) { location.replace(destino); }
 })();
 </script>
 </body>
