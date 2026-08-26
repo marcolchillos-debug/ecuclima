@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-259W73642D"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-259W73642D');
+</script>
+<title>P&aacute;gina no encontrada &mdash; Ecuclima</title>
+<link rel="canonical" href="https://ecuclima.com/">
+<meta name="robots" content="noindex, follow">
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#004080;color:#fff;margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:2rem}
+a{color:#FF8000;font-weight:600;text-decoration:none}
+.caja{max-width:620px}
+h1{font-size:1.6rem;margin:0 0 .6rem}
+p{opacity:.92;line-height:1.6}
+.enlaces{display:flex;flex-wrap:wrap;gap:.7rem;justify-content:center;margin-top:1.6rem}
+.enlaces a{background:#FF8000;color:#fff;padding:.7rem 1.2rem;border-radius:8px}
+</style>
+</head>
+<body>
+<div class="caja">
+  <h1>No encontramos esa p&aacute;gina</h1>
+  <p id="aviso">Es posible que se haya mudado. Le llevamos al lugar correcto.</p>
+  <div class="enlaces">
+    <a href="/partes.html">Ver cat&aacute;logo</a>
+    <a href="/">Inicio</a>
+    <a href="https://wa.me/593959805696">Escribirnos</a>
+  </div>
+</div>
+<script>
+/* Las direcciones del WordPress anterior siguen indexadas en Google. En vez de
+   dejar al visitante en un error, se le lleva a la seccion equivalente. */
+(function(){
+  var r = location.pathname.toLowerCase();
+  var destino = null;
+  if (/\/(product|producto)\//.test(r))            destino = '/partes.html';
+  else if (/categoria-producto|product-category/.test(r)) destino = '/partes.html';
+  else if (/chiller|trane/.test(r))                  destino = '/trane-chillers.html';
+  else if (/bitzer|compresor/.test(r))               destino = '/compresores-bitzer.html';
+  else if (/swep|intercambiador/.test(r))            destino = '/swep-heat-exchangers-info.html';
+  else if (/sanhua/.test(r))                         destino = '/sanhua.html';
+  else if (/valvul|expansion|carel/.test(r))         destino = '/valvulas-industriales.html';
+  else if (/cuarto|camara|frio|inema|puerta/.test(r))destino = '/cuartos-frios-inema.html';
+  else if (/hielo|snowkey/.test(r))                  destino = '/maquinas-hielo-comerciales-industriales.html';
+  else if (/full.?gauge|control/.test(r))            destino = '/full-gauge.html';
+  else if (/parte|repuesto|producto/.test(r))        destino = '/partes.html';
+  if (typeof gtag === 'function') {
+    gtag('event','pagina_no_encontrada',{ruta:location.pathname, llevado_a:destino||'ninguno'});
+  }
+  if (destino) {
+    document.getElementById('aviso').textContent = 'Esta pagina se mudo. Le llevamos a la seccion correcta...';
+    setTimeout(function(){ location.replace(destino); }, 900);
+  }
+})();
+</script>
+</body>
+</html>
