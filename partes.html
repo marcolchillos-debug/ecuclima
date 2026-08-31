@@ -129,6 +129,7 @@ nav a.nav-wa:hover{color:#1EBE5A;opacity:1}
 .parte{background:#fff;border:1px solid #e4e8ee;border-radius:12px;overflow:hidden;display:flex;flex-direction:column;transition:all 0.3s}
 .parte:hover{transform:translateY(-5px);box-shadow:0 12px 32px rgba(0,64,128,0.13);border-color:#FF8000}
 .parte-foto{height:180px;background:#f4f7fa;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.falta-foto{font-size:0.8rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#8a94a3;border:1.5px dashed #c9d3de;border-radius:8px;padding:.6rem 1rem}
 .parte-foto img{width:100%;height:100%;object-fit:contain;padding:0.8rem}
 .parte-cuerpo{padding:1.1rem 1.2rem 1.2rem;display:flex;flex-direction:column;flex:1}
 .parte-cat{font-size:0.875rem;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:#FF8000;margin-bottom:0.5rem}
@@ -270,7 +271,7 @@ html,body{overflow-x:clip;max-width:100vw}*{min-width:0}img,table,iframe{max-wid
   <p style="margin-top:2rem;font-size:0.875rem;opacity:0.7">© 2026 Ecuclima. Todos los derechos reservados.</p>
   <!-- El sello lo estampa publicar.ps1 en cada publicacion. No editarlo a mano:
        sirve para saber si lo que se ve es la version nueva o una copia en cache. -->
-  <p style="margin-top:0.6rem;font-size:0.875rem;opacity:0.45">Versión <!--SELLO-->31/08/2026 01:03<!--/SELLO--></p>
+  <p style="margin-top:0.6rem;font-size:0.875rem;opacity:0.45">Versión <!--SELLO-->31/08/2026 01:21<!--/SELLO--></p>
 </footer>
 
 <button id="botFab" onclick="abrirBot()" aria-label="Abrir IceBot, asistente virtual" title="IceBot &mdash; asistente virtual de Ecuclima"><img src="img/icebot.png" alt="" aria-hidden="true"></button><div id="botPanel" role="dialog" aria-label="IceBot, asistente virtual de Ecuclima"><div class="bp-cab"><img src="img/icebot.png" alt=""><div><b>IceBot</b><span>Asistente virtual de Ecuclima</span></div><button class="bp-x" onclick="cerrarBot()" aria-label="Cerrar IceBot">&times;</button></div><iframe id="botFrame" title="IceBot &mdash; asistente virtual" src="about:blank"></iframe></div><script>var BOT_URL="https://pc-casa.tail635de0.ts.net/static/publico.html";function abrirBot(){var p=document.getElementById('botPanel'),f=document.getElementById('botFrame');if(!f.dataset.cargado){f.src=BOT_URL;f.dataset.cargado='1'}p.classList.add('abierto');document.getElementById('botFab').style.display='none';if(typeof gtag==='function')gtag('event','abrir_icebot',{pagina:location.pathname})}function cerrarBot(){document.getElementById('botPanel').classList.remove('abierto');document.getElementById('botFab').style.display='flex'}window.addEventListener('load',function(){var o=window.verFab;if(typeof o==='function'){window.verFab=function(v){o(v);var b=document.getElementById('botFab'),p=document.getElementById('botPanel');if(b&&p&&!p.classList.contains('abierto'))b.style.display=v?'flex':'none'}}});</script><button id="waFab" onclick="abrirChat()" aria-label="Escríbanos por WhatsApp" title="Escríbanos por WhatsApp"><svg width="31" height="31" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413"/></svg></button>
@@ -1033,18 +1034,42 @@ const PRODUCTOS_TODOS = [
 {n:"Tuberia de cobre 1 1/4",c:"Tubería y Conexiones",p:19.17,iva:true,s:5.45,f:"ec02878-tuberia-de-cobre-1-1-4-sin-marca.jpg",id:"ec02878-tuberia-de-cobre-1-1-4-sin-marca",so:1},
 {n:"Tuberia de cobre 2 1/2",c:"Tubería y Conexiones",p:38.74,iva:true,s:11.3,f:"ec02879-tuberia-de-cobre-2-1-2.jpg",id:"ec02879-tuberia-de-cobre-2-1-2",so:1},
 {n:"Tuberia RIGIDA de cobre 4¨",c:"Tubería y Conexiones",p:28.7,iva:true,s:1.4,f:"ec02880-tuberia-rigida-de-cobre-4-sin-marca.jpg",id:"ec02880-tuberia-rigida-de-cobre-4-sin-marca",so:1},
-{n:"Tubería de 1/2 rígido",c:"Tubería y Conexiones",p:6.94,iva:true,s:2.5,f:"ec02917-tuberia-de-1-2-rigido-sin-marca.jpg",id:"ec02917-tuberia-de-1-2-rigido-sin-marca",so:1}
+{n:"Tubería de 1/2 rígido",c:"Tubería y Conexiones",p:6.94,iva:true,s:2.5,f:"ec02917-tuberia-de-1-2-rigido-sin-marca.jpg",id:"ec02917-tuberia-de-1-2-rigido-sin-marca",so:1},
+{n:"Rele Termico 20-25A 3RU2126-4DB0",c:"Componentes Eléctricos",p:51.91,iva:true,s:0,f:"",id:"ec00947-rele-termico-20-25a-3ru2126-4db0-sin-marca",oculto:1,nf:1},
+{n:"Rele Termico 23-28 A 3RU2126-4NB0",c:"Componentes Eléctricos",p:82.61,iva:true,s:0,f:"",id:"ec00948-rele-termico-23-28-a-3ru2126-4nb0-sin-marca",oculto:1,nf:1},
+{n:"Breaker  2P 20AMP p/riel  ESX 1220-7 Siemens",c:"Componentes Eléctricos",p:21.1,iva:true,s:0,f:"",id:"ec00983-breaker-2p-20amp-p-riel-esx-1220-7-siemens-sin-marca",oculto:1,nf:1},
+{n:"breaker 3P 20 AMP p/riel Siemens",c:"Componentes Eléctricos",p:35.34,iva:true,s:0,f:"",id:"ec00987-breaker-3p-20-amp-p-riel-siemens-sin-marca",oculto:1,nf:1},
+{n:"Rele de estado sólido  60a 90-250 vac unput 40-440 vac",c:"Componentes Eléctricos",p:47.5,iva:true,s:0,f:"",id:"ec01088-rele-de-estado-solido-60a-90-250-vac-unput-40-440-vac-sin-marca",oculto:1,nf:1},
+{n:"Gas Map Azul",c:"Compresores y Repuestos",p:13.1,iva:true,s:0,f:"",id:"ec01725-gas-map-azul-sin-marca",oculto:1,nf:1},
+{n:"Terminal talon sencillo A-150",c:"Componentes Eléctricos",p:1.68,iva:true,s:0,f:"",id:"ec02335-terminal-talon-sencillo-a-150-sin-marca",oculto:1,nf:1},
+{n:"FILTROS PARA LOS RESPIRADORES",c:"Compresores y Repuestos",p:9.38,iva:true,s:0,f:"",id:"ec02599-filtros-para-los-respiradores-sin-marca",oculto:1,nf:1},
+{n:"Tuberia de cobre 1\"",c:"Tubería y Conexiones",p:17.66,iva:true,s:18,f:"",id:"ec03466-tuberia-de-cobre-1-sin-marca",oculto:1,nf:1},
+{n:"Tuberia PVCP Blanca 1\"",c:"Tubería y Conexiones",p:0,iva:true,s:0,f:"",id:"ec03500-tuberia-pvcp-blanca-1-sin-marca",oculto:1,nf:1},
+{n:"Tuberia cobre 7/8 tipo K",c:"Tubería y Conexiones",p:null,iva:true,s:0,f:"",id:"ec03983-tuberia-cobre-7-8-tipo-k-sin-marca",oculto:1,nf:1},
+{n:"FILTRO BOLSA 24*24*12\" 95% THENOW MERV15 6P REAL",c:"Compresores y Repuestos",p:44.3,iva:true,s:0,f:"",id:"ec03732-filtro-bolsa-24-24-12-95-thenow-merv15-6p-real-climapower",oculto:1,nf:1},
+{n:"CONTROLADOR CONGELADOR TC-900 ELOG",c:"Controles Full Gauge",p:89.1,iva:true,s:0,f:"",id:"ec02113-controlador-congelador-tc-900-elog-full-gauge",oculto:1,nf:1},
+{n:"Swich de Flujo F61MB-1C",c:"Compresores y Repuestos",p:226.12,iva:true,s:0,f:"",id:"ec01726-swich-de-flujo-f61mb-1c-johnson-crontols",oculto:1,nf:1},
+{n:"Cortina de aire de 120 a 110v",c:"Compresores y Repuestos",p:334,iva:true,s:0,f:"",id:"ec02064-cortina-de-aire-de-120-a-110v-quality",oculto:1,nf:1},
+{n:"Ventilador Axial 500mm 1625 - RPM 220V 1PH 60Hz",c:"Compresores y Repuestos",p:144,iva:true,s:0,f:"",id:"ec03754-ventilador-axial-500mm-1625-rpm-220v-1ph-60hz-quality",oculto:1,nf:1},
+{n:"VISOR 5/8 SOLDAR",c:"Válvulas Sanhua",p:13.94,iva:true,s:1,f:"",id:"ec03845-visor-5-8-soldar-sanhua",oculto:1,nf:1},
+{n:"VISOR 7/8 SOLDAR",c:"Válvulas Sanhua",p:18.05,iva:true,s:1,f:"",id:"ec03846-visor-7-8-soldar-sanhua",oculto:1,nf:1},
+{n:"Tuberia de cobre 2 5/8",c:"Tubería y Conexiones",p:54.24,iva:true,s:9.7,f:"",id:"ec00876-tuberia-de-cobre-2-5-8-producto",oculto:1,nf:1}
 ];
 /* catalogo-sync: los ocultos no se muestran, pero siguen aca */
-var VER_OCULTOS = new URLSearchParams(location.search).get('ocultos') === '1';
+var _consulta = new URLSearchParams(location.search);
+var VER_OCULTOS = _consulta.get('ocultos') === '1';
+var VER_SIN_FOTO = _consulta.get('sinfoto') === '1';
 const PRODUCTOS = PRODUCTOS_TODOS.filter(function(p){
+  if (VER_SIN_FOTO) return !!p.nf;          /* solo los que esperan foto */
   return VER_OCULTOS ? !!p.oculto : !p.oculto;
 });
-if (VER_OCULTOS) {
+if (VER_OCULTOS || VER_SIN_FOTO) {
   document.addEventListener('DOMContentLoaded', function(){
     var b = document.createElement('div');
     b.style.cssText = 'background:#00294F;color:#fff;padding:.7rem 1rem;text-align:center;font-weight:700;font-size:.95rem';
-    b.textContent = 'Vista privada \u2014 ' + PRODUCTOS.length + ' productos ocultos. Los clientes no ven esta lista.';
+    b.textContent = VER_SIN_FOTO
+      ? 'Vista privada \u2014 ' + PRODUCTOS.length + ' productos esperando foto. Con la foto cargada entran solos al cat\u00e1logo.'
+      : 'Vista privada \u2014 ' + PRODUCTOS.length + ' productos ocultos. Los clientes no ven esta lista.';
     document.body.insertBefore(b, document.body.firstChild);
   });
 }
@@ -1306,7 +1331,7 @@ function pintar(){
     return '<article class="parte"' + abre + '>' +
       '<div class="parte-foto">' +
         (cod ? '<span class="cod-foto">' + cod + '</span>' : '') +
-        '<img src="img/productos/' + p.f + '" alt="' + escAttr(p.n) + '" loading="lazy" onerror="this.style.display=\'none\'"></div>' +
+        (p.f ? '<img src="img/productos/' + p.f + '" alt="' + escAttr(p.n) + '" loading="lazy" onerror="this.style.display=\'none\'">' : '<span class="falta-foto">Falta foto</span>') + '</div>' +
       '<div class="parte-cuerpo">' +
         '<p class="parte-cat">' + p.c + '</p>' +
         '<h3>' + p.n + '</h3>' +
