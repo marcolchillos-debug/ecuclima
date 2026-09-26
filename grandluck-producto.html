@@ -38,10 +38,20 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/favicon-180.png">
 <meta name="theme-color" content="#004080">
+<meta name="google-site-verification" content="DMykoKpMgfAMha6eA12LkzoFils0bgMjnfYtr0nkc1k">
 <title id="tTitle">Ficha de producto Grandluck | Ecuclima</title>
 <meta id="tDesc" name="description" content="Ficha de línea industrial Grandluck, representada en Ecuador por Ecuclima.">
+<meta name="keywords" content="Grandluck Ecuador, congelacion industrial, equipos de congelacion China, distribuidor Grandluck Ecuador">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <link id="tCanon" rel="canonical" href="https://ecuclima.com/grandluck-producto.html">
+<meta property="og:type" content="product">
+<meta property="og:locale" content="es_EC">
+<meta property="og:site_name" content="Ecuclima">
+<meta id="ogTitle" property="og:title" content="Ficha de producto Grandluck | Ecuclima">
+<meta id="ogDesc" property="og:description" content="Ficha de línea industrial Grandluck, representada en Ecuador por Ecuclima.">
+<meta id="ogUrl" property="og:url" content="https://ecuclima.com/grandluck-producto.html">
+<meta id="ogImg" property="og:image" content="https://ecuclima.com/img/marcas/grandluck.png">
+<meta name="twitter:card" content="summary_large_image">
 <script id="ldJson" type="application/ld+json">{}</script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -441,6 +451,11 @@ if (!f) {
   document.getElementById("tTitle").textContent = f.nombre + " — Grandluck | Ecuclima Ecuador";
   document.getElementById("tDesc").setAttribute("content", f.nombre + " Grandluck, representada en Ecuador por Ecuclima. " + f.descripcion.slice(0,100));
   document.getElementById("tCanon").setAttribute("href", "https://ecuclima.com/grandluck-producto.html?id=" + id);
+  const ogUrlCompleta = "https://ecuclima.com/grandluck-producto.html?id=" + id;
+  document.getElementById("ogTitle").setAttribute("content", f.nombre + " — Grandluck | Ecuclima Ecuador");
+  document.getElementById("ogDesc").setAttribute("content", f.descripcion.slice(0,160));
+  document.getElementById("ogUrl").setAttribute("content", ogUrlCompleta);
+  document.getElementById("ogImg").setAttribute("content", "https://ecuclima.com/" + f.imagenes[0]);
   document.getElementById("migaCat").textContent = f.categoria;
   document.getElementById("migaCatLink").href = "grandluck.html#" + (ANCLA_CATEGORIA[f.categoria] || "");
   document.getElementById("migaNombre").textContent = f.nombre;
