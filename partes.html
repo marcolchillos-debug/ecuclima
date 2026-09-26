@@ -276,7 +276,7 @@ html,body{overflow-x:clip;max-width:100vw}*{min-width:0}img,table,iframe{max-wid
   <p style="margin-top:2rem;font-size:0.875rem;opacity:0.7">© 2026 Ecuclima. Todos los derechos reservados.</p>
   <!-- El sello lo estampa publicar.ps1 en cada publicacion. No editarlo a mano:
        sirve para saber si lo que se ve es la version nueva o una copia en cache. -->
-  <p style="margin-top:0.6rem;font-size:0.875rem;opacity:0.45">Versión <!--SELLO-->25/09/2026 20:37<!--/SELLO--></p>
+  <p style="margin-top:0.6rem;font-size:0.875rem;opacity:0.45">Versión <!--SELLO-->25/09/2026 20:41<!--/SELLO--></p>
 </footer>
 
 <button id="botFab" onclick="abrirBot()" aria-label="Abrir IceBot, asistente virtual" title="IceBot &mdash; asistente virtual de Ecuclima"><img src="img/icebot.png" alt="" aria-hidden="true"></button><div id="botPanel" role="dialog" aria-label="IceBot, asistente virtual de Ecuclima"><div class="bp-cab"><img src="img/icebot.png" alt=""><div><b>IceBot</b><span>Asistente virtual de Ecuclima</span></div><button class="bp-x" onclick="cerrarBot()" aria-label="Cerrar IceBot">&times;</button></div><iframe id="botFrame" title="IceBot &mdash; asistente virtual" src="about:blank"></iframe></div><script>var BOT_URL="https://pc-casa.tail635de0.ts.net/static/publico.html";function abrirBot(){var p=document.getElementById('botPanel'),f=document.getElementById('botFrame');if(!f.dataset.cargado){f.src=BOT_URL;f.dataset.cargado='1'}p.classList.add('abierto');document.getElementById('botFab').style.display='none';if(typeof gtag==='function')gtag('event','abrir_icebot',{pagina:location.pathname})}function cerrarBot(){document.getElementById('botPanel').classList.remove('abierto');document.getElementById('botFab').style.display='flex'}window.addEventListener('load',function(){var o=window.verFab;if(typeof o==='function'){window.verFab=function(v){o(v);var b=document.getElementById('botFab'),p=document.getElementById('botPanel');if(b&&p&&!p.classList.contains('abierto'))b.style.display=v?'flex':'none'}}});</script><a id="homeFab" href="index.html" aria-label="Ir al inicio de Ecuclima" title="Inicio — Ecuclima" onclick="if(typeof gtag==='function')gtag('event','ir_a_inicio',{pagina:location.pathname})"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V9.5"/></svg></a><button id="waFab" onclick="abrirChat()" aria-label="Escríbanos por WhatsApp" title="Escríbanos por WhatsApp"><svg width="31" height="31" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413"/></svg></button>
@@ -1058,7 +1058,28 @@ const PRODUCTOS_TODOS = [
 {n:"Ventilador Axial 500mm 1625 - RPM 220V 1PH 60Hz",c:"Compresores y Repuestos",p:144,iva:true,s:0,f:"",id:"ec03754-ventilador-axial-500mm-1625-rpm-220v-1ph-60hz-quality",oculto:1,nf:1},
 {n:"VISOR 5/8 SOLDAR",c:"Válvulas Sanhua",p:13.94,iva:true,s:1,f:"",id:"ec03845-visor-5-8-soldar-sanhua",nf:1, oculto:1},
 {n:"VISOR 7/8 SOLDAR",c:"Válvulas Sanhua",p:18.05,iva:true,s:1,f:"",id:"ec03846-visor-7-8-soldar-sanhua",nf:1, oculto:1},
-{n:"Tuberia de cobre 2 5/8",c:"Tubería y Conexiones",p:54.24,iva:true,s:9.7,f:"",id:"ec00876-tuberia-de-cobre-2-5-8-producto",nf:1, oculto:1}
+{n:"Tuberia de cobre 2 5/8",c:"Tubería y Conexiones",p:54.24,iva:true,s:9.7,f:"",id:"ec00876-tuberia-de-cobre-2-5-8-producto",nf:1, oculto:1},
+
+// Linea industrial Grandluck (China), representada por Ecuclima. Sin precio
+// publico ni stock local: se fabrica bajo pedido. La ficha completa (galeria,
+// zoom, especificaciones) vive en grandluck-producto.html, no en producto.html
+// -- ver el redireccionamiento por prefijo "gl-" en el onclick de la tarjeta.
+{n:"Congelador espiral doble Grandluck",c:"Congeladores espirales Grandluck",p:null,f:"doble-espiral-grandluck.jpg",id:"gl-espiral-doble"},
+{n:"Congelador espiral simple Grandluck",c:"Congeladores espirales Grandluck",p:null,f:"simple-espiral-grandluck.jpg",id:"gl-espiral-simple"},
+{n:"Túnel de congelación de malla Grandluck",c:"Túneles de congelación Grandluck",p:null,f:"tunel-malla-grandluck.jpg",id:"gl-tunel-malla"},
+{n:"Túnel de congelación de banda sólida Grandluck",c:"Túneles de congelación Grandluck",p:null,f:"tunel-banda-solida-grandluck.jpg",id:"gl-tunel-banda-solida"},
+{n:"Túnel de malla Super-jet Grandluck",c:"Túneles de congelación Grandluck",p:null,f:"tunel-malla-superjet-grandluck.jpg",id:"gl-tunel-malla-superjet"},
+{n:"Túnel de banda sólida Super-jet Grandluck",c:"Túneles de congelación Grandluck",p:null,f:"tunel-solido-superjet-grandluck.jpg",id:"gl-tunel-solido-superjet"},
+{n:"Congelador de placas vertical Grandluck",c:"Congeladores de placas Grandluck",p:null,f:"placas-vertical-grandluck.jpg",id:"gl-placas-vertical"},
+{n:"Congelador de placas horizontal Grandluck",c:"Congeladores de placas Grandluck",p:null,f:"placas-horizontal-grandluck.jpg",id:"gl-placas-horizontal"},
+{n:"Congelador de placas tipo estante Grandluck",c:"Congeladores de placas Grandluck",p:null,f:"placas-estantes-grandluck.jpg",id:"gl-placas-estante"},
+{n:"Máquina de hielo en escamas Grandluck",c:"Máquinas de hielo Grandluck",p:null,f:"hielo-escamas-grandluck.jpg",id:"gl-hielo-escamas"},
+{n:"Máquina de hielo en tubo Grandluck",c:"Máquinas de hielo Grandluck",p:null,f:"hielo-tubo-grandluck.jpg",id:"gl-hielo-tubo"},
+{n:"Clasificadora de camarón Grandluck",c:"Procesamiento de camarón y pescado Grandluck",p:null,f:"clasificadora-camaron-grandluck.jpg",id:"gl-clasificadora-camaron"},
+{n:"Despieladora de pescado Grandluck",c:"Procesamiento de camarón y pescado Grandluck",p:null,f:"despielado-pescado-grandluck.jpg",id:"gl-despielado-pescado"},
+{n:"Sistema de refrigeración industrial y equipo auxiliar Grandluck",c:"Sistemas de refrigeración Grandluck",p:null,f:"sistema-refrigeracion-grandluck.jpg",id:"gl-sistema-refrigeracion"},
+{n:"Bandejas y marcos de congelación Grandluck",c:"Congeladores de placas Grandluck",p:null,f:"bandejas-congelacion-grandluck.jpg",id:"gl-bandejas-congelacion"},
+{n:"Eyector Grandluck",c:"Congeladores de placas Grandluck",p:null,f:"eyector-grandluck.jpg",id:"gl-eyector"}
 ];
 /* catalogo-sync: los ocultos no se muestran, pero siguen aca */
 var _consulta = new URLSearchParams(location.search);
@@ -1088,7 +1109,7 @@ let tipoActivo  = "Todos";
 const MARCAS = [
   ["BITZER", /bitzer/],     ["Sanhua", /sanhua/],   ["CAREL", /carel/],
   ["Full Gauge", /full[ -]?gauge/], ["Trane", /trane/], ["Siemens", /siemens/],
-  ["Danfoss", /danfoss/],   ["SWEP", /swep/]
+  ["Danfoss", /danfoss/],   ["SWEP", /swep/],       ["Grandluck", /grandluck/]
   // Sporlan (2), Hansen (2) y Emerson (1) no se listan aparte: una marca con uno
   // o dos articulos no merece su propia entrada. Caen en "Otras marcas".
 ];
@@ -1330,7 +1351,8 @@ function pintar(){
         ? '<span class="stock pedido">Consultar stock</span>'
         : '<span class="stock hay">' + ((porMedida(p) || p.so) ? 'En stock' : p.s + ' en stock') + '</span>';
     }
-    const abre = p.id ? " onclick=\"location.href='producto.html?id=" + p.id + "'\" style=\"cursor:pointer\"" : "";
+    const fichaUrl = p.id && p.id.indexOf("gl-") === 0 ? "grandluck-producto.html?id=" : "producto.html?id=";
+    const abre = p.id ? " onclick=\"location.href='" + fichaUrl + p.id + "'\" style=\"cursor:pointer\"" : "";
     const boton = ocultarPrecio ? "Cotizar por WhatsApp" : "Consultar";
     const cod = codigoDe(p);
     return '<article class="parte"' + abre + '>' +
