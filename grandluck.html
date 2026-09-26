@@ -2,6 +2,38 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-259W73642D"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-259W73642D');
+  (function(){
+    function etiqueta(el){return (el.getAttribute('aria-label')||el.textContent||el.id||'').replace(/\s+/g,' ').trim().slice(0,80)}
+    document.addEventListener('click', function(e){
+      var el = e.target.closest('a,button');
+      if(!el || typeof gtag !== 'function') return;
+      var href = el.getAttribute('href') || '';
+      if (/wa\.me|api\.whatsapp\.com/i.test(href)) {
+        gtag('event','contacto_whatsapp',{texto_boton:etiqueta(el), pagina:location.pathname});
+      } else if (/^tel:/i.test(href)) {
+        gtag('event','click_telefono',{pagina:location.pathname});
+      } else if (/^mailto:/i.test(href)) {
+        gtag('event','click_correo',{pagina:location.pathname});
+      } else if (el.matches('.btn,button') && !/whatsapp/i.test(el.getAttribute('onclick')||'')) {
+        gtag('event','click_boton',{texto_boton:etiqueta(el), pagina:location.pathname});
+      }
+    }, true);
+    var _open = window.open;
+    window.open = function(url){
+      if (typeof url === 'string' && /wa\.me|api\.whatsapp\.com/i.test(url) && typeof gtag === 'function') {
+        gtag('event','contacto_whatsapp',{pagina:location.pathname, texto_boton:'chat'});
+      }
+      return _open.apply(window, arguments);
+    };
+  })();
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <meta name="theme-color" content="#004080">
@@ -82,6 +114,14 @@ main{max-width:1100px;margin:0 auto;padding:2.2rem 2rem 4rem}
 footer{background:#004080;color:#fff;padding:3rem 2rem;text-align:center;font-size:.92rem}
 footer a{color:#FF8000;text-decoration:none;font-weight:600}
 @media(max-width:768px){header{padding:1rem 1.5rem;flex-direction:column;gap:.6rem;align-items:flex-start}}
+/* Botones flotantes propios de Grandluck: WhatsApp va directo al fabricante
+   (con "Requerimiento Ecuador" por delante para que sepan que el contacto
+   vino de aca); el correo va a Ecuclima, para que el lead no se pierda. */
+#mailFabGL,#waFabGL{position:fixed;right:22px;width:56px;height:56px;border-radius:50%;border:0;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:900;box-shadow:0 6px 20px rgba(0,0,0,.28);transition:transform .25s;text-decoration:none;color:#fff}
+#mailFabGL:hover,#waFabGL:hover{transform:scale(1.09)}
+#mailFabGL{bottom:92px;background:#004080}
+#waFabGL{bottom:22px;background:#25D366}
+@media(max-width:768px){#mailFabGL,#waFabGL{width:52px;height:52px;right:16px}#mailFabGL{bottom:80px}#waFabGL{bottom:16px}}
 </style>
 </head>
 <body>
@@ -241,5 +281,8 @@ if (window.matchMedia('(max-width:768px)').matches) {
   });
 }
 </script>
+
+<a id="mailFabGL" href="mailto:info@ecuclima.com?cc=info@grandluck-freezcold.com&subject=Consulta%20Grandluck%20-%20sitio%20web%20Ecuclima&body=Hola%2C%20quisiera%20mas%20informacion%20y%20cotizacion%20de%20los%20equipos%20Grandluck%20que%20representa%20Ecuclima%20en%20Ecuador." aria-label="Escríbanos por correo" title="Escríbanos por correo"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16v16H4z"/><path d="m4 6 8 7 8-7"/></svg></a>
+<a id="waFabGL" href="https://wa.me/593959805696?text=%5BWeb%20Grandluck%5D%20Deseo%20informacion%20de%20las%20lineas%20de%20congelacion%20industrial%20Grandluck" target="_blank" rel="noopener" aria-label="Escríbanos por WhatsApp" title="Escríbanos por WhatsApp"><svg width="31" height="31" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413"/></svg></a>
 </body>
 </html>
