@@ -609,11 +609,10 @@ document.querySelectorAll(".tab-btn").forEach(function(btn){
 });
 
 function volverAGrandluck(){
-  const ref = document.referrer;
-  const mismoSitio = ref && ref.indexOf(location.host) !== -1;
-  const desdeOtraPieza = mismoSitio && ref.indexOf("grandluck-producto.html") !== -1;
-  if (mismoSitio && !desdeOtraPieza) { history.back(); }
-  else { location.href = "grandluck.html"; }
+  // El boton dice "Volver a Grandluck", asi que siempre va ahi -- antes usaba
+  // history.back() y, si se llegaba desde partes.html u otra pagina externa a
+  // Grandluck, el boton devolvia a esa pagina en vez de a grandluck.html.
+  location.href = "grandluck.html";
 }
 
 if (window.matchMedia('(max-width:768px)').matches) {
