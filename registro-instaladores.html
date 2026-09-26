@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-259W73642D"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-259W73642D');
+  (function(){
+    function etiqueta(el){return (el.getAttribute('aria-label')||el.textContent||el.id||'').replace(/\s+/g,' ').trim().slice(0,80)}
+    document.addEventListener('click', function(e){
+      var el = e.target.closest('a,button');
+      if(!el || typeof gtag !== 'function') return;
+      var href = el.getAttribute('href') || '';
+      if (/wa\.me|api\.whatsapp\.com/i.test(href)) {
+        gtag('event','contacto_whatsapp',{texto_boton:etiqueta(el), pagina:location.pathname});
+      } else if (/^tel:/i.test(href)) {
+        gtag('event','click_telefono',{pagina:location.pathname});
+      } else if (/^mailto:/i.test(href)) {
+        gtag('event','click_correo',{pagina:location.pathname});
+      } else if (el.matches('.btn,button') && !/whatsapp/i.test(el.getAttribute('onclick')||'')) {
+        gtag('event','click_boton',{texto_boton:etiqueta(el), pagina:location.pathname});
+      }
+    }, true);
+    var _open = window.open;
+    window.open = function(url){
+      if (typeof url === 'string' && /wa\.me|api\.whatsapp\.com/i.test(url) && typeof gtag === 'function') {
+        gtag('event','contacto_whatsapp',{pagina:location.pathname, texto_boton:'chat'});
+      }
+      return _open.apply(window, arguments);
+    };
+  })();
+</script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png"><link rel="apple-touch-icon" sizes="180x180" href="/favicon-180.png"><meta name="theme-color" content="#004080"><meta name="google-site-verification" content="DMykoKpMgfAMha6eA12LkzoFils0bgMjnfYtr0nkc1k">
+<title>Instaladores registrados — descuentos EcuclimaTechvac | Ecuclima</title>
+<meta name="description" content="Regístrate como instalador y obtén 15% de descuento (y más según tus proyectos) en la línea EcuclimaTechvac de aire acondicionado comercial e industrial.">
+<meta name="keywords" content="instalador registrado aire acondicionado Ecuador, descuento instaladores HVAC, EcuclimaTechvac">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://ecuclima.com/registro-instaladores.html">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="es_EC">
+<meta property="og:site_name" content="Ecuclima">
+<meta property="og:title" content="Instaladores registrados — descuentos EcuclimaTechvac">
+<meta property="og:description" content="Regístrate como instalador y obtén 15% de descuento, y más según tus proyectos, en aire acondicionado comercial e industrial.">
+<meta property="og:url" content="https://ecuclima.com/registro-instaladores.html">
+<meta property="og:image" content="https://ecuclima.com/img/productos/4tvh0086r8000aa-ecuclimatechvac.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://ecuclima.com/"},{"@type":"ListItem","position":2,"name":"Instaladores registrados","item":"https://ecuclima.com/registro-instaladores.html"}]}</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#fff;color:#1a1a1a;line-height:1.6}
+header{background:#004080;color:#fff;padding:1.2rem 2rem;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;box-shadow:0 4px 16px rgba(0,0,0,.3);border-bottom:3px solid #FF8000}
+header .marca a{color:#fff;text-decoration:none;display:flex;align-items:center;gap:8px;font-weight:700;font-size:1.2rem;letter-spacing:-.3px}
+header img{height:38px}
+nav{display:flex;gap:1.6rem;align-items:center}
+nav a{color:#fff;text-decoration:none;font-size:0.875rem;font-weight:500;opacity:.95;transition:.3s}
+nav a:hover{opacity:1;color:#FF8000}
+nav a.nav-wa{color:#25D366;display:inline-flex;align-items:center}
+#menuBtn{display:none;background:0;border:0;color:#fff;font-size:1.5rem;cursor:pointer}.menu-txt{font-size:.85rem}
+.tapa{background:linear-gradient(135deg,#004080 0%,#003050 100%);color:#fff;padding:3rem 2rem 2.6rem;text-align:center}
+.tapa p.mig{font-size:0.875rem;text-transform:uppercase;letter-spacing:4px;color:#FFA24D;font-weight:600;margin-bottom:.7rem}
+.tapa h1{font-size:2.1rem;font-weight:700;letter-spacing:-1px;line-height:1.15;margin-bottom:.8rem}
+.tapa .bajada{max-width:640px;margin:0 auto;color:#cfe0f5;font-size:1.02rem}
+main{max-width:1000px;margin:0 auto;padding:3rem 2rem 4rem}
+.intro{font-size:1.05rem;color:#3d4a5c;margin-bottom:2.5rem;max-width:760px}
+.card{background:#f8f9fa;border-left:3px solid #FF8000;border-radius:12px;padding:1.6rem 1.8rem;margin-bottom:1.2rem}
+.card h2{color:#004080;font-size:1.15rem;font-weight:600;margin-bottom:.5rem}
+.card p{color:#4a5568;font-size:.95rem}
+.btn{padding:.85rem 1.8rem;border:0;border-radius:8px;font-weight:600;font-size:.92rem;cursor:pointer;text-decoration:none;display:inline-block;font-family:inherit;transition:.3s}
+.btn-primary{background:#FF8000;color:#fff}
+.btn-primary:hover{background:#E67000}
+.btn-secondary{background:0;border:1.5px solid #004080;color:#004080}
+.btn-secondary:hover{background:#004080;color:#fff}
+footer{background:#004080;color:#fff;padding:3rem 2rem;text-align:center;font-size:.92rem}
+footer a{color:#FF8000;text-decoration:none;font-weight:600}
+footer p{margin:.5rem 0;opacity:.9}
+#botFab{position:fixed;bottom:92px;right:22px;width:56px;height:56px;border-radius:50%;background:#004080;border:0;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:900;box-shadow:0 6px 20px rgba(0,0,0,0.28);transition:transform .25s,box-shadow .25s;padding:0}
+#botFab img{width:44px;height:44px;object-fit:contain;display:block;pointer-events:none}
+#botFab:hover{transform:scale(1.09);box-shadow:0 10px 28px rgba(0,64,128,0.5)}
+#botFab:focus-visible{outline:3px solid #FF8000;outline-offset:3px}
+#cartFab{position:fixed;bottom:162px;right:22px;width:56px;height:56px;border-radius:50%;background:#FF8000;color:#fff;border:0;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:900;box-shadow:0 6px 20px rgba(0,0,0,0.28);transition:transform .25s,box-shadow .25s;padding:0;text-decoration:none}
+#cartFab:hover{transform:scale(1.09);box-shadow:0 10px 28px rgba(255,128,0,0.5)}
+#cartFab:focus-visible{outline:3px solid #004080;outline-offset:3px}
+@media(max-width:768px){#cartFab{width:52px;height:52px;bottom:144px;right:16px}}
+@media(prefers-reduced-motion:reduce){#cartFab{transition:none}#cartFab:hover{transform:none}}
+#botPanel{position:fixed;bottom:22px;right:22px;width:380px;height:min(560px,calc(100vh - 44px));background:#fff;border-radius:14px;box-shadow:0 18px 50px rgba(0,0,0,0.32);z-index:950;display:none;flex-direction:column;overflow:hidden}
+#botPanel.abierto{display:flex}
+#botPanel .bp-cab{background:#004080;color:#fff;padding:.65rem .9rem;display:flex;align-items:center;gap:.6rem;flex:0 0 auto}
+#botPanel .bp-cab img{width:30px;height:30px;object-fit:contain}
+#botPanel .bp-cab b{font-size:.95rem;font-weight:700;display:block}
+#botPanel .bp-cab span{font-size:.72rem;opacity:.78;display:block}
+#botPanel .bp-x{margin-left:auto;background:none;border:0;color:#fff;font-size:1.6rem;line-height:1;cursor:pointer;padding:0 .2rem}
+#botPanel iframe{flex:1 1 auto;width:100%;border:0;display:block;background:#fff}
+@media(max-width:768px){#botFab{width:52px;height:52px;bottom:80px;right:16px}#botFab img{width:40px;height:40px}#botPanel{width:auto;top:0;left:0;right:0;bottom:0;height:100%;max-height:100dvh;border-radius:0}}
+#waFab{position:fixed;bottom:22px;right:22px;width:56px;height:56px;border-radius:50%;background:#25D366;color:#fff;border:0;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:900;box-shadow:0 6px 20px rgba(0,0,0,.28);transition:transform .25s}
+#waFab:hover{transform:scale(1.09)}
+@media(max-width:768px){#waFab{width:52px;height:52px;bottom:16px;right:16px}}
+@media(max-width:768px){
+ #menuBtn{display:block}
+ nav{position:absolute;top:60px;left:0;right:0;background:#003060;flex-direction:column;gap:0;padding:1rem 0;max-height:0;overflow:hidden;transition:max-height .3s}
+ nav.active{max-height:340px}
+ nav a{padding:.8rem 2rem;border-bottom:1px solid rgba(255,255,255,.1)}
+ header{padding:1rem 1.5rem}
+ .tapa h1{font-size:1.5rem}
+ main{padding:2rem 1.3rem 3rem}
+}
+html,body{overflow-x:clip;max-width:100vw}*{min-width:0}img,table,iframe{max-width:100%}p,li,dd,h1,h2,h3,h4,td,th{overflow-wrap:break-word;hyphens:auto}
+main p,main li,.intro,.card p{text-align:justify;text-justify:inter-word;hyphens:auto;-webkit-hyphens:auto}
+main h1,main h2,.hero p,.hero h1,.tapa p,.tapa h1,.tapa .bajada,footer p,footer nav a{text-align:inherit;hyphens:manual}
+.nav-drop{position:relative;display:flex;align-items:center}
+.nav-drop-btn{display:flex;align-items:center;gap:2px}
+.nav-drop-menu{position:absolute;top:100%;left:50%;transform:translateX(-50%);background:#fff;border-radius:10px;box-shadow:0 10px 30px rgba(0,10,30,.22);padding:.5rem;display:flex;flex-direction:column;min-width:212px;opacity:0;visibility:hidden;transition:opacity .2s,transform .2s,visibility .2s;z-index:50}
+.nav-drop:hover .nav-drop-menu,.nav-drop:focus-within .nav-drop-menu{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
+.nav-drop-menu a{color:#004080!important;opacity:1!important;padding:.5rem .9rem;border-radius:6px;font-size:.88rem;font-weight:600;display:flex;align-items:center;gap:.6rem;border-bottom:0!important}
+.nav-drop-menu a img{width:26px;height:26px;object-fit:contain;flex-shrink:0}
+.nav-drop-menu a svg{width:21px;height:21px;flex-shrink:0}
+.nav-drop-menu a:hover{background:#f4f6f9;color:#FF8000!important}
+nav a.nav-actual{color:#FF8000;opacity:1;box-shadow:inset 0 -2px 0 #FF8000;cursor:default;pointer-events:none}
+#navMenu > a,#navMenu .nav-drop-btn{white-space:nowrap}
+#navMenu{gap:clamp(.75rem,1.5vw,1.6rem);margin-left:1rem}
+@media(max-width:768px){#navMenu{margin-left:0;gap:0}.nav-drop{display:block;width:100%}.nav-drop-menu{display:none!important}nav a.nav-actual{box-shadow:none;background:rgba(255,128,0,.14)}#navMenu .nav-drop-btn{justify-content:center}#navMenu{padding:0}#navMenu.active{padding:.5rem 0;max-height:460px}
+  #navMenu .calc-drop .nav-drop-menu{display:flex!important;position:static;transform:none;opacity:1;visibility:visible;background:transparent;box-shadow:none;padding:0;min-width:0;border-radius:0}
+  #navMenu .calc-drop .nav-drop-menu a{color:#fff!important;padding:.62rem 2rem .62rem 3.1rem;font-size:13px;font-weight:500;border-bottom:1px solid rgba(255,255,255,.1)!important;justify-content:flex-start;background:rgba(0,0,0,.16)}
+  #navMenu .calc-drop .nav-drop-menu a:hover{background:rgba(255,128,0,.2);color:#fff!important}
+  #navMenu.active{max-height:660px}
+}
+
+/* Contenido propio de esta pagina */
+.franjas{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem;margin:2rem 0 2.6rem}
+.franja{background:#fff;border:1.5px solid #e4e8ee;border-radius:12px;padding:1.4rem 1.2rem;text-align:center}
+.franja .pct{font-size:2rem;font-weight:800;color:#FF8000;line-height:1}
+.franja .cual{font-size:.85rem;color:#5a6b80;margin-top:.4rem;font-weight:600}
+.franjas-una{grid-template-columns:1fr;max-width:480px}
+.franjas-dos{grid-template-columns:repeat(2,1fr);max-width:640px}
+.franja-grande{padding:1.8rem 2rem}
+.franja-grande .pct{font-size:2.6rem}
+.franja-grande .cual{font-size:.95rem;margin-top:.6rem}
+.beneficios{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;margin-bottom:2.6rem}
+.beneficios li{background:#f8f9fa;border-radius:10px;padding:1rem 1.2rem;font-size:.92rem;color:#3d4a5c;display:flex;gap:.6rem;align-items:flex-start}
+.beneficios li b{color:#004080}
+.galeria-equipos{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin-bottom:2.6rem}
+.galeria-equipos img{width:100%;aspect-ratio:1;object-fit:contain;background:#f8f9fa;border-radius:10px;border:1px solid #eceff3}
+.form-hero{position:relative;display:flex;padding:4rem 2rem;overflow:hidden}
+.form-hero-foto{flex:1 1 50%;background-size:cover;background-position:center}
+.form-hero-velo{position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,32,64,.88) 0%,rgba(0,64,128,.8) 55%,rgba(0,32,64,.88) 100%)}
+.form-registro{position:relative;z-index:1;background:#fff;border-radius:14px;padding:2rem;max-width:640px;margin:0 auto;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.form-hero-movil{display:none}
+/* Grande (>1024px): las dos fotos partidas detras, como fondo. */
+/* Medio (701-1024px): una sola foto detras, sigue como fondo (hay espacio a los lados). */
+@media(max-width:1024px){.form-hero-foto:nth-child(2){display:none}}
+/* Chico (<=700px): la tarjeta ocupa casi todo el ancho y no deja ver el fondo --
+   la foto pasa a ser una imagen normal, completa, arriba del formulario. */
+@media(max-width:700px){
+  .form-hero{flex-direction:column;padding:0 0 2.2rem}
+  .form-hero-foto,.form-hero-velo{display:none}
+  .form-hero-movil{display:block;width:100%;height:220px;object-fit:cover;object-position:center 25%}
+  .form-registro{margin:0 1.2rem;max-width:none}
+}
+.form-registro h2{color:#004080;margin-bottom:.4rem}
+.form-registro .sub{color:#5a6b80;font-size:.9rem;margin-bottom:1.4rem}
+.campo{margin-bottom:1rem}
+.campo label{display:block;font-size:.85rem;font-weight:600;color:#004080;margin-bottom:.35rem}
+.campo input,.campo select{width:100%;padding:.7rem .9rem;border:1.5px solid #d7dee7;border-radius:8px;font-size:.92rem;font-family:inherit}
+.campo input:focus,.campo select:focus{outline:none;border-color:#FF8000}
+.form-fila{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media(max-width:600px){.form-fila,.franjas,.galeria-equipos{grid-template-columns:1fr}}
+.form-nota{font-size:.8rem;color:#8a94a3;margin-top:.8rem}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="marca"><a href="index.html"><img src="logo-ecuclima.png" alt="Ecuclima — refrigeración industrial Ecuador" width="38" height="38"> ECUCLIMA</a></div>
+  <button id="menuBtn" onclick="document.getElementById('navMenu').classList.toggle('active')" aria-label="Abrir menú"><span class="menu-txt">Menú</span>&#9776;</button>
+  <nav id="navMenu"><a href="index.html">Inicio</a><a href="partes.html">Productos</a><a href="trane-chillers.html">Chillers</a><div class="nav-drop"><a href="marcas-refrigeracion-industrial.html" class="nav-drop-btn">Marcas <span aria-hidden="true">&#9662;</span></a><div class="nav-drop-menu"><a href="trane-chillers.html"><img src="img/marcas/trane.png" alt="" loading="lazy">Trane Chiller</a><a href="partes.html?q=EcuclimaTechvac"><img src="img/marcas/trane.png" alt="" loading="lazy">Trane HVAC</a><a href="compresores-bitzer.html"><img src="img/marcas/bitzer.png" alt="" loading="lazy">Bitzer</a><a href="valvulas-industriales.html"><img src="img/marcas/carel.png" alt="" loading="lazy">Carel</a><a href="swep-heat-exchangers-info.html"><img src="img/marcas/swep.png" alt="" loading="lazy">Swep</a><a href="sanhua.html"><img src="img/marcas/sanhua.png" alt="" loading="lazy">Sanhua</a><a href="marcas-refrigeracion-industrial.html"><img src="img/marcas/emerson.png" alt="" loading="lazy">Emerson Copeland</a><a href="maquinas-hielo-comerciales-industriales.html"><img src="img/marcas/snowkey.png" alt="" loading="lazy">Snowkey</a><a href="marcas-refrigeracion-industrial.html"><img src="img/marcas/danfoss.png" alt="" loading="lazy">Danfoss</a><a href="grandluck.html"><img src="img/marcas/grandluck.png" alt="" loading="lazy">Grandluck</a></div></div><div class="nav-drop calc-drop"><a href="calculador.html" class="nav-drop-btn">Calculador <span aria-hidden="true">&#9662;</span></a><div class="nav-drop-menu"><a href="calculador.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 3v18"/><path d="M8 9v3"/><path d="M16 9v3"/></svg>Cámaras frigoríficas</a><a href="trane-chillers.html#selector-chillers"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v20"/><path d="M2 12h20"/><path d="M5 5l14 14"/><path d="M19 5L5 19"/></svg>Selector de chillers</a><a href="calculador.html#catalogo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M9 10v10"/></svg>Listado de cargas</a></div></div><a href="quienes-somos.html">Quiénes somos</a><a href="https://wa.me/593959805696" target="_blank" rel="noopener" class="nav-wa" aria-label="Escríbanos por WhatsApp" title="Escríbanos por WhatsApp"><svg width="23" height="23" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413"/></svg></a></nav>
+</header>
+
+<section class="tapa">
+  <p class="mig">EcuclimaTechvac — Aire acondicionado comercial e industrial</p>
+  <h1>Instaladores registrados</h1>
+  <p class="bajada">Regístrate como instalador y accede a precios preferenciales en toda la línea de equipos de aire acondicionado comercial e industrial.</p>
+</section>
+
+<main>
+  <p class="intro">Si te dedicas a instalar o dar mantenimiento a equipos de aire acondicionado, este programa es para ti: entre más proyectos registres, mayor el descuento sobre el precio de lista.</p>
+
+  <div class="franjas franjas-dos">
+    <div class="franja franja-grande"><div class="pct">15%</div><div class="cual">Por registrarte como instalador</div></div>
+    <div class="franja franja-grande"><div class="pct">+%</div><div class="cual">Descuento adicional según tus proyectos con nosotros</div></div>
+  </div>
+
+  <ul class="beneficios">
+    <li>🔧 <span><b>Precio preferencial</b> en toda la línea, desde unidades interiores hasta condensadoras exteriores.</span></li>
+    <li>📦 <span><b>Prioridad de stock</b> y tiempos de entrega más cortos en tus pedidos.</span></li>
+    <li>📞 <span><b>Asesoría técnica directa</b> para dimensionar el equipo correcto en cada proyecto.</span></li>
+    <li>🧾 <span><b>Facturación a tu empresa</b>, con soporte para tus propias cotizaciones a cliente final.</span></li>
+  </ul>
+
+  <div class="galeria-equipos">
+    <img src="img/productos/4tvh0086r8000aa-ecuclimatechvac.jpg" alt="Condensadora exterior VRF" loading="lazy">
+    <img src="img/productos/4tvc0007rf000aa-ecuclimatechvac.jpg" alt="Cassette interior de 4 vías" loading="lazy">
+    <img src="img/productos/4tvw0018rf000aa-ecuclimatechvac.jpg" alt="Unidad decorativa de pared" loading="lazy">
+  </div>
+
+</main>
+
+<section class="form-hero">
+  <div class="form-hero-foto" style="background-image:url('img/tecnico-ecuclimatechvac-cassette.jpg')"></div>
+  <div class="form-hero-foto" style="background-image:url('img/tecnico-ecuclimatechvac-condensadora.jpg')"></div>
+  <div class="form-hero-velo"></div>
+  <img class="form-hero-movil" src="img/tecnico-ecuclimatechvac-cassette.jpg" alt="Técnico junto a equipo EcuclimaTechvac">
+  <div class="form-registro">
+    <h2>Regístrate como Técnico Registrado en Aire Acondicionado</h2>
+    <p class="sub">Completa todos los datos y te contactamos por WhatsApp para validar tu registro.</p>
+    <form id="formInstalador">
+      <div class="form-fila">
+        <div class="campo"><label for="fiNombre">Nombre completo</label><input id="fiNombre" required></div>
+        <div class="campo"><label for="fiEmpresa">Empresa</label><input id="fiEmpresa" required></div>
+      </div>
+      <div class="form-fila">
+        <div class="campo"><label for="fiTelefono">Teléfono</label><input id="fiTelefono" type="tel" required></div>
+        <div class="campo"><label for="fiCiudad">Ciudad</label><input id="fiCiudad" required></div>
+      </div>
+      <div class="campo"><label for="fiCorreo">Correo</label><input id="fiCorreo" type="email" required></div>
+      <button type="submit" class="btn btn-primary">💬 Enviar registro por WhatsApp</button>
+      <p class="form-nota">Al enviar, se abre WhatsApp con tus datos ya escritos para que solo confirmes el envío.</p>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <p><strong>ECUCLIMA</strong> — Refrigeración industrial en Ecuador</p>
+  <p>Conocoto, Quito | Lunes a viernes de 8:30 a 17:30 | Emergencias 24/7</p>
+  <p style="margin-top:1rem"><a href="mailto:info@ecuclima.com">info@ecuclima.com</a> | <a href="tel:+593959805696">+593 95 980 5696</a></p>
+  <p style="margin-top:2rem;font-size:0.875rem;opacity:.7">&copy; 2026 Ecuclima. Todos los derechos reservados.</p>
+</footer>
+
+<button id="botFab" onclick="abrirBot()" aria-label="Abrir IceBot, asistente virtual" title="IceBot &mdash; asistente virtual de Ecuclima"><img src="img/icebot.png" alt="" aria-hidden="true"></button><div id="botPanel" role="dialog" aria-label="IceBot, asistente virtual de Ecuclima"><div class="bp-cab"><img src="img/icebot.png" alt=""><div><b>IceBot</b><span>Asistente virtual de Ecuclima</span></div><button class="bp-x" onclick="cerrarBot()" aria-label="Cerrar IceBot">&times;</button></div><iframe id="botFrame" title="IceBot &mdash; asistente virtual" src="about:blank"></iframe></div><script>var BOT_URL="https://pc-casa.tail635de0.ts.net/static/publico.html";function abrirBot(){var p=document.getElementById('botPanel'),f=document.getElementById('botFrame');if(!f.dataset.cargado){f.src=BOT_URL;f.dataset.cargado='1'}p.classList.add('abierto');document.getElementById('botFab').style.display='none';if(typeof gtag==='function')gtag('event','abrir_icebot',{pagina:location.pathname})}function cerrarBot(){document.getElementById('botPanel').classList.remove('abierto');document.getElementById('botFab').style.display='flex'}window.addEventListener('load',function(){var o=window.verFab;if(typeof o==='function'){window.verFab=function(v){o(v);var b=document.getElementById('botFab'),p=document.getElementById('botPanel');if(b&&p&&!p.classList.contains('abierto'))b.style.display=v?'flex':'none'}}});</script><a id="cartFab" href="partes.html?q=EcuclimaTechvac" aria-label="Ver equipos EcuclimaTechvac" title="Ver equipos EcuclimaTechvac" onclick="if(typeof gtag==='function')gtag('event','ir_a_tienda',{pagina:location.pathname})"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M2 3h2.4l2.6 12.6a1.7 1.7 0 0 0 1.7 1.4h9.4a1.7 1.7 0 0 0 1.7-1.4L21.4 7H5.5"/></svg></a><a id="waFab" href="https://wa.me/593959805696?text=%5BWeb%5D%20Quiero%20registrarme%20como%20T%C3%A9cnico%20Registrado%20en%20Aire%20Acondicionado" target="_blank" rel="noopener" aria-label="Escríbanos por WhatsApp" title="Escríbanos por WhatsApp"><svg width="31" height="31" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413"/></svg></a>
+
+<script>
+document.getElementById("formInstalador").addEventListener("submit", function(e){
+  e.preventDefault();
+  var nombre = document.getElementById("fiNombre").value.trim();
+  var empresa = document.getElementById("fiEmpresa").value.trim();
+  var telefono = document.getElementById("fiTelefono").value.trim();
+  var ciudad = document.getElementById("fiCiudad").value.trim();
+  var correo = document.getElementById("fiCorreo").value.trim();
+  var lineas = [
+    "[Web] Quiero registrarme como Técnico Registrado en Aire Acondicionado — EcuclimaTechvac",
+    "Nombre: " + nombre,
+    "Empresa: " + empresa,
+    "Teléfono: " + telefono,
+    "Ciudad: " + ciudad,
+    "Correo: " + correo
+  ].join("\n");
+  window.open("https://wa.me/593959805696?text=" + encodeURIComponent(lineas), "_blank");
+});
+</script>
+
+</body>
+</html>
