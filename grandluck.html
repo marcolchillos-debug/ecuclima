@@ -2,13 +2,56 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-259W73642D"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-259W73642D');
+  (function(){
+    function etiqueta(el){return (el.getAttribute('aria-label')||el.textContent||el.id||'').replace(/\s+/g,' ').trim().slice(0,80)}
+    document.addEventListener('click', function(e){
+      var el = e.target.closest('a,button');
+      if(!el || typeof gtag !== 'function') return;
+      var href = el.getAttribute('href') || '';
+      if (/wa\.me|api\.whatsapp\.com/i.test(href)) {
+        gtag('event','contacto_whatsapp',{texto_boton:etiqueta(el), pagina:location.pathname});
+      } else if (/^tel:/i.test(href)) {
+        gtag('event','click_telefono',{pagina:location.pathname});
+      } else if (/^mailto:/i.test(href)) {
+        gtag('event','click_correo',{pagina:location.pathname});
+      } else if (el.matches('.btn,button,.grupos-rapidos a') && !/whatsapp/i.test(el.getAttribute('onclick')||'')) {
+        gtag('event','click_boton',{texto_boton:etiqueta(el), pagina:location.pathname});
+      }
+    }, true);
+    var _open = window.open;
+    window.open = function(url){
+      if (typeof url === 'string' && /wa\.me|api\.whatsapp\.com/i.test(url) && typeof gtag === 'function') {
+        gtag('event','contacto_whatsapp',{pagina:location.pathname, texto_boton:'chat'});
+      }
+      return _open.apply(window, arguments);
+    };
+  })();
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <meta name="theme-color" content="#004080">
-<title>Líneas de congelación industrial Grandluck en Ecuador | Ecuclima</title>
-<meta name="description" content="Congeladores espirales, de túnel y de placas, máquinas de hielo, clasificadora de camarón y línea de proceso de pescado Grandluck — representados en Ecuador por Ecuclima, con instalación y servicio local.">
+<title>Grandluck en Ecuador: túneles IQF y máquinas de hielo | Ecuclima</title>
+<meta name="description" content="Representante autorizado Grandluck en Ecuador: túneles IQF, congeladores espirales y de placas, máquinas de hielo y equipos para camarón y pescado.">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <link rel="canonical" href="https://ecuclima.com/grandluck.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_EC">
+<meta property="og:site_name" content="Ecuclima">
+<meta property="og:title" content="Grandluck en Ecuador: túneles IQF y máquinas de hielo | Ecuclima">
+<meta property="og:description" content="Representante autorizado Grandluck en Ecuador: túneles IQF, congeladores espirales y de placas, máquinas de hielo y equipos para camarón y pescado.">
+<meta property="og:url" content="https://ecuclima.com/grandluck.html">
+<meta property="og:image" content="https://ecuclima.com/img/productos/tunel-solido-superjet-grandluck.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Grandluck en Ecuador: túneles IQF y máquinas de hielo | Ecuclima">
+<meta name="twitter:description" content="Representante autorizado Grandluck en Ecuador: túneles IQF, congeladores espirales y de placas, máquinas de hielo y equipos para camarón y pescado.">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://ecuclima.com/index.html"},{"@type":"ListItem","position":2,"name":"Marcas","item":"https://ecuclima.com/marcas-refrigeracion-industrial.html"},{"@type":"ListItem","position":3,"name":"Grandluck","item":"https://ecuclima.com/grandluck.html"}]},{"@type":"CollectionPage","@id":"https://ecuclima.com/grandluck.html","url":"https://ecuclima.com/grandluck.html","name":"Grandluck en Ecuador: túneles IQF y máquinas de hielo | Ecuclima","description":"Representante autorizado Grandluck en Ecuador: túneles IQF, congeladores espirales y de placas, máquinas de hielo y equipos para camarón y pescado.","inLanguage":"es","publisher":{"@id":"https://ecuclima.com/#negocio"},"mainEntity":{"@type":"ItemList","name":"Equipos Grandluck representados por Ecuclima","itemListElement":[{"@type":"ListItem","position":1,"name":"Congelador espiral doble","url":"https://ecuclima.com/grandluck-espiral-doble.html"},{"@type":"ListItem","position":2,"name":"Congelador espiral simple","url":"https://ecuclima.com/grandluck-espiral-simple.html"},{"@type":"ListItem","position":3,"name":"Túnel de congelación de malla","url":"https://ecuclima.com/grandluck-tunel-malla.html"},{"@type":"ListItem","position":4,"name":"Túnel de congelación de banda sólida","url":"https://ecuclima.com/grandluck-tunel-banda-solida.html"},{"@type":"ListItem","position":5,"name":"Túnel de malla Super-jet","url":"https://ecuclima.com/grandluck-tunel-malla-superjet.html"},{"@type":"ListItem","position":6,"name":"Túnel de banda sólida Super-jet","url":"https://ecuclima.com/grandluck-tunel-solido-superjet.html"},{"@type":"ListItem","position":7,"name":"Congelador de lecho fluidizado","url":"https://ecuclima.com/grandluck-lecho-fluidizado.html"},{"@type":"ListItem","position":8,"name":"Congelador de placas vertical","url":"https://ecuclima.com/grandluck-placas-vertical.html"},{"@type":"ListItem","position":9,"name":"Congelador de placas horizontal","url":"https://ecuclima.com/grandluck-placas-horizontal.html"},{"@type":"ListItem","position":10,"name":"Congelador de placas tipo estante","url":"https://ecuclima.com/grandluck-placas-estante.html"},{"@type":"ListItem","position":11,"name":"Máquina de hielo en escamas","url":"https://ecuclima.com/grandluck-hielo-escamas.html"},{"@type":"ListItem","position":12,"name":"Máquina de hielo en tubo","url":"https://ecuclima.com/grandluck-hielo-tubo.html"},{"@type":"ListItem","position":13,"name":"Máquina de hielo en placa","url":"https://ecuclima.com/grandluck-hielo-placa.html"},{"@type":"ListItem","position":14,"name":"Máquina de hielo en bloque","url":"https://ecuclima.com/grandluck-hielo-bloque.html"},{"@type":"ListItem","position":15,"name":"Clasificadora de camarón","url":"https://ecuclima.com/grandluck-clasificadora-camaron.html"},{"@type":"ListItem","position":16,"name":"Despieladora de pescado","url":"https://ecuclima.com/grandluck-despielado-pescado.html"},{"@type":"ListItem","position":17,"name":"Sistema de refrigeración industrial y equipo auxiliar","url":"https://ecuclima.com/grandluck-sistema-refrigeracion.html"},{"@type":"ListItem","position":18,"name":"Bandejas y marcos de congelación","url":"https://ecuclima.com/grandluck-bandejas-congelacion.html"},{"@type":"ListItem","position":19,"name":"Eyector","url":"https://ecuclima.com/grandluck-eyector.html"},{"@type":"ListItem","position":20,"name":"Túnel de choque (cámara de congelación rápida)","url":"https://ecuclima.com/grandluck-tunel-choque.html"},{"@type":"ListItem","position":21,"name":"Línea de camarón cocido","url":"https://ecuclima.com/grandluck-linea-camaron-cocido.html"}]}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"¿Quién representa a Grandluck en Ecuador?","acceptedAnswer":{"@type":"Answer","text":"Ecuclima, representante autorizado de Grandluck en Ecuador, con oficina en Conocoto, Quito. La cotización la prepara la fábrica; Ecuclima la coordina con usted, instala, supervisa y da servicio técnico local, y también puede venderle el equipo. WhatsApp +593 95 980 5696."}},{"@type":"Question","name":"¿Qué equipos Grandluck se pueden pedir?","acceptedAnswer":{"@type":"Answer","text":"Congeladores espirales (simple y doble), túneles de congelación (malla, banda sólida y Super-jet), congeladores de placas (vertical, horizontal y tipo estante), lecho fluidizado IQF, túnel de choque, máquinas de hielo (escamas, tubo, placa y bloque), clasificadora de camarón, despieladora de pescado, línea de camarón cocido, sistemas de refrigeración a medida, y bandejas, marcos y eyector."}},{"@type":"Question","name":"¿Grandluck sirve para plantas camaroneras?","acceptedAnswer":{"@type":"Answer","text":"Sí. La clasificadora de camarón, la despieladora de pescado, los túneles y los congeladores de Grandluck están hechos para ese tipo de planta."}},{"@type":"Question","name":"¿Quién es el fabricante?","acceptedAnswer":{"@type":"Answer","text":"Nantong Grandluck Freezcold Equipment Co., Ltd. (China), especializada en congelación rápida y soporte de refrigeración para el procesamiento de alimentos."}},{"@type":"Question","name":"¿Cómo se cotiza?","acceptedAnswer":{"@type":"Answer","text":"Escríbanos por WhatsApp con el producto, el volumen y la ciudad de la planta. Ecuclima coordina la cotización con Grandluck, que diseña el equipo a la medida."}}]}]}</script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#fff;color:#1a1a1a;line-height:1.6}
@@ -83,6 +126,74 @@ footer{background:#004080;color:#fff;padding:3rem 2rem;text-align:center;font-si
 footer a{color:#FF8000;text-decoration:none;font-weight:600}
 .aviso-borrador{background:#FF8000;color:#1a2b42;text-align:center;font-weight:700;font-size:.85rem;padding:.5rem}
 @media(max-width:768px){header{padding:1rem 1.5rem;flex-direction:column;gap:.6rem;align-items:flex-start}}
+
+/* ---- componentes nuevos: paginas por aplicacion y fichas estaticas ---- */
+.nav-drop-menu .sep{height:1px;background:#e2e8f0;margin:.3rem .5rem}
+.nav-drop-menu .grupo{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#8a94a3;padding:.4rem .9rem .1rem}
+.confianza{background:#f4f6f9;border-bottom:1px solid #e2e8f0}
+.confianza-in{max-width:1100px;margin:0 auto;padding:.75rem 2rem;display:flex;flex-wrap:wrap;gap:.35rem 1.5rem;justify-content:center;font-size:.8rem;font-weight:600;color:#004080}
+.confianza-in span:before{content:"✓ ";color:#FF8000}
+.lp main{max-width:1100px;margin:0 auto;padding:1.6rem 2rem 4rem}
+.lp .miga{max-width:1100px;margin:1.1rem auto 0;padding:0 2rem;font-size:.875rem;color:#8a94a3}
+.lp .miga a{color:#004080;text-decoration:none}
+.lp h2{font-size:1.3rem;color:#004080;margin:2.4rem 0 .9rem;padding-bottom:.45rem;border-bottom:2px solid #e2e8f0}
+.lp h3{font-size:1.05rem;color:#1a2b42;margin:1.4rem 0 .5rem}
+.lp p{color:#4a5568;font-size:.97rem;margin-bottom:.85rem;max-width:860px}
+.lp .intro p{font-size:1.02rem}
+.lp ul.puntos{margin:.4rem 0 1rem 1.2rem;max-width:860px}
+.lp ul.puntos li{color:#4a5568;font-size:.93rem;margin-bottom:.4rem;line-height:1.5}
+.lp ol.pasos{margin:.4rem 0 1rem 1.4rem;max-width:900px}
+.lp ol.pasos li{color:#4a5568;font-size:.93rem;margin-bottom:.65rem;line-height:1.5}
+.lp ol.pasos li strong{color:#1a2b42}
+.cta-fila{display:flex;flex-wrap:wrap;gap:.8rem;align-items:center;margin:1.1rem 0}
+.btn{padding:.85rem 1.7rem;border:0;border-radius:8px;font-weight:600;font-size:.92rem;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:.5rem;font-family:inherit}
+.btn-wa{background:#25D366;color:#fff}
+.btn-wa:hover{background:#1EBE5A}
+.btn-secondary{background:0;border:1.5px solid #004080;color:#004080}
+.btn-secondary:hover{background:#004080;color:#fff}
+.cta-caja{background:#f8f9fa;border-left:3px solid #FF8000;border-radius:12px;padding:1.3rem 1.4rem;margin:2.2rem 0}
+.cta-caja .titulo{font-size:1.02rem;font-weight:700;color:#1a2b42;margin-bottom:.3rem}
+.cta-caja p{margin-bottom:.8rem}
+.nota-fabrica{font-size:.8rem!important;color:#8a94a3!important;margin:.5rem 0 0!important}
+.nota-fabrica a{color:#004080}
+.tabla-wrap{overflow-x:auto;border:1px solid #e2e8f0;border-radius:10px;margin:.8rem 0 1.2rem}
+table.tabla-comparar{width:100%;border-collapse:collapse;font-size:.88rem}
+table.tabla-comparar th{background:#004080;color:#fff;text-align:left;padding:.65rem .9rem;font-weight:600;white-space:nowrap}
+table.tabla-comparar td{padding:.6rem .9rem;border-bottom:1px solid #eef1f5;color:#4a5568;vertical-align:top}
+table.tabla-comparar tbody tr:nth-child(even){background:#f8f9fa}
+table.tabla-comparar td:first-child{font-weight:700;color:#004080;white-space:nowrap}
+table.tabla-comparar td:first-child a{color:#004080;text-decoration:none}
+table.tabla-comparar td:first-child a:hover{color:#FF8000}
+.equipo{display:grid;grid-template-columns:300px 1fr;gap:1.6rem;align-items:start;margin:1.2rem 0 .6rem}
+.equipo .foto{border-radius:12px;overflow:hidden;background:#e2e8f0;border:1px solid #e2e8f0}
+.equipo .foto img{width:100%;height:auto;display:block}
+.equipo .foto figcaption{font-size:.74rem;color:#8a94a3;padding:.35rem .6rem;background:#fff}
+.equipo .cap{display:inline-block;background:#e6f0fb;color:#004080;font-weight:700;font-size:.85rem;padding:.35rem .8rem;border-radius:8px;margin-bottom:.8rem}
+.equipo .ver{display:inline-block;margin-top:.2rem;font-size:.9rem;font-weight:700;color:#004080;text-decoration:none;border-bottom:1.5px solid #FF8000}
+.equipo .ver:hover{color:#FF8000}
+.nota-cap{font-size:.82rem!important;color:#8a94a3!important;font-style:italic}
+.fabricante{background:#f8f9fa;border-radius:12px;padding:1.2rem 1.4rem;margin:1.6rem 0}
+.fabricante p{font-size:.92rem!important}
+.faq details{border:1px solid #e2e8f0;border-radius:10px;padding:.8rem 1.1rem;margin-bottom:.6rem;background:#fff;max-width:860px}
+.faq summary{cursor:pointer;font-weight:700;color:#1a2b42;font-size:.95rem}
+.faq details[open]{border-color:#FF8000}
+.faq details p{margin:.6rem 0 .1rem}
+.tarjetas-lp{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1.1rem;margin:1rem 0}
+.mas-info{background:#fdf0e3;border-radius:10px;padding:.8rem 1rem;margin:1.2rem 0;font-size:.9rem;color:#8a4b0b}
+.mas-info a{color:#004080;font-weight:700}
+.rec{background:#e6f4ea;border-radius:10px;padding:1rem 1.2rem;margin:1.4rem 0;max-width:860px}
+.rec p{margin:0!important;color:#1b6b34!important}
+.rec a{color:#004080;font-weight:700}
+#volverTab{text-decoration:none}
+@media(max-width:768px){
+  .lp main{padding:1.2rem 1.2rem 3rem}
+  .lp .miga{padding:0 1.2rem}
+  .confianza-in{padding:.7rem 1.2rem;justify-content:flex-start}
+  .equipo{grid-template-columns:1fr}
+}
+
+.intro-gl{margin-bottom:2.2rem}.intro-gl p{color:#4a5568;font-size:.97rem;max-width:860px;margin-bottom:.8rem}.faq details p{color:#4a5568;font-size:.93rem}
+.tapa h1{max-width:680px;margin-left:auto;margin-right:auto}
 </style>
 </head>
 <body>
@@ -96,6 +207,13 @@ footer a{color:#FF8000;text-decoration:none;font-weight:600}
     <div class="nav-drop">
       <a href="grandluck.html" class="nav-drop-btn nav-actual" aria-current="page">Grandluck <span aria-hidden="true">&#9662;</span></a>
       <div class="nav-drop-menu">
+        <span class="grupo">Por aplicación</span>
+        <a href="tunel-congelacion-iqf-camaron-pescado.html">Túneles IQF para camarón</a>
+        <a href="maquinas-hielo-escamas-tubo-placa-bloque.html">Máquinas de hielo</a>
+        <a href="procesamiento-camaron-clasificadora-linea-cocido.html">Equipos para camarón</a>
+        <a href="congeladores-placas-camaron-pescado.html">Congeladores de placas</a>
+        <div class="sep"></div>
+        <span class="grupo">Todo el catálogo</span>
         <a href="grandluck.html#cat-espirales">Congeladores espirales</a>
         <a href="grandluck.html#cat-tuneles">Túneles de congelación</a>
         <a href="grandluck.html#cat-placas">Congeladores de placas</a>
@@ -105,7 +223,6 @@ footer a{color:#FF8000;text-decoration:none;font-weight:600}
         <a href="grandluck.html#cat-otros">Otros congeladores</a>
         <a href="grandluck.html#cat-linea-camaron">Línea de camarón cocido</a>
         <a href="grandluck.html#cat-estructura">Estructura y eyector</a>
-        
       </div>
     </div>
     <a href="quienes-somos.html">Quiénes somos</a>
@@ -116,7 +233,7 @@ footer a{color:#FF8000;text-decoration:none;font-weight:600}
   <img class="logo-ecu" src="logo-ecuclima.png" alt="Ecuclima — refrigeración industrial Ecuador">
   <a class="logo-grandluck-enlace" href="https://grandluck-freezcold.com" target="_blank" rel="noopener" title="Grandluck — fabricante"><img class="logo-grandluck" src="img/marcas/grandluck.png" alt="Grandluck"></a>
   <p class="mig">Congelación industrial</p>
-  <h1>Líneas Grandluck en Ecuador</h1>
+  <h1>Túneles IQF, congeladores y máquinas de hielo Grandluck en Ecuador</h1>
   <p class="oficial">✓ Representante autorizado en Ecuador</p>
 </section>
 
@@ -134,6 +251,12 @@ footer a{color:#FF8000;text-decoration:none;font-weight:600}
     <a href="#quienes-son" class="about">🏭 Quiénes son</a>
   </div>
 </nav>
+<div class="confianza"><div class="confianza-in">
+  <span>Ecuclima, desde 1998: más de 25 años en refrigeración industrial</span>
+  <span>Representante autorizado de Grandluck en Ecuador</span>
+  <span>Instalación, supervisión y servicio técnico local</span>
+  <span>Conocoto, Quito · Lunes a viernes de 8:30 a 17:30</span>
+</div></div>
 
 <main>
   <div class="franja">
@@ -141,38 +264,55 @@ footer a{color:#FF8000;text-decoration:none;font-weight:600}
     <p><strong>Ecuador es uno de los mayores exportadores de camarón del mundo.</strong> La clasificadora de camarón, la despieladora de pescado y los congeladores de Grandluck están hechos exactamente para ese tipo de planta — y Ecuclima ya conoce a esos clientes.</p>
   </div>
 
+  <div class="intro-gl">
+    <p>Ecuclima, empresa ecuatoriana de refrigeración industrial desde 1998, es representante autorizado de Grandluck en Ecuador. Grandluck fabrica túneles de congelación IQF (malla, banda sólida y Super-jet), congeladores espirales, congeladores de placas, lecho fluidizado, túnel de choque, máquinas de hielo en escamas, tubo, placa y bloque, y equipos para procesar camarón y pescado: clasificadora de camarón, despieladora de pescado y línea de camarón cocido.</p>
+    <p>La cotización la prepara Grandluck desde fábrica. Ecuclima la coordina con usted y, si lo prefiere, le vende el equipo en Ecuador; además lo instala, lo supervisa y da servicio técnico local.</p>
+    <div class="cta-fila"><a class="btn btn-wa" href="https://wa.me/593959805696?text=%5BWeb%5D%20Hola%20Ecuclima%2C%20vengo%20de%20la%20p%C3%A1gina%20Grandluck%20y%20quiero%20asesor%C3%ADa%20para%20mi%20planta.%20Producto%3A%20___%20%C2%B7%20Ciudad%3A%20___" target="_blank" rel="noopener">💬 Cotizar por WhatsApp</a><a class="btn btn-secondary" href="mailto:info@ecuclima.com?subject=Cotizaci%C3%B3n%20equipo%20Grandluck">✉ info@ecuclima.com</a></div>
+  </div>
+
+  <div class="categoria" id="aplicaciones">
+    <h2>Elija por aplicación</h2>
+    <div class="grid">
+      <a class="card" href="tunel-congelacion-iqf-camaron-pescado.html"><div class="foto"><img src="img/productos/tunel-malla-superjet-grandluck.jpg" alt="Túneles IQF para camarón Grandluck" width="900" height="675" loading="lazy"></div><div class="txt"><b>Túneles IQF para camarón</b><span>Malla, banda sólida, Super-jet y espiral</span></div></a>
+      <a class="card" href="maquinas-hielo-escamas-tubo-placa-bloque.html"><div class="foto"><img src="img/productos/hielo-escamas-grandluck.jpg" alt="Máquinas de hielo Grandluck" width="900" height="884" loading="lazy"></div><div class="txt"><b>Máquinas de hielo</b><span>Escamas, tubo, placa y bloque</span></div></a>
+      <a class="card" href="procesamiento-camaron-clasificadora-linea-cocido.html"><div class="foto"><img src="img/productos/clasificadora-camaron-grandluck.jpg" alt="Equipos para camarón Grandluck" width="900" height="602" loading="lazy"></div><div class="txt"><b>Equipos para camarón</b><span>Clasificadora y línea de cocido</span></div></a>
+      <a class="card" href="congeladores-placas-camaron-pescado.html"><div class="foto"><img src="img/productos/placas-horizontal-grandluck.jpg" alt="Congeladores de placas Grandluck" width="900" height="675" loading="lazy"></div><div class="txt"><b>Congeladores de placas</b><span>Vertical, horizontal y estante</span></div></a>
+    </div>
+  </div>
+
+
   <div class="categoria" id="cat-espirales">
     <h2>Congeladores espirales</h2>
     <div class="grid">
-      <a class="card" href="grandluck-producto.html?id=gl-espiral-doble"><div class="foto"><img src="img/productos/doble-espiral-grandluck.jpg" alt="Congelador espiral doble Grandluck"></div><div class="txt"><b>Congelador espiral doble</b><span>Alto volumen, banda doble</span><span class="apps-ico" title="Aplicaciones">🦐🐔🥛</span></div></a>
-      <a class="card" href="grandluck-producto.html?id=gl-espiral-simple"><div class="foto"><img src="img/productos/simple-espiral-grandluck.jpg" alt="Congelador espiral simple Grandluck"></div><div class="txt"><b>Congelador espiral simple</b><span>Volumen medio, banda simple</span><span class="apps-ico" title="Aplicaciones">🦐🐔🥛</span></div></a>
+      <a class="card" href="grandluck-espiral-doble.html"><div class="foto"><img src="img/productos/doble-espiral-grandluck.jpg" alt="Congelador espiral doble Grandluck"></div><div class="txt"><b>Congelador espiral doble</b><span>Alto volumen, banda doble</span><span class="apps-ico" title="Aplicaciones">🦐🐔🥛</span></div></a>
+      <a class="card" href="grandluck-espiral-simple.html"><div class="foto"><img src="img/productos/simple-espiral-grandluck.jpg" alt="Congelador espiral simple Grandluck"></div><div class="txt"><b>Congelador espiral simple</b><span>Volumen medio, banda simple</span><span class="apps-ico" title="Aplicaciones">🦐🐔🥛</span></div></a>
     </div>
   </div>
 
   <div class="categoria" id="cat-tuneles">
     <h2>Túneles de congelación</h2>
     <div class="grid">
-      <a class="card" href="grandluck-producto.html?id=gl-tunel-malla"><div class="foto"><img src="img/productos/tunel-malla-grandluck.jpg" alt="Túnel de congelación de malla Grandluck"></div><div class="txt"><b>Túnel de malla</b><span>Mariscos, avícola, lácteos</span><span class="apps-ico" title="Aplicaciones">🦐🐔🥛</span></div></a>
-      <a class="card" href="grandluck-producto.html?id=gl-tunel-banda-solida"><div class="foto"><img src="img/productos/tunel-banda-solida-grandluck.jpg" alt="Túnel de congelación de banda sólida Grandluck"></div><div class="txt"><b>Túnel de banda sólida</b><span>Trozos, cubos, rebanadas</span><span class="apps-ico" title="Aplicaciones">🦐</span></div></a>
-      <a class="card" href="grandluck-producto.html?id=gl-tunel-malla-superjet"><div class="foto"><img src="img/productos/tunel-malla-superjet-grandluck.jpg" alt="Túnel de malla Super-jet Grandluck"></div><div class="txt"><b>Túnel de malla Super-jet</b><span>Soplado bidireccional</span><span class="apps-ico" title="Aplicaciones">🦐</span></div></a>
-      <a class="card" href="grandluck-producto.html?id=gl-tunel-solido-superjet"><div class="foto"><img src="img/productos/tunel-solido-superjet-grandluck.jpg" alt="Túnel de banda sólida Super-jet Grandluck"></div><div class="txt"><b>Túnel de banda sólida Super-jet</b><span>Congelación más rápida</span><span class="apps-ico" title="Aplicaciones">🦐</span></div></a>
+      <a class="card" href="grandluck-tunel-malla.html"><div class="foto"><img src="img/productos/tunel-malla-grandluck.jpg" alt="Túnel de congelación de malla Grandluck"></div><div class="txt"><b>Túnel de malla</b><span>Mariscos, avícola, lácteos</span><span class="apps-ico" title="Aplicaciones">🦐🐔🥛</span></div></a>
+      <a class="card" href="grandluck-tunel-banda-solida.html"><div class="foto"><img src="img/productos/tunel-banda-solida-grandluck.jpg" alt="Túnel de congelación de banda sólida Grandluck"></div><div class="txt"><b>Túnel de banda sólida</b><span>Trozos, cubos, rebanadas</span><span class="apps-ico" title="Aplicaciones">🦐</span></div></a>
+      <a class="card" href="grandluck-tunel-malla-superjet.html"><div class="foto"><img src="img/productos/tunel-malla-superjet-grandluck.jpg" alt="Túnel de malla Super-jet Grandluck"></div><div class="txt"><b>Túnel de malla Super-jet</b><span>Soplado bidireccional</span><span class="apps-ico" title="Aplicaciones">🦐</span></div></a>
+      <a class="card" href="grandluck-tunel-solido-superjet.html"><div class="foto"><img src="img/productos/tunel-solido-superjet-grandluck.jpg" alt="Túnel de banda sólida Super-jet Grandluck"></div><div class="txt"><b>Túnel de banda sólida Super-jet</b><span>Congelación más rápida</span><span class="apps-ico" title="Aplicaciones">🦐</span></div></a>
     </div>
   </div>
 
   <div class="categoria" id="cat-otros">
     <h2>Otros congeladores</h2>
     <div class="grid">
-      <a class="card" href="grandluck-producto.html?id=gl-lecho-fluidizado"><div class="foto"><img src="img/productos/lecho-fluidizado-grandluck.jpg" alt="Congelador de lecho fluidizado Grandluck"></div><div class="txt"><b>Lecho fluidizado</b><span>IQF a granel, trato suave</span><span class="apps-ico" title="Aplicaciones">🥦🍓</span></div></a>
-      <a class="card" href="grandluck-producto.html?id=gl-tunel-choque"><div class="foto"><img src="img/productos/tunel-choque-grandluck.jpg" alt="Túnel de choque (blast freezer) Grandluck"></div><div class="txt"><b>Túnel de choque</b><span>Contenedor modular</span></div></a>
+      <a class="card" href="grandluck-lecho-fluidizado.html"><div class="foto"><img src="img/productos/lecho-fluidizado-grandluck.jpg" alt="Congelador de lecho fluidizado Grandluck"></div><div class="txt"><b>Lecho fluidizado</b><span>IQF a granel, trato suave</span><span class="apps-ico" title="Aplicaciones">🥦🍓</span></div></a>
+      <a class="card" href="grandluck-tunel-choque.html"><div class="foto"><img src="img/productos/tunel-choque-grandluck.jpg" alt="Túnel de choque (blast freezer) Grandluck"></div><div class="txt"><b>Túnel de choque</b><span>Contenedor modular</span></div></a>
     </div>
   </div>
 
   <div class="categoria" id="cat-placas">
     <h2>Congeladores de placas</h2>
     <div class="grid">
-      <a class="card" href="grandluck-producto.html?id=gl-placas-vertical"><div class="foto"><img src="img/productos/placas-vertical-grandluck.jpg" alt="Congelador de placas vertical Grandluck"></div><div class="txt"><b>Placas vertical</b><span>Apto para embarcaciones</span><span class="apps-ico" title="Aplicaciones">🦐⚓</span></div></a>
-      <a class="card" href="grandluck-producto.html?id=gl-placas-horizontal"><div class="foto"><img src="img/productos/placas-horizontal-grandluck.jpg" alt="Congelador de placas horizontal Grandluck"></div><div class="txt"><b>Placas horizontal</b><span>Acuícola y cárnicos</span><span class="apps-ico" title="Aplicaciones">🦐</span></div></a>
-      <a class="card" href="grandluck-producto.html?id=gl-placas-estante"><div class="foto"><img src="img/productos/placas-estantes-grandluck.jpg" alt="Congelador de placas tipo estante Grandluck"></div><div class="txt"><b>Placas tipo estante</b><span>Aire + contacto</span><span class="apps-ico" title="Aplicaciones">🦐🐔</span></div></a>
+      <a class="card" href="grandluck-placas-vertical.html"><div class="foto"><img src="img/productos/placas-vertical-grandluck.jpg" alt="Congelador de placas vertical Grandluck"></div><div class="txt"><b>Placas vertical</b><span>Apto para embarcaciones</span><span class="apps-ico" title="Aplicaciones">🦐⚓</span></div></a>
+      <a class="card" href="grandluck-placas-horizontal.html"><div class="foto"><img src="img/productos/placas-horizontal-grandluck.jpg" alt="Congelador de placas horizontal Grandluck"></div><div class="txt"><b>Placas horizontal</b><span>Acuícola y cárnicos</span><span class="apps-ico" title="Aplicaciones">🦐</span></div></a>
+      <a class="card" href="grandluck-placas-estante.html"><div class="foto"><img src="img/productos/placas-estantes-grandluck.jpg" alt="Congelador de placas tipo estante Grandluck"></div><div class="txt"><b>Placas tipo estante</b><span>Aire + contacto</span><span class="apps-ico" title="Aplicaciones">🦐🐔</span></div></a>
       
       
     </div>
@@ -181,40 +321,40 @@ footer a{color:#FF8000;text-decoration:none;font-weight:600}
   <div class="categoria" id="cat-hielo">
     <h2>Máquinas de hielo</h2>
     <div class="grid">
-      <a class="card" href="grandluck-producto.html?id=gl-hielo-escamas"><div class="foto"><img src="img/productos/hielo-escamas-grandluck.jpg" alt="Máquina de hielo en escamas Grandluck"></div><div class="txt"><b>Hielo en escamas</b><span>Pesquerías y mercados</span><span class="apps-ico" title="Aplicaciones">🧊🦐</span></div></a>
-      <a class="card" href="grandluck-producto.html?id=gl-hielo-tubo"><div class="foto"><img src="img/productos/hielo-tubo-grandluck.jpg" alt="Máquina de hielo en tubo Grandluck"></div><div class="txt"><b>Hielo en tubo</b><span>Larga duración</span><span class="apps-ico" title="Aplicaciones">🧊</span></div></a>
-      <a class="card" href="grandluck-producto.html?id=gl-hielo-placa"><div class="foto"><img src="img/productos/hielo-placa-grandluck.jpg" alt="Máquina de hielo en placa Grandluck"></div><div class="txt"><b>Hielo en placa</b><span>Placas irregulares 40–80 mm</span><span class="apps-ico" title="Aplicaciones">🧊</span></div></a>
-      <a class="card" href="grandluck-producto.html?id=gl-hielo-bloque"><div class="foto"><img src="img/productos/hielo-bloque-grandluck.jpg" alt="Máquina de hielo en bloque Grandluck"></div><div class="txt"><b>Hielo en bloque</b><span>El más grande, dura más</span><span class="apps-ico" title="Aplicaciones">🧊</span></div></a>
+      <a class="card" href="grandluck-hielo-escamas.html"><div class="foto"><img src="img/productos/hielo-escamas-grandluck.jpg" alt="Máquina de hielo en escamas Grandluck"></div><div class="txt"><b>Hielo en escamas</b><span>Pesquerías y mercados</span><span class="apps-ico" title="Aplicaciones">🧊🦐</span></div></a>
+      <a class="card" href="grandluck-hielo-tubo.html"><div class="foto"><img src="img/productos/hielo-tubo-grandluck.jpg" alt="Máquina de hielo en tubo Grandluck"></div><div class="txt"><b>Hielo en tubo</b><span>Larga duración</span><span class="apps-ico" title="Aplicaciones">🧊</span></div></a>
+      <a class="card" href="grandluck-hielo-placa.html"><div class="foto"><img src="img/productos/hielo-placa-grandluck.jpg" alt="Máquina de hielo en placa Grandluck"></div><div class="txt"><b>Hielo en placa</b><span>Placas irregulares 40–80 mm</span><span class="apps-ico" title="Aplicaciones">🧊</span></div></a>
+      <a class="card" href="grandluck-hielo-bloque.html"><div class="foto"><img src="img/productos/hielo-bloque-grandluck.jpg" alt="Máquina de hielo en bloque Grandluck"></div><div class="txt"><b>Hielo en bloque</b><span>El más grande, dura más</span><span class="apps-ico" title="Aplicaciones">🧊</span></div></a>
     </div>
   </div>
 
   <div class="categoria" id="cat-camaron">
     <h2>Procesamiento de camarón y pescado</h2>
     <div class="grid">
-      <a class="card" href="grandluck-producto.html?id=gl-clasificadora-camaron"><div class="foto"><img src="img/productos/clasificadora-camaron-grandluck.jpg" alt="Clasificadora de camarón industrial Grandluck"></div><div class="txt"><b>Clasificadora de camarón</b><span>Con o sin cabeza</span><span class="apps-ico" title="Aplicaciones">🦐</span></div></a>
-      <a class="card" href="grandluck-producto.html?id=gl-despielado-pescado"><div class="foto"><img src="img/productos/despielado-pescado-grandluck.jpg" alt="Despieladora de pescado Grandluck"></div><div class="txt"><b>Despieladora de pescado</b><span>Bacalao, atún, sardina</span><span class="apps-ico" title="Aplicaciones">🦐</span></div></a>
+      <a class="card" href="grandluck-clasificadora-camaron.html"><div class="foto"><img src="img/productos/clasificadora-camaron-grandluck.jpg" alt="Clasificadora de camarón industrial Grandluck"></div><div class="txt"><b>Clasificadora de camarón</b><span>Con o sin cabeza</span><span class="apps-ico" title="Aplicaciones">🦐</span></div></a>
+      <a class="card" href="grandluck-despielado-pescado.html"><div class="foto"><img src="img/productos/despielado-pescado-grandluck.jpg" alt="Despieladora de pescado Grandluck"></div><div class="txt"><b>Despieladora de pescado</b><span>Bacalao, atún, sardina</span><span class="apps-ico" title="Aplicaciones">🦐</span></div></a>
     </div>
   </div>
 
   <div class="categoria" id="cat-linea-camaron">
     <h2>Línea de camarón cocido</h2>
     <div class="grid">
-      <a class="card" href="grandluck-producto.html?id=gl-linea-camaron-cocido"><div class="foto"><img src="img/productos/linea-camaron-cocido-grandluck.jpg" alt="Línea de camarón cocido Grandluck"></div><div class="txt"><b>Línea de camarón cocido</b><span>8 equipos, proceso completo</span><span class="apps-ico" title="Aplicaciones">🦐</span></div></a>
+      <a class="card" href="grandluck-linea-camaron-cocido.html"><div class="foto"><img src="img/productos/linea-camaron-cocido-grandluck.jpg" alt="Línea de camarón cocido Grandluck"></div><div class="txt"><b>Línea de camarón cocido</b><span>Proceso completo en serie</span><span class="apps-ico" title="Aplicaciones">🦐</span></div></a>
     </div>
   </div>
 
   <div class="categoria" id="cat-refrigeracion">
     <h2>Sistemas de refrigeración</h2>
     <div class="grid">
-      <a class="card" href="grandluck-producto.html?id=gl-sistema-refrigeracion"><div class="foto"><img src="img/productos/sistema-refrigeracion-grandluck.jpg" alt="Sistema de refrigeración industrial Grandluck"></div><div class="txt"><b>Sistema de refrigeración industrial</b><span>Rack de compresores a medida</span></div></a>
+      <a class="card" href="grandluck-sistema-refrigeracion.html"><div class="foto"><img src="img/productos/sistema-refrigeracion-grandluck.jpg" alt="Sistema de refrigeración industrial Grandluck"></div><div class="txt"><b>Sistema de refrigeración industrial</b><span>Rack de compresores a medida</span></div></a>
     </div>
   </div>
 
   <div class="categoria" id="cat-estructura">
     <h2>Estructura y eyector</h2>
     <div class="grid">
-      <a class="card" href="grandluck-producto.html?id=gl-bandejas-congelacion"><div class="foto"><img src="img/productos/bandejas-congelacion-grandluck.jpg" alt="Bandejas y marcos de congelación Grandluck"></div><div class="txt"><b>Bandejas y marcos</b><span>Accesorio, a medida</span></div></a>
-      <a class="card" href="grandluck-producto.html?id=gl-eyector"><div class="foto"><img src="img/productos/eyector-grandluck.jpg" alt="Eyector Grandluck"></div><div class="txt"><b>Eyector</b><span>Accesorio de placas</span></div></a>
+      <a class="card" href="grandluck-bandejas-congelacion.html"><div class="foto"><img src="img/productos/bandejas-congelacion-grandluck.jpg" alt="Bandejas y marcos de congelación Grandluck"></div><div class="txt"><b>Bandejas y marcos</b><span>Accesorio, a medida</span></div></a>
+      <a class="card" href="grandluck-eyector.html"><div class="foto"><img src="img/productos/eyector-grandluck.jpg" alt="Eyector Grandluck"></div><div class="txt"><b>Eyector</b><span>Accesorio de placas</span></div></a>
     </div>
   </div>
 
@@ -244,12 +384,30 @@ footer a{color:#FF8000;text-decoration:none;font-weight:600}
     </div>
   </div>
 
+  <div class="categoria" id="preguntas">
+    <h2>Preguntas frecuentes</h2>
+    <div class="faq">
+      <details><summary>¿Quién representa a Grandluck en Ecuador?</summary><p>Ecuclima, representante autorizado de Grandluck en Ecuador, con oficina en Conocoto, Quito. La cotización la prepara la fábrica; Ecuclima la coordina con usted, instala, supervisa y da servicio técnico local, y también puede venderle el equipo. WhatsApp +593 95 980 5696.</p></details>
+      <details><summary>¿Qué equipos Grandluck se pueden pedir?</summary><p>Congeladores espirales (simple y doble), túneles de congelación (malla, banda sólida y Super-jet), congeladores de placas (vertical, horizontal y tipo estante), lecho fluidizado IQF, túnel de choque, máquinas de hielo (escamas, tubo, placa y bloque), clasificadora de camarón, despieladora de pescado, línea de camarón cocido, sistemas de refrigeración a medida, y bandejas, marcos y eyector.</p></details>
+      <details><summary>¿Grandluck sirve para plantas camaroneras?</summary><p>Sí. La clasificadora de camarón, la despieladora de pescado, los túneles y los congeladores de Grandluck están hechos para ese tipo de planta.</p></details>
+      <details><summary>¿Quién es el fabricante?</summary><p>Nantong Grandluck Freezcold Equipment Co., Ltd. (China), especializada en congelación rápida y soporte de refrigeración para el procesamiento de alimentos.</p></details>
+      <details><summary>¿Cómo se cotiza?</summary><p>Escríbanos por WhatsApp con el producto, el volumen y la ciudad de la planta. Ecuclima coordina la cotización con Grandluck, que diseña el equipo a la medida.</p></details>
+    </div>
+  </div>
+
+  <div class="cta-caja">
+    <div class="titulo">Cotice con Ecuclima, representante de Grandluck en Ecuador</div>
+    <p style="color:#4a5568;font-size:.95rem;margin-bottom:.8rem">La cotización la prepara Grandluck desde fábrica. Ecuclima la coordina con usted y, si lo prefiere, le vende el equipo en Ecuador; además lo instala, lo supervisa y da servicio técnico local.</p>
+    <div class="cta-fila"><a class="btn btn-wa" href="https://wa.me/593959805696?text=%5BWeb%5D%20Hola%20Ecuclima%2C%20vengo%20de%20la%20p%C3%A1gina%20Grandluck%20y%20quiero%20asesor%C3%ADa%20para%20mi%20planta.%20Producto%3A%20___%20%C2%B7%20Ciudad%3A%20___" target="_blank" rel="noopener">💬 Cotizar por WhatsApp</a><a class="btn btn-secondary" href="mailto:info@ecuclima.com?subject=Cotizaci%C3%B3n%20equipo%20Grandluck">✉ info@ecuclima.com</a></div>
+    <p class="nota-fabrica">¿Prefiere hablar directo con el fabricante? <a href="https://wa.me/8613862929350" target="_blank" rel="noopener">WhatsApp Grandluck</a> · <a href="mailto:info@grandluck-freezcold.com">info@grandluck-freezcold.com</a></p>
+  </div>
+
 </main>
 
 <footer>
   <p><strong>ECUCLIMA</strong> — Refrigeración industrial en Ecuador</p>
-  <p>Representante y servicio técnico local de Grandluck en Ecuador</p>
-  <p style="margin-top:1rem"><a href="mailto:info@ecuclima.com">info@ecuclima.com</a> | <a href="tel:+593959805696">+593 95 980 5696</a></p>
+  <p>Representante autorizado de Grandluck en Ecuador · Instalación, supervisión y servicio técnico local</p>
+  <p style="margin-top:1rem"><a href="mailto:info@ecuclima.com">info@ecuclima.com</a> | <a href="tel:+593959805696">+593 95 980 5696</a> | <a href="https://www.linkedin.com/company/81553973/" target="_blank" rel="noopener me" onclick="if(typeof gtag==='function')gtag('event','click_linkedin',{pagina:location.pathname})">LinkedIn</a> | <a href="https://www.facebook.com/profile.php?id=61580520650635" target="_blank" rel="noopener me" onclick="if(typeof gtag==='function')gtag('event','click_facebook',{pagina:location.pathname})">Facebook</a> | <a href="https://www.instagram.com/ecuclimamarco/" target="_blank" rel="noopener me" onclick="if(typeof gtag==='function')gtag('event','click_instagram',{pagina:location.pathname})">Instagram</a> | <a href="https://www.tiktok.com/@ecuclima_2025_ec" target="_blank" rel="noopener me" onclick="if(typeof gtag==='function')gtag('event','click_tiktok',{pagina:location.pathname})">TikTok</a></p>
 </footer>
 
 <script>

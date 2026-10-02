@@ -2,14 +2,50 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-259W73642D"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-259W73642D');
+  (function(){
+    function etiqueta(el){return (el.getAttribute('aria-label')||el.textContent||el.id||'').replace(/\s+/g,' ').trim().slice(0,80)}
+    document.addEventListener('click', function(e){
+      var el = e.target.closest('a,button');
+      if(!el || typeof gtag !== 'function') return;
+      var href = el.getAttribute('href') || '';
+      if (/wa\.me|api\.whatsapp\.com/i.test(href)) {
+        gtag('event','contacto_whatsapp',{texto_boton:etiqueta(el), pagina:location.pathname});
+      } else if (/^tel:/i.test(href)) {
+        gtag('event','click_telefono',{pagina:location.pathname});
+      } else if (/^mailto:/i.test(href)) {
+        gtag('event','click_correo',{pagina:location.pathname});
+      } else if (el.matches('.btn,button,.grupos-rapidos a') && !/whatsapp/i.test(el.getAttribute('onclick')||'')) {
+        gtag('event','click_boton',{texto_boton:etiqueta(el), pagina:location.pathname});
+      }
+    }, true);
+    var _open = window.open;
+    window.open = function(url){
+      if (typeof url === 'string' && /wa\.me|api\.whatsapp\.com/i.test(url) && typeof gtag === 'function') {
+        gtag('event','contacto_whatsapp',{pagina:location.pathname, texto_boton:'chat'});
+      }
+      return _open.apply(window, arguments);
+    };
+  })();
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+/* Las fichas ahora tienen su propia pagina (con el contenido ya escrito para Google). Quien llegue con un enlace viejo ?id=... pasa a la nueva. */
+(function(){var M={"gl-espiral-doble":"grandluck-espiral-doble.html","gl-espiral-simple":"grandluck-espiral-simple.html","gl-tunel-malla":"grandluck-tunel-malla.html","gl-tunel-banda-solida":"grandluck-tunel-banda-solida.html","gl-tunel-malla-superjet":"grandluck-tunel-malla-superjet.html","gl-tunel-solido-superjet":"grandluck-tunel-solido-superjet.html","gl-lecho-fluidizado":"grandluck-lecho-fluidizado.html","gl-placas-vertical":"grandluck-placas-vertical.html","gl-placas-horizontal":"grandluck-placas-horizontal.html","gl-placas-estante":"grandluck-placas-estante.html","gl-hielo-escamas":"grandluck-hielo-escamas.html","gl-hielo-tubo":"grandluck-hielo-tubo.html","gl-hielo-placa":"grandluck-hielo-placa.html","gl-hielo-bloque":"grandluck-hielo-bloque.html","gl-clasificadora-camaron":"grandluck-clasificadora-camaron.html","gl-despielado-pescado":"grandluck-despielado-pescado.html","gl-sistema-refrigeracion":"grandluck-sistema-refrigeracion.html","gl-bandejas-congelacion":"grandluck-bandejas-congelacion.html","gl-eyector":"grandluck-eyector.html","gl-tunel-choque":"grandluck-tunel-choque.html","gl-linea-camaron-cocido":"grandluck-linea-camaron-cocido.html"};var id=new URLSearchParams(location.search).get("id");if(id&&M[id])location.replace(M[id]);})();
+</script>
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="favicon-180.png">
 <meta name="theme-color" content="#004080">
 <title id="tTitle">Ficha de producto Grandluck | Ecuclima</title>
 <meta id="tDesc" name="description" content="Ficha de línea industrial Grandluck, representada en Ecuador por Ecuclima.">
-<meta name="robots" content="index, follow, max-image-preview:large">
-<link id="tCanon" rel="canonical" href="https://ecuclima.com/grandluck-producto.html">
+<meta name="robots" content="noindex, follow">
+<link id="tCanon" rel="canonical" href="https://ecuclima.com/grandluck.html">
 <script id="ldJson" type="application/ld+json">{}</script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -125,6 +161,72 @@ table.tabla-modelos tbody td{padding:.55rem .8rem;border-bottom:1px solid #eef1f
 table.tabla-modelos tbody tr:nth-child(even){background:#f8f9fa}
 table.tabla-modelos td.modelo-nombre{font-weight:700;color:#004080}
 .modelos-nota{font-size:.78rem;color:#8a94a3;margin-top:.6rem;font-style:italic}
+
+/* ---- componentes nuevos: paginas por aplicacion y fichas estaticas ---- */
+.nav-drop-menu .sep{height:1px;background:#e2e8f0;margin:.3rem .5rem}
+.nav-drop-menu .grupo{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#8a94a3;padding:.4rem .9rem .1rem}
+.confianza{background:#f4f6f9;border-bottom:1px solid #e2e8f0}
+.confianza-in{max-width:1100px;margin:0 auto;padding:.75rem 2rem;display:flex;flex-wrap:wrap;gap:.35rem 1.5rem;justify-content:center;font-size:.8rem;font-weight:600;color:#004080}
+.confianza-in span:before{content:"✓ ";color:#FF8000}
+.lp main{max-width:1100px;margin:0 auto;padding:1.6rem 2rem 4rem}
+.lp .miga{max-width:1100px;margin:1.1rem auto 0;padding:0 2rem;font-size:.875rem;color:#8a94a3}
+.lp .miga a{color:#004080;text-decoration:none}
+.lp h2{font-size:1.3rem;color:#004080;margin:2.4rem 0 .9rem;padding-bottom:.45rem;border-bottom:2px solid #e2e8f0}
+.lp h3{font-size:1.05rem;color:#1a2b42;margin:1.4rem 0 .5rem}
+.lp p{color:#4a5568;font-size:.97rem;margin-bottom:.85rem;max-width:860px}
+.lp .intro p{font-size:1.02rem}
+.lp ul.puntos{margin:.4rem 0 1rem 1.2rem;max-width:860px}
+.lp ul.puntos li{color:#4a5568;font-size:.93rem;margin-bottom:.4rem;line-height:1.5}
+.lp ol.pasos{margin:.4rem 0 1rem 1.4rem;max-width:900px}
+.lp ol.pasos li{color:#4a5568;font-size:.93rem;margin-bottom:.65rem;line-height:1.5}
+.lp ol.pasos li strong{color:#1a2b42}
+.cta-fila{display:flex;flex-wrap:wrap;gap:.8rem;align-items:center;margin:1.1rem 0}
+.btn{padding:.85rem 1.7rem;border:0;border-radius:8px;font-weight:600;font-size:.92rem;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:.5rem;font-family:inherit}
+.btn-wa{background:#25D366;color:#fff}
+.btn-wa:hover{background:#1EBE5A}
+.btn-secondary{background:0;border:1.5px solid #004080;color:#004080}
+.btn-secondary:hover{background:#004080;color:#fff}
+.cta-caja{background:#f8f9fa;border-left:3px solid #FF8000;border-radius:12px;padding:1.3rem 1.4rem;margin:2.2rem 0}
+.cta-caja .titulo{font-size:1.02rem;font-weight:700;color:#1a2b42;margin-bottom:.3rem}
+.cta-caja p{margin-bottom:.8rem}
+.nota-fabrica{font-size:.8rem!important;color:#8a94a3!important;margin:.5rem 0 0!important}
+.nota-fabrica a{color:#004080}
+.tabla-wrap{overflow-x:auto;border:1px solid #e2e8f0;border-radius:10px;margin:.8rem 0 1.2rem}
+table.tabla-comparar{width:100%;border-collapse:collapse;font-size:.88rem}
+table.tabla-comparar th{background:#004080;color:#fff;text-align:left;padding:.65rem .9rem;font-weight:600;white-space:nowrap}
+table.tabla-comparar td{padding:.6rem .9rem;border-bottom:1px solid #eef1f5;color:#4a5568;vertical-align:top}
+table.tabla-comparar tbody tr:nth-child(even){background:#f8f9fa}
+table.tabla-comparar td:first-child{font-weight:700;color:#004080;white-space:nowrap}
+table.tabla-comparar td:first-child a{color:#004080;text-decoration:none}
+table.tabla-comparar td:first-child a:hover{color:#FF8000}
+.equipo{display:grid;grid-template-columns:300px 1fr;gap:1.6rem;align-items:start;margin:1.2rem 0 .6rem}
+.equipo .foto{border-radius:12px;overflow:hidden;background:#e2e8f0;border:1px solid #e2e8f0}
+.equipo .foto img{width:100%;height:auto;display:block}
+.equipo .foto figcaption{font-size:.74rem;color:#8a94a3;padding:.35rem .6rem;background:#fff}
+.equipo .cap{display:inline-block;background:#e6f0fb;color:#004080;font-weight:700;font-size:.85rem;padding:.35rem .8rem;border-radius:8px;margin-bottom:.8rem}
+.equipo .ver{display:inline-block;margin-top:.2rem;font-size:.9rem;font-weight:700;color:#004080;text-decoration:none;border-bottom:1.5px solid #FF8000}
+.equipo .ver:hover{color:#FF8000}
+.nota-cap{font-size:.82rem!important;color:#8a94a3!important;font-style:italic}
+.fabricante{background:#f8f9fa;border-radius:12px;padding:1.2rem 1.4rem;margin:1.6rem 0}
+.fabricante p{font-size:.92rem!important}
+.faq details{border:1px solid #e2e8f0;border-radius:10px;padding:.8rem 1.1rem;margin-bottom:.6rem;background:#fff;max-width:860px}
+.faq summary{cursor:pointer;font-weight:700;color:#1a2b42;font-size:.95rem}
+.faq details[open]{border-color:#FF8000}
+.faq details p{margin:.6rem 0 .1rem}
+.tarjetas-lp{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1.1rem;margin:1rem 0}
+.mas-info{background:#fdf0e3;border-radius:10px;padding:.8rem 1rem;margin:1.2rem 0;font-size:.9rem;color:#8a4b0b}
+.mas-info a{color:#004080;font-weight:700}
+.rec{background:#e6f4ea;border-radius:10px;padding:1rem 1.2rem;margin:1.4rem 0;max-width:860px}
+.rec p{margin:0!important;color:#1b6b34!important}
+.rec a{color:#004080;font-weight:700}
+#volverTab{text-decoration:none}
+@media(max-width:768px){
+  .lp main{padding:1.2rem 1.2rem 3rem}
+  .lp .miga{padding:0 1.2rem}
+  .confianza-in{padding:.7rem 1.2rem;justify-content:flex-start}
+  .equipo{grid-template-columns:1fr}
+}
+
 </style>
 </head>
 <body>
@@ -138,13 +240,22 @@ table.tabla-modelos td.modelo-nombre{font-weight:700;color:#004080}
     <div class="nav-drop">
       <a href="grandluck.html" class="nav-drop-btn nav-actual" aria-current="page">Grandluck <span aria-hidden="true">&#9662;</span></a>
       <div class="nav-drop-menu">
+        <span class="grupo">Por aplicación</span>
+        <a href="tunel-congelacion-iqf-camaron-pescado.html">Túneles IQF para camarón</a>
+        <a href="maquinas-hielo-escamas-tubo-placa-bloque.html">Máquinas de hielo</a>
+        <a href="procesamiento-camaron-clasificadora-linea-cocido.html">Equipos para camarón</a>
+        <a href="congeladores-placas-camaron-pescado.html">Congeladores de placas</a>
+        <div class="sep"></div>
+        <span class="grupo">Todo el catálogo</span>
         <a href="grandluck.html#cat-espirales">Congeladores espirales</a>
         <a href="grandluck.html#cat-tuneles">Túneles de congelación</a>
         <a href="grandluck.html#cat-placas">Congeladores de placas</a>
         <a href="grandluck.html#cat-hielo">Máquinas de hielo</a>
         <a href="grandluck.html#cat-camaron">Camarón y pescado</a>
         <a href="grandluck.html#cat-refrigeracion">Sistemas de refrigeración</a>
-        
+        <a href="grandluck.html#cat-otros">Otros congeladores</a>
+        <a href="grandluck.html#cat-linea-camaron">Línea de camarón cocido</a>
+        <a href="grandluck.html#cat-estructura">Estructura y eyector</a>
       </div>
     </div>
     <a href="quienes-somos.html">Quiénes somos</a>
@@ -184,13 +295,14 @@ table.tabla-modelos td.modelo-nombre{font-weight:700;color:#004080}
       </div>
       <div id="capacidadBox"></div>
 
-      <div class="contacto-caja">
-        <div class="titulo">Cotiza directo con el fabricante</div>
-        <div class="sub">Grandluck atiende la cotización y fabricación; Ecuclima coordina la instalación y el servicio en Ecuador.</div>
-        <div class="acciones-producto">
-          <a id="btnWaGrandluck" href="https://wa.me/8613862929350" target="_blank" rel="noopener" class="btn btn-wa">💬 WhatsApp Grandluck</a>
-          <a href="mailto:info@grandluck-freezcold.com" class="btn btn-secondary">✉ info@grandluck-freezcold.com</a>
+      <div class="contacto-caja cta-caja">
+        <div class="titulo">Cotice con Ecuclima, representante de Grandluck</div>
+        <div class="sub">La cotización la prepara Grandluck desde fábrica. Ecuclima la coordina con usted y, si lo prefiere, le vende el equipo en Ecuador; además lo instala, lo supervisa y da servicio técnico local.</div>
+        <div class="acciones-producto cta-fila">
+          <a id="btnWaGrandluck" href="https://wa.me/593959805696?text=%5BWeb%5D%20Hola%20Ecuclima%2C%20quiero%20cotizar%20un%20equipo%20Grandluck.%20Producto%3A%20___%20%C2%B7%20Capacidad%3A%20___%20%C2%B7%20Ciudad%3A%20___" target="_blank" rel="noopener" class="btn btn-wa">💬 Cotizar por WhatsApp</a>
+          <a href="mailto:info@ecuclima.com?subject=Cotizaci%C3%B3n%20equipo%20Grandluck" class="btn btn-secondary">✉ info@ecuclima.com</a>
         </div>
+        <p class="nota-fabrica">¿Prefiere hablar directo con el fabricante? <a href="https://wa.me/8613862929350" target="_blank" rel="noopener">WhatsApp Grandluck</a> · <a href="mailto:info@grandluck-freezcold.com">info@grandluck-freezcold.com</a></p>
       </div>
 
       <div class="acciones-secundarias">
@@ -230,8 +342,8 @@ table.tabla-modelos td.modelo-nombre{font-weight:700;color:#004080}
 
 <footer>
   <p><strong>ECUCLIMA</strong> — Refrigeración industrial en Ecuador</p>
-  <p>Representante y servicio técnico local de Grandluck en Ecuador</p>
-  <p style="margin-top:1rem"><a href="mailto:info@ecuclima.com">info@ecuclima.com</a> | <a href="tel:+593959805696">+593 95 980 5696</a></p>
+  <p>Representante autorizado de Grandluck en Ecuador · Instalación, supervisión y servicio técnico local</p>
+  <p style="margin-top:1rem"><a href="mailto:info@ecuclima.com">info@ecuclima.com</a> | <a href="tel:+593959805696">+593 95 980 5696</a> | <a href="https://www.linkedin.com/company/81553973/" target="_blank" rel="noopener me" onclick="if(typeof gtag==='function')gtag('event','click_linkedin',{pagina:location.pathname})">LinkedIn</a> | <a href="https://www.facebook.com/profile.php?id=61580520650635" target="_blank" rel="noopener me" onclick="if(typeof gtag==='function')gtag('event','click_facebook',{pagina:location.pathname})">Facebook</a> | <a href="https://www.instagram.com/ecuclimamarco/" target="_blank" rel="noopener me" onclick="if(typeof gtag==='function')gtag('event','click_instagram',{pagina:location.pathname})">Instagram</a> | <a href="https://www.tiktok.com/@ecuclima_2025_ec" target="_blank" rel="noopener me" onclick="if(typeof gtag==='function')gtag('event','click_tiktok',{pagina:location.pathname})">TikTok</a></p>
 </footer>
 
 <script>
@@ -589,7 +701,7 @@ const FICHAS_GRANDLUCK = {
     caracteristicas: [
       "Partes en acero inoxidable, aleación de aluminio y PE, conforme a normas internacionales de sanidad",
       "Estructura interna exclusiva: alta conductividad térmica, buen aislamiento y estabilidad",
-      "Hielo rápido y que no se derrite fácil, escama de 1,5–2,3 mm, seca y sin apelmazarse",
+      "Hielo rápido y que no se derrite fácil, escama de 1,5–2,2 mm, seca y sin apelmazarse",
       "Proceso continuo: la bomba lleva agua a la bandeja distribuidora, baja de forma pareja por la pared interior del tambor de hielo, el refrigerante la enfría bajo el punto de congelación formando una capa de hielo, y una cuchilla la raspa formando la escama que cae al depósito; el agua que no formó escama vuelve al tanque para seguir el ciclo"
     ],
     especificaciones: [
@@ -632,7 +744,7 @@ const FICHAS_GRANDLUCK = {
       filas: [
         ["ITP-10","1000","4,1","0,25","1,1"],
         ["ITP-20","2000","7,44","0,25","1,5"],
-        ["ITP-30","5000","10","0,55","1,5"],
+        ["ITP-30","Consultar","10","0,55","1,5"],
         ["ITP-50","5000","19,9","0,55","2,2"],
         ["ITP-100","10000","27,9","1,5","4"],
         ["ITP-150","15000","46,4","1,5","5"],
@@ -707,7 +819,7 @@ const FICHAS_GRANDLUCK = {
       filas: [
         ["IBP-10","1000","4,22","0,25","1,1"],
         ["IBP-20","2000","7,7","0,25","1,5"],
-        ["IBP-30","5000","10,33","0,55","1,5"],
+        ["IBP-30","Consultar","10,33","0,55","1,5"],
         ["IBP-50","5000","20,5","0,55","2,2"],
         ["IBP-100","10000","32,22","1,5","4"],
         ["IBP-150","15000","47,8","1,5","5,5"],
@@ -872,7 +984,7 @@ const FICHAS_GRANDLUCK = {
     precio: null,
     capacidad: "",
     imagenes: ["img/productos/linea-camaron-cocido-grandluck.jpg","img/productos/linea-camaron-cocido-grandluck-2.jpg","img/productos/linea-camaron-cocido-grandluck-3.jpg","img/productos/linea-camaron-cocido-grandluck-4.jpg","img/productos/linea-camaron-cocido-grandluck-5.jpg","img/productos/linea-camaron-cocido-grandluck-6.jpg"],
-    descripcion: "Línea completa de Grandluck para procesar camarón cocido, de la clasificación al empaque. Se arma con 8 equipos en serie — algunos ya son fichas propias de Ecuclima×Grandluck (clasificadora de camarón, congelador espiral) y el resto es equipo dedicado a esta línea. Se cotiza y diseña a medida según el volumen de producción de cada cliente.",
+    descripcion: "Línea completa de Grandluck para procesar camarón cocido, de la clasificación al empaque. Se arma con varios equipos en serie — algunos ya son fichas propias de Ecuclima×Grandluck (clasificadora de camarón, congelador espiral) y el resto es equipo dedicado a esta línea. Se cotiza y diseña a medida según el volumen de producción de cada cliente.",
     caracteristicas: [
       "1. Clasificadora de camarón: separa el camarón por tamaño antes de cocinar (ficha propia, ver «Clasificadora de camarón»)",
       "2. Cocedor de vapor tipo túnel: cuece con vapor a alta temperatura el camarón ya clasificado, directo sobre la banda de malla; tiempo de cocción ajustable entre 0,5 y 14 minutos",
@@ -919,7 +1031,7 @@ if (!f) {
 } else {
   document.getElementById("tTitle").textContent = f.nombre + " — Grandluck | Ecuclima Ecuador";
   document.getElementById("tDesc").setAttribute("content", f.nombre + " Grandluck, representada en Ecuador por Ecuclima. " + f.descripcion.slice(0,100));
-  document.getElementById("tCanon").setAttribute("href", "https://ecuclima.com/grandluck-producto.html?id=" + id);
+  document.getElementById("tCanon").setAttribute("href", "https://ecuclima.com/grandluck-" + id.replace(/^gl-/, "") + ".html");
   document.getElementById("migaCat").textContent = f.categoria;
   document.getElementById("migaCatLink").href = "grandluck.html#" + (ANCLA_CATEGORIA[f.categoria] || "");
   document.getElementById("migaNombre").textContent = f.nombre;
@@ -1076,8 +1188,7 @@ if (!f) {
     "name": f.nombre, "brand": {"@type":"Brand","name":"Grandluck"},
     "manufacturer": {"@type":"Organization","name":"Nantong Grandluck Freezcold Equipment Co., Ltd."},
     "image": "https://ecuclima.com/" + f.imagenes[0].replace("img/productos/","img/productos/"),
-    "description": f.descripcion,
-    "offers": {"@type":"Offer","priceCurrency":"USD","price":0,"availability":"https://schema.org/PreOrder","seller":{"@type":"Organization","name":"Ecuclima","url":"https://ecuclima.com"}}
+    "description": f.descripcion
   });
 }
 

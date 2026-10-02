@@ -1,18 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://ecuclima.com/</loc><lastmod>2026-07-26</lastmod><changefreq>monthly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://ecuclima.com/partes.html</loc><lastmod>2026-07-26</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://ecuclima.com/</loc><lastmod>2026-10-02</lastmod><changefreq>monthly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://ecuclima.com/partes.html</loc><lastmod>2026-10-02</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
   <url><loc>https://ecuclima.com/calculador.html</loc><lastmod>2026-07-26</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://ecuclima.com/compresores-bitzer.html</loc><lastmod>2026-07-26</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://ecuclima.com/valvulas-industriales.html</loc><lastmod>2026-07-26</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://ecuclima.com/swep-heat-exchangers-info.html</loc><lastmod>2026-07-26</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://ecuclima.com/valvulas-industriales.html</loc><lastmod>2026-10-02</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://ecuclima.com/swep-heat-exchangers-info.html</loc><lastmod>2026-10-02</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
   <url><loc>https://ecuclima.com/trane-chillers.html</loc><lastmod>2026-07-26</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://ecuclima.com/repuestos-trane.html</loc><lastmod>2026-07-26</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://ecuclima.com/repuestos-trane.html</loc><lastmod>2026-10-02</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
   <url><loc>https://ecuclima.com/cuartos-frios-inema.html</loc><lastmod>2026-07-26</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
   <url><loc>https://ecuclima.com/maquinas-hielo-comerciales-industriales.html</loc><lastmod>2026-07-26</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ecuclima.com/marcas-refrigeracion-industrial.html</loc><lastmod>2026-07-26</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ecuclima.com/marcas-refrigeracion-industrial.html</loc><lastmod>2026-10-02</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ecuclima.com/sanhua.html</loc><lastmod>2026-07-31</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://ecuclima.com/full-gauge.html</loc><lastmod>2026-07-31</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ecuclima.com/quienes-somos.html</loc><lastmod>2026-07-26</lastmod><changefreq>yearly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://ecuclima.com/ubicacion.html</loc><lastmod>2026-07-26</lastmod><changefreq>yearly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ecuclima.com/quienes-somos.html</loc><lastmod>2026-10-02</lastmod><changefreq>yearly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://ecuclima.com/ubicacion.html</loc><lastmod>2026-10-02</lastmod><changefreq>yearly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ecuclima.com/grandluck.html</loc><lastmod>2026-10-02</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://ecuclima.com/trane-hvac.html</loc><lastmod>2026-10-02</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://ecuclima.com/registro-instaladores.html</loc><lastmod>2026-10-02</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://ecuclima.com/tunel-congelacion-iqf-camaron-pescado.html</loc><lastmod>2026-10-02</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://ecuclima.com/maquinas-hielo-escamas-tubo-placa-bloque.html</loc><lastmod>2026-10-02</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://ecuclima.com/procesamiento-camaron-clasificadora-linea-cocido.html</loc><lastmod>2026-10-02</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://ecuclima.com/congeladores-placas-camaron-pescado.html</loc><lastmod>2026-10-02</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://ecuclima.com/grandluck-espiral-doble.html</loc><lastmod>2026-10-02</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ecuclima.com/grandluck-espiral-simple.html</loc><lastmod>2026-10-02</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ecuclima.com/grandluck-tunel-malla.html</loc><lastmod>2026-10-02</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ecuclima.com/grandluck-tunel-banda-solida.html</loc><lastmod>2026-10-02</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ecuclima.com/grandluck-tunel-malla-superjet.html</loc><lastmod>2026-10-02</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ecuclima.com/grandluck-tunel-solido-superjet.html</loc><lastmod>2026-10-02</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ecuclima.com/grandluck-lecho-fluidizado.html</loc><lastmod>2026-10-02</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ecuclima.com/grandluck-placas-vertical.html</loc><lastmod>2026-10-02</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ecuclima.com/grandluck-placas-horizontal.html</loc><lastmod>2026-10-02</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ecuclima.com/grandluck-placas-estante.html</loc><lastmod>2026-10-02</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ecuclima.com/grandluck-hielo-escamas.html</loc><lastmod>2026-10-02</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ecuclima.com/grandluck-hielo-tubo.html</loc><lastmod>2026-10-02</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ecuclima.com/grandluck-hielo-placa.html</loc><lastmod>2026-10-02</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ecuclima.com/grandluck-hielo-bloque.html</loc><lastmod>2026-10-02</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ecuclima.com/grandluck-clasificadora-camaron.html</loc><lastmod>2026-10-02</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ecuclima.com/grandluck-despielado-pescado.html</loc><lastmod>2026-10-02</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ecuclima.com/grandluck-sistema-refrigeracion.html</loc><lastmod>2026-10-02</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ecuclima.com/grandluck-bandejas-congelacion.html</loc><lastmod>2026-10-02</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ecuclima.com/grandluck-eyector.html</loc><lastmod>2026-10-02</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ecuclima.com/grandluck-tunel-choque.html</loc><lastmod>2026-10-02</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ecuclima.com/grandluck-linea-camaron-cocido.html</loc><lastmod>2026-10-02</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
 </urlset>
