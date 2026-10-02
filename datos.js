@@ -1047,7 +1047,7 @@ CF["marca"] = {
                     "sitio":  "ecuclima.com"
                 },
     "contacto":  {
-                     "telefono":  "+593 98 042 0996",
+                     "telefono":  "+593 95 980 5696",
                      "email":  "info@ecuclima.com",
                      "responsable":  "Marco Rojas",
                      "direccion":  "Conocoto, Quito",
