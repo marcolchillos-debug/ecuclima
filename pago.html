@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-259W73642D"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-259W73642D');
+  (function(){
+    function etiqueta(el){return (el.getAttribute('aria-label')||el.textContent||el.id||'').replace(/\s+/g,' ').trim().slice(0,80)}
+    document.addEventListener('click', function(e){
+      var el = e.target.closest('a,button');
+      if(!el || typeof gtag !== 'function') return;
+      var href = el.getAttribute('href') || '';
+      if (/wa\.me|api\.whatsapp\.com/i.test(href)) {
+        gtag('event','contacto_whatsapp',{texto_boton:etiqueta(el), pagina:location.pathname});
+      } else if (/^tel:/i.test(href)) {
+        gtag('event','click_telefono',{pagina:location.pathname});
+      } else if (/^mailto:/i.test(href)) {
+        gtag('event','click_correo',{pagina:location.pathname});
+      } else if (el.matches('.btn,button,.grupos-rapidos a') && !/whatsapp/i.test(el.getAttribute('onclick')||'')) {
+        gtag('event','click_boton',{texto_boton:etiqueta(el), pagina:location.pathname});
+      }
+    }, true);
+    var _open = window.open;
+    window.open = function(url){
+      if (typeof url === 'string' && /wa\.me|api\.whatsapp\.com/i.test(url) && typeof gtag === 'function') {
+        gtag('event','contacto_whatsapp',{pagina:location.pathname, texto_boton:'chat'});
+      }
+      return _open.apply(window, arguments);
+    };
+  })();
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png"><link rel="apple-touch-icon" sizes="180x180" href="/favicon-180.png"><meta name="theme-color" content="#004080">
+<title>Pagar tu pedido | Ecuclima</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="origin-when-cross-origin">
+<style>
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#fff;color:#1a1a1a}
+/* En el catalogo el encabezado lleva dentro el buscador y las categorias, asi
+   que se apila en dos filas y queda fijo entero: nada se solapa ni se corta. */
+header{background:#004080;color:#fff;padding:0.35rem 2rem 0;display:flex;flex-direction:column;position:sticky;top:0;z-index:100;box-shadow:0 4px 16px rgba(0,0,0,0.3);border-bottom:3px solid #FF8000}
+.hdr-top{display:flex;justify-content:space-between;align-items:center;position:relative}
+header .hdr-logo{font-size:1.2rem;font-weight:700;display:flex;align-items:center;gap:8px;letter-spacing:-0.3px}
+header .hdr-logo a{color:#fff;text-decoration:none;display:flex;align-items:center;gap:8px;transition:0.3s}
+header .hdr-logo a:hover{color:#FF8000}
+header img{height:38px}
+nav{display:flex;gap:1.8rem;align-items:center}
+nav a{color:#fff;text-decoration:none;font-size:0.875rem;opacity:0.95;transition:0.3s;font-weight:500}
+nav a:hover{opacity:1;color:#FF8000}
+nav a.nav-wa{color:#25D366;display:inline-flex;align-items:center}
+nav a.nav-wa:hover{color:#1EBE5A;opacity:1}
+#menuBtn{display:none;background:0;border:0;color:#fff;font-size:1.5rem;cursor:pointer}.menu-txt{font-size:.85rem}
+@media(max-width:768px){
+  #menuBtn{display:block}
+  nav{position:absolute;top:100%;left:0;right:0;background:#003060;flex-direction:column;gap:0;padding:1rem 0;max-height:0;overflow:hidden;transition:max-height 0.3s;z-index:5}
+  nav.active{max-height:300px}
+  nav a{padding:0.8rem 2rem;border-bottom:1px solid rgba(255,255,255,0.1)}
+  header{padding:0.7rem 1.2rem 0}
+  header .hdr-logo{font-size:1rem}
+  header .hdr-logo img{height:32px}
+}
+
+/* El bloque entero (buscar + filtros) queda fijo bajo el encabezado. La altura
+   real del encabezado la mide el script y la deja en --hdr: si se fija a mano
+   el buscador se mete debajo y se ve cortado. */
+.barra-catalogo{max-width:1200px;width:100%;margin:0 auto}
+.buscador{color:#fff;padding:0.3rem 0 0;text-align:center;position:relative}
+.buscador .kicker{display:none}
+.buscador h2{display:none}
+.sr-solo{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.buscador p{display:none}
+.search-box{max-width:480px;position:relative;margin:0 auto}
+.search-box input{width:100%;padding:0.42rem 1.1rem 0.42rem 2.8rem;font-size:1rem;border:2px solid transparent;border-radius:10px;font-family:inherit;outline:none;transition:border-color 0.25s}
+.search-box input:focus{border-color:#FF8000}
+.search-box .ico{position:absolute;left:1rem;top:50%;transform:translateY(-50%);font-size:1rem;opacity:0.45}
+/* Dos fotos de producto, una a cada lado del buscador, que rotan y se
+   desvanecen para mostrar la siguiente. Le dan movimiento al encabezado,
+   que si no queda muy estatico con solo el campo de busqueda. */
+.lado-icono{position:absolute;top:50%;width:56px;height:56px;border-radius:10px;background:#fff;padding:6px;box-shadow:0 8px 20px rgba(0,10,30,.35);opacity:0;transform:translateY(-50%) rotate(-10deg) scale(.7);transition:opacity .7s ease,transform .7s ease;pointer-events:none;z-index:2}
+.lado-icono img{width:100%;height:100%;object-fit:contain;display:block}
+.lado-icono.izq{left:2%}
+.lado-icono.der{right:2%}
+.lado-icono.mostrar{opacity:1;transform:translateY(-50%) rotate(-6deg) scale(1)}
+.lado-icono.der.mostrar{transform:translateY(-50%) rotate(6deg) scale(1)}
+@media(min-width:640px){.lado-icono{left:4%}.lado-icono.der{right:4%;left:auto}.lado-icono{width:60px;height:60px}}
+@media(max-width:768px){
+  .buscador{padding:1.6rem 1.4rem 1.8rem}
+  .buscador h2{font-size:1.5rem}
+  .search-box{margin:0 2.6rem}
+  .lado-icono{width:42px;height:42px}
+  .lado-icono.izq{left:1%}
+  .lado-icono.der{right:1%}
+  .buscador p{padding:0 34px}
+  .filtro-select-wrap{padding:0 1.4rem}
+}
+
+.grupos-rapidos{display:flex;justify-content:center;flex-wrap:wrap;gap:.5rem;margin:.35rem 0 .4rem}
+.grupos-rapidos a{color:#fff;text-decoration:none;font-size:.8rem;font-weight:600;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.35);padding:.2rem .9rem;border-radius:20px;transition:.2s}
+.grupos-rapidos a:hover{background:rgba(255,255,255,.22)}
+.grupos-rapidos a.activo{background:#FF8000;border-color:#FF8000}
+.filtros{display:none}
+.filtro-select-wrap{display:block;max-width:600px;margin:0 auto;padding:0 0 0.15rem}
+.filtro-fila{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.filtro-fila>div{min-width:0}
+#wrapTipo[hidden]{display:none}
+@media(max-width:600px){.buscador{padding:0.6rem 0.8rem}.search-box input{font-size:1rem;padding:0.5rem 0.8rem}.filtro-fila{grid-template-columns:1fr 1fr;gap:0.5rem}.filtro-select-wrap{margin:0.3rem auto 0;padding:0.4rem 0.8rem}.filtro-select-wrap label{font-size:0.8125rem;margin-bottom:0.05rem;font-weight:500}.filtro-select-wrap select{padding:0.3rem 0.4rem;font-size:1rem;height:auto;border-radius:6px;width:100%}}
+.filtro-select-wrap label{display:block;font-size:0.875rem;font-weight:600;color:#fff;opacity:.85;margin-bottom:0.08rem}
+.filtro-select-wrap select{width:100%;padding:0.42rem 1rem;border:1.5px solid #d8dee6;border-radius:10px;background:#fff;color:#004080;font-weight:600;font-size:1rem;font-family:inherit;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FF8000' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center;background-size:18px}
+.chip{padding:0.5rem 1.1rem;border:1.5px solid #d8dee6;background:#fff;border-radius:20px;font-size:0.875rem;font-weight:500;color:#4a5568;cursor:pointer;transition:all 0.25s;font-family:inherit}
+.chip:hover{border-color:#FF8000;color:#004080}
+.chip.on{background:#004080;border-color:#004080;color:#fff}
+
+.conteo{max-width:1200px;margin:1.6rem auto 0;padding:0 2rem;font-size:0.875rem;color:#8a94a3}
+
+.rejilla{max-width:1200px;margin:1rem auto 4rem;padding:0 2rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1.6rem}
+.parte{background:#fff;border:1px solid #e4e8ee;border-radius:12px;overflow:hidden;display:flex;flex-direction:column;transition:all 0.3s}
+.parte:hover{transform:translateY(-5px);box-shadow:0 12px 32px rgba(0,64,128,0.13);border-color:#FF8000}
+.parte-foto{height:180px;background:#f4f7fa;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.falta-foto{font-size:0.8rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#8a94a3;border:1.5px dashed #c9d3de;border-radius:8px;padding:.6rem 1rem}
+.parte-foto img{width:100%;height:100%;object-fit:contain;padding:0.8rem}
+.parte-cuerpo{padding:1.1rem 1.2rem 1.2rem;display:flex;flex-direction:column;flex:1}
+.parte-cat{font-size:0.875rem;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:#FF8000;margin-bottom:0.5rem}
+.parte h3{font-size:0.92rem;font-weight:600;color:#1a2b42;line-height:1.4;margin-bottom:0.9rem;flex:1}
+.parte-pie{display:flex;justify-content:space-between;align-items:flex-end;gap:0.8rem;margin-bottom:0.9rem}
+.precio{font-size:1.25rem;font-weight:700;color:#004080;line-height:1.2}
+.precio small{display:block;font-size:0.875rem;font-weight:500;color:#8a94a3;letter-spacing:0.2px}
+.precio.pedido{font-size:0.95rem;color:#5a6b80}
+.stock{font-size:0.875rem;font-weight:600;padding:0.28rem 0.6rem;border-radius:5px;white-space:nowrap}
+.stock.hay{background:#e6f4ea;color:#1b6b34}
+.stock.pedido{background:#fdf0e3;color:#8a4b0b}
+.btn-consulta{width:100%;padding:0.7rem;background:#FF8000;color:#fff;border:0;border-radius:7px;font-weight:600;font-size:0.875rem;cursor:pointer;font-family:inherit;transition:background 0.25s}
+.btn-consulta:hover{background:#E67000}
+.parte-foto{position:relative}
+.cod-foto{position:absolute;top:8px;left:8px;background:rgba(0,64,128,.92);color:#fff;font-size:0.875rem;font-weight:700;letter-spacing:0.04em;padding:0.25rem 0.5rem;border-radius:5px;z-index:2}
+.cod-info{display:block;color:#5a6b80;font-size:0.875rem;font-weight:600;letter-spacing:0.04em;margin:0.15rem 0 0.35rem}
+.esp-barra{border:2px dashed #FF8000;background:#fffaf5}
+.esp-barra:hover{border-color:#FF8000}
+.esp-ic{gap:0.6rem}
+.esp-caja{width:56px;height:56px;border-radius:10px;background:#004080;display:flex;align-items:center;justify-content:center;flex:none}
+.esp-caja img{max-width:70%}
+.esp-caja.q{background:linear-gradient(135deg,#0059b3,#0072e6);color:#fff;font-size:1.7rem;font-weight:800;line-height:1}
+.esp-caja.lupa{background:#fff;border:1.5px solid #d8dee6;font-size:1.7rem;animation:lupaGlow 1.6s ease-in-out infinite}
+.esp-caja.lupa .lupa-mov{display:inline-block;animation:lupaMov 1.8s ease-in-out infinite}
+@keyframes lupaGlow{0%,100%{box-shadow:0 0 0 0 rgba(0,89,179,.45)}50%{box-shadow:0 0 0 14px rgba(0,89,179,0)}}
+@keyframes lupaMov{0%{transform:translate(0,0) rotate(0deg)}25%{transform:translate(-6px,-4px) rotate(-12deg)}50%{transform:translate(5px,-2px) rotate(8deg)}75%{transform:translate(-3px,4px) rotate(-6deg)}100%{transform:translate(0,0) rotate(0deg)}}
+@media(prefers-reduced-motion:reduce){.esp-caja.lupa,.esp-caja.lupa .lupa-mov{animation:none}}
+.esp-txt span{display:none}
+.esp-btn{width:100%;padding:0.7rem;background:#FF8000;color:#fff;border:0;border-radius:7px;font-weight:600;font-size:0.875rem;cursor:pointer;font-family:inherit;transition:background 0.25s}
+.esp-btn:hover{background:#E67000}
+
+.vacio{grid-column:1/-1;text-align:center;padding:4rem 1rem;color:#8a94a3}
+.vacio strong{display:block;font-size:1.1rem;color:#4a5568;margin-bottom:0.5rem;font-weight:600}
+
+#botFab{position:fixed;bottom:92px;right:22px;width:56px;height:56px;border-radius:50%;background:#004080;border:0;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:900;box-shadow:0 6px 20px rgba(0,0,0,0.28);transition:transform .25s,box-shadow .25s;padding:0}
+#botFab img{width:44px;height:44px;object-fit:contain;display:block;pointer-events:none}
+#botFab:hover{transform:scale(1.09);box-shadow:0 10px 28px rgba(0,64,128,0.5)}
+#botFab:focus-visible{outline:3px solid #FF8000;outline-offset:3px}
+#homeFab{position:fixed;bottom:162px;right:22px;width:56px;height:56px;border-radius:50%;background:#FF8000;color:#fff;border:0;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:900;box-shadow:0 6px 20px rgba(0,0,0,0.28);transition:transform .25s,box-shadow .25s;padding:0;text-decoration:none}
+#homeFab:hover{transform:scale(1.09);box-shadow:0 10px 28px rgba(255,128,0,0.5)}
+#homeFab:focus-visible{outline:3px solid #004080;outline-offset:3px}
+@media(max-width:768px){#homeFab{width:52px;height:52px;bottom:144px;right:16px}}
+@media(prefers-reduced-motion:reduce){#homeFab{transition:none}#homeFab:hover{transform:none}}
+#botPanel{position:fixed;bottom:22px;right:22px;width:380px;height:min(560px,calc(100vh - 44px));background:#fff;border-radius:14px;box-shadow:0 18px 50px rgba(0,0,0,0.32);z-index:950;display:none;flex-direction:column;overflow:hidden}
+#botPanel.abierto{display:flex}
+#botPanel .bp-cab{background:#004080;color:#fff;padding:.65rem .9rem;display:flex;align-items:center;gap:.6rem;flex:0 0 auto}
+#botPanel .bp-cab img{width:30px;height:30px;object-fit:contain}
+#botPanel .bp-cab b{font-size:.95rem;font-weight:700;display:block}
+#botPanel .bp-cab span{font-size:.72rem;opacity:.78;display:block}
+#botPanel .bp-x{margin-left:auto;background:none;border:0;color:#fff;font-size:1.6rem;line-height:1;cursor:pointer;padding:0 .2rem}
+#botPanel iframe{flex:1 1 auto;width:100%;border:0;display:block;background:#fff}
+@media(max-width:768px){#botFab{width:52px;height:52px;bottom:80px;right:16px}#botFab img{width:40px;height:40px}#botPanel{width:auto;top:0;left:0;right:0;bottom:0;height:100%;max-height:100dvh;border-radius:0}}
+#waFab{position:fixed;bottom:22px;right:22px;width:56px;height:56px;border-radius:50%;background:#25D366;color:#fff;border:0;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:900;box-shadow:0 6px 20px rgba(0,0,0,0.28);transition:transform .25s,box-shadow .25s;padding:0}
+#waFab:hover{transform:scale(1.09);box-shadow:0 10px 28px rgba(37,211,102,0.45)}
+#waFab:focus-visible{outline:3px solid #004080;outline-offset:3px}
+@media(max-width:768px){#waFab{width:52px;height:52px;bottom:16px;right:16px}}
+@media(prefers-reduced-motion:reduce){#waFab{transition:none}#waFab:hover{transform:none}}
+footer{background:#004080;color:#fff;padding:3rem 2rem;text-align:center}
+footer p{margin:0.5rem 0;opacity:0.9}
+footer a{color:#FF8000;text-decoration:none;font-weight:600}
+
+@media(max-width:768px){
+  .buscador .kicker{font-size:0.8125rem;letter-spacing:3px}
+  .filtros,.rejilla,.conteo{padding:0 1.2rem}
+  .rejilla{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:1rem}
+  .parte-foto{height:140px}
+}
+html,body{overflow-x:clip;max-width:100vw}*{min-width:0}img,table,iframe{max-width:100%}p,li,dd,h1,h2,h3,h4,td,th{overflow-wrap:break-word;hyphens:auto}(max-width:768px){main p,main li,.intro,.card p,.producto p,section>p,.aviso p,#resultado .nota{text-align:justify;text-justify:inter-word}main,section{padding-left:1.1rem;padding-right:1.1rem}}main p,main li,.intro,.card p,.producto p,section>p,.aviso p,.nota p,.sub,#resultado .nota,.fichas li,.tarjeta p{text-align:justify;text-justify:inter-word;hyphens:auto;-webkit-hyphens:auto}main h1,main h2,main h3,.hero p,.hero h1,.hero h2,.tapa p,.tapa h1,.tapa .bajada,footer p,footer nav a,.buscador p,.buscador h2,caption,th,td,.mod,dt,dd,.vacio,.tarjeta .sello,.tarjeta .ir{text-align:inherit;hyphens:manual}/* Menu unico en todas las paginas: mismo orden, mismos destinos. La pagina donde estas se marca en naranja y no se pulsa, asi el menu nunca cambia de ancho. */.nav-drop{position:relative;display:flex;align-items:center}.nav-drop-btn{display:flex;align-items:center;gap:2px}.nav-drop-menu{position:absolute;top:100%;left:50%;transform:translateX(-50%);background:#fff;border-radius:10px;box-shadow:0 10px 30px rgba(0,10,30,.22);padding:.5rem;display:flex;flex-direction:column;min-width:190px;opacity:0;visibility:hidden;transition:opacity .2s,transform .2s,visibility .2s;z-index:50}.nav-drop:hover .nav-drop-menu,.nav-drop:focus-within .nav-drop-menu{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}.nav-drop-menu a{color:#004080!important;opacity:1!important;padding:.5rem .9rem;border-radius:6px;font-size:.88rem;font-weight:600;display:flex;align-items:center;gap:.6rem;border-bottom:0!important}.nav-drop-menu a img{width:26px;height:26px;object-fit:contain;flex-shrink:0}.nav-drop-menu a:hover{background:#f4f6f9;color:#FF8000!important}nav a.nav-actual{color:#FF8000;opacity:1;box-shadow:inset 0 -2px 0 #FF8000;cursor:default;pointer-events:none}@media(max-width:768px){.nav-drop{display:block;width:100%}.nav-drop-menu{display:none!important}nav a.nav-actual{box-shadow:none;background:rgba(255,128,0,.14)}}
+/* Menu de celular: sin relleno mientras esta cerrado (si no, deja una franja azul tapando lo de abajo) y con alto suficiente para las 7 opciones. */
+@media(max-width:768px){#navMenu{padding:0}#navMenu.active{padding:.5rem 0;max-height:460px}}
+
+/* En celular Marcas va centrado como las demas opciones de la lista. */
+@media(max-width:768px){#navMenu .nav-drop-btn{justify-content:center}}
+
+/* En celular el selector lleva menos relleno para no comerse la pantalla, pero
+   con la letra a 16px — por debajo de eso el iPhone hace zoom al tocarlo.
+   Va al final porque la regla de escritorio esta mas abajo y si no, gana ella. */
+@media(max-width:600px){.filtro-select-wrap select{padding:.5rem 1.7rem .5rem .6rem;background-position:right .5rem center;text-overflow:ellipsis;white-space:nowrap;overflow:hidden}}
+
+/* El menu de calculadoras: mismo desplegable que el de marcas, pero con iconos
+   en vez de logos. El selector de chillers vivia enterrado en la pagina de Trane. */
+.nav-drop-menu a svg{width:21px;height:21px;flex-shrink:0}
+.nav-drop-menu{min-width:212px}
+
+/* Con dos desplegables el menu quedo mas ancho: si no se ajusta el espaciado,
+   "Quienes somos" se parte en dos lineas y se sale del encabezado. */
+#navMenu > a,#navMenu .nav-drop-btn{white-space:nowrap}
+#navMenu{gap:clamp(.75rem,1.5vw,1.6rem);margin-left:1rem}
+@media(max-width:768px){#navMenu{margin-left:0;gap:0}}
+
+/* En celular las calculadoras se ven en linea dentro del menu: son solo tres y
+   si se ocultan no hay forma de llegar al selector de chillers ni al listado. */
+@media(max-width:768px){
+  #navMenu .calc-drop .nav-drop-menu{display:flex!important;position:static;transform:none;opacity:1;visibility:visible;background:transparent;box-shadow:none;padding:0;min-width:0;border-radius:0}
+  #navMenu .calc-drop .nav-drop-menu a{color:#fff!important;padding:.62rem 2rem .62rem 3.1rem;font-size:13px;font-weight:500;border-bottom:1px solid rgba(255,255,255,.1)!important;justify-content:flex-start;background:rgba(0,0,0,.16)}
+  #navMenu .calc-drop .nav-drop-menu a:hover{background:rgba(255,128,0,.2);color:#fff!important}
+  #navMenu .calc-drop .nav-drop-menu a svg{opacity:.85}
+  #navMenu.active{max-height:660px}
+}
+@media(max-width:768px){#waFab{width:52px;height:52px;bottom:16px;right:16px}}
+
+/* ================== PAGO EN LINEA (clases pg-*) ================== */
+:root{--pg-azul:#004080;--pg-azul2:#0a5aa8;--pg-naranja:#FF8000;--pg-texto:#1a2b42;--pg-gris:#5a6b80;--pg-borde:#e4e8ee;--pg-fondo:#f4f7fa;--pg-verde:#1b6b34;--pg-rojo:#d92d20}
+.pg-main{background:var(--pg-fondo);padding:1.6rem 0 3rem;min-height:60vh}
+.pg-wrap{max-width:1100px;margin:0 auto;padding:0 1.2rem}
+.pg-main h1{font-size:clamp(1.5rem,3.4vw,2.1rem);color:var(--pg-azul);margin-bottom:.3rem;font-weight:800}
+.pg-sub{color:var(--pg-gris);margin-bottom:1.2rem}
+.pg-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:1.2rem;align-items:start}
+.pg-card{background:#fff;border:1px solid var(--pg-borde);border-radius:14px;padding:1.2rem 1.3rem;margin-bottom:1rem}
+.pg-card h2{font-size:1.1rem;color:var(--pg-azul);margin-bottom:.8rem}
+.pg-f{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+.pg-f .full{grid-column:1/-1}
+.pg-f label{display:block;font-size:.85rem;font-weight:700;color:var(--pg-texto);margin-bottom:.25rem}
+.pg-f input,.pg-f select,.pg-f textarea{width:100%;font:inherit;padding:.65rem .75rem;border:1px solid #c9d2de;border-radius:10px;background:#fff;color:var(--pg-texto)}
+.pg-f input:focus,.pg-f select:focus,.pg-f textarea:focus{outline:3px solid rgba(10,90,168,.25);border-color:var(--pg-azul2)}
+.pg-f .malo{border-color:var(--pg-rojo)}
+.pg-msg{color:var(--pg-rojo);font-size:.85rem;margin-top:.3rem}
+.pg-envio label{display:flex;gap:.6rem;align-items:flex-start;padding:.7rem .8rem;border:1px solid var(--pg-borde);border-radius:10px;margin-bottom:.5rem;cursor:pointer;font-weight:600;color:var(--pg-texto)}
+.pg-envio label:has(input:checked){border-color:var(--pg-azul2);background:#f0f6fc}
+.pg-envio input{margin-top:.25rem}
+.pg-envio small{display:block;color:var(--pg-gris);font-weight:400}
+.pg-ok{display:flex;gap:.6rem;align-items:flex-start;font-size:.92rem;color:var(--pg-texto);margin:.4rem 0 1rem}
+.pg-ok input{margin-top:.2rem;width:18px;height:18px;flex:none}
+.pg-ok a{color:var(--pg-azul2);font-weight:700}
+.pg-btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;width:100%;border:0;border-radius:12px;padding:.9rem 1.2rem;font:inherit;font-weight:800;font-size:1.05rem;cursor:pointer;text-decoration:none;background:var(--pg-naranja);color:#fff}
+.pg-btn:hover{filter:brightness(.95)}
+.pg-btn:focus-visible{outline:3px solid rgba(10,90,168,.4);outline-offset:2px}
+.pg-btn.sec{background:#fff;color:var(--pg-azul);border:1px solid #c9d2de;font-weight:700}
+.pg-btn[disabled]{opacity:.6;cursor:not-allowed}
+.pg-resumen{position:sticky;top:78px}
+.pg-linea{display:grid;grid-template-columns:56px 1fr;gap:.7rem;align-items:start;padding:.7rem 0;border-bottom:1px solid var(--pg-borde)}
+.pg-linea:first-of-type{padding-top:0}
+.pg-linea img{width:56px;height:56px;object-fit:contain;background:var(--pg-fondo);border-radius:8px}
+.pg-linea h3{font-size:.92rem;line-height:1.25;color:var(--pg-texto);margin-bottom:.15rem}
+.pg-linea .c{font-size:.78rem;color:var(--pg-gris)}
+.pg-linea .fila{display:flex;align-items:center;justify-content:space-between;margin-top:.35rem;gap:.5rem}
+.pg-step{display:inline-flex;align-items:center;border:1px solid #c9d2de;border-radius:8px;overflow:hidden}
+.pg-step button{width:30px;height:30px;border:0;background:#f4f7fa;font-size:1.05rem;cursor:pointer;color:var(--pg-azul);font-weight:800}
+.pg-step span{min-width:30px;text-align:center;font-weight:700;font-size:.92rem}
+.pg-linea .t{font-weight:800;color:var(--pg-azul)}
+.pg-tot{display:flex;justify-content:space-between;padding:.25rem 0;color:var(--pg-texto)}
+.pg-tot.g{font-size:1.2rem;font-weight:800;color:var(--pg-azul);border-top:2px solid var(--pg-borde);margin-top:.4rem;padding-top:.6rem}
+.pg-nota{font-size:.82rem;color:var(--pg-gris);margin-top:.6rem;line-height:1.45}
+.pg-vacio{background:#fff;border:1px solid var(--pg-borde);border-radius:14px;padding:2rem 1.3rem;text-align:center;color:var(--pg-gris)}
+.pg-vacio a{display:inline-block;margin-top:.8rem;color:#fff;background:var(--pg-azul);padding:.7rem 1.2rem;border-radius:10px;font-weight:700;text-decoration:none}
+#pp-button{margin-top:.8rem}
+.pg-aviso{background:#fdf0e3;border:1px solid #ffe0c2;color:#7a4a12;border-radius:10px;padding:.7rem .9rem;font-size:.88rem;margin-bottom:.8rem}
+
+@media(max-width:860px){.pg-grid{grid-template-columns:1fr}.pg-resumen{position:static;order:-1}.pg-f{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header>
+<div class="hdr-top">
+  <div class="hdr-logo"><a href="index.html"><img src="logo-ecuclima.png" alt="ECUCLIMA logo"> ECUCLIMA</a></div>
+  <button id="menuBtn" onclick="toggleMenu()" aria-label="Abrir menú"><span class="menu-txt">Menú</span>☰</button>
+  <nav id="navMenu"><a href="index.html">Inicio</a><a href="partes.html">Productos</a><a href="ofertas.html">Ofertas</a><a href="trane-chillers.html">Chillers</a><div class="nav-drop"><a href="marcas-refrigeracion-industrial.html" class="nav-drop-btn">Marcas <span aria-hidden="true">&#9662;</span></a><div class="nav-drop-menu"><a href="trane-chillers.html"><img src="img/marcas/trane.png" alt="" loading="lazy">Trane Chiller</a><a href="trane-hvac.html"><img src="img/marcas/trane.png" alt="" loading="lazy">Trane HVAC</a><a href="compresores-bitzer.html"><img src="img/marcas/bitzer.png" alt="" loading="lazy">Bitzer</a><a href="valvulas-industriales.html"><img src="img/marcas/carel.png" alt="" loading="lazy">Carel</a><a href="swep-heat-exchangers-info.html"><img src="img/marcas/swep.png" alt="" loading="lazy">Swep</a><a href="sanhua.html"><img src="img/marcas/sanhua.png" alt="" loading="lazy">Sanhua</a><a href="marcas-refrigeracion-industrial.html"><img src="img/marcas/emerson.png" alt="" loading="lazy">Emerson Copeland</a><a href="maquinas-hielo-comerciales-industriales.html"><img src="img/marcas/snowkey.png" alt="" loading="lazy">Snowkey</a><a href="marcas-refrigeracion-industrial.html"><img src="img/marcas/danfoss.png" alt="" loading="lazy">Danfoss</a><a href="grandluck.html"><img src="img/marcas/grandluck.png" alt="" loading="lazy">Grandluck</a></div></div><div class="nav-drop calc-drop"><a href="calculador.html" class="nav-drop-btn">Calculador <span aria-hidden="true">&#9662;</span></a><div class="nav-drop-menu"><a href="calculador.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 3v18"/><path d="M8 9v3"/><path d="M16 9v3"/></svg>Cámaras frigoríficas</a><a href="trane-chillers.html#selector-chillers"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v20"/><path d="M2 12h20"/><path d="M5 5l14 14"/><path d="M19 5L5 19"/></svg>Selector de chillers</a><a href="calculador.html#catalogo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M9 10v10"/></svg>Listado de cargas</a></div></div><a href="quienes-somos.html">Quiénes somos</a><a href="javascript:void(0)" onclick="abrirChat()" class="nav-wa" aria-label="Escríbanos por WhatsApp" title="Escríbanos por WhatsApp"><svg width="23" height="23" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413"/></svg></a></nav>
+  </div>
+</header>
+
+<main class="pg-main"><div class="pg-wrap">
+  <h1>Pagar tu pedido</h1>
+  <p class="pg-sub">Revisa tu pedido, completa tus datos y paga con tarjeta. Los precios se muestran sin IVA; el IVA se suma al total.</p>
+
+  <div class="pg-vacio" id="pgVacio" hidden>
+    <p>Tu pedido está vacío.</p>
+    <a href="ofertas.html">Ver las ofertas</a>
+  </div>
+
+  <div class="pg-grid" id="pgGrid" hidden>
+    <form id="pgForm" novalidate autocomplete="on">
+
+      <section class="pg-card" aria-labelledby="pgT1">
+        <h2 id="pgT1">1 · Tus datos</h2>
+        <div class="pg-f">
+          <div class="full"><label for="pgNombre">Nombre y apellido, o razón social</label><input id="pgNombre" name="nombre" autocomplete="name" required></div>
+          <div><label for="pgTipoDoc">Documento para la factura</label><select id="pgTipoDoc" name="tipoDoc"><option value="cedula">Cédula</option><option value="ruc">RUC</option><option value="pasaporte">Pasaporte</option></select></div>
+          <div><label for="pgDoc">Número de documento</label><input id="pgDoc" name="doc" inputmode="numeric" autocomplete="off" required></div>
+          <div><label for="pgEmail">Correo electrónico</label><input id="pgEmail" name="email" type="email" autocomplete="email" required></div>
+          <div><label for="pgTel">Teléfono o WhatsApp</label><input id="pgTel" name="tel" type="tel" autocomplete="tel" inputmode="tel" required></div>
+        </div>
+      </section>
+
+      <section class="pg-card" aria-labelledby="pgT2">
+        <h2 id="pgT2">2 · Envío</h2>
+        <div class="pg-f">
+          <div><label for="pgCiudad">Ciudad y provincia</label><input id="pgCiudad" name="ciudad" autocomplete="address-level2" required></div>
+          <div><label for="pgDir">Dirección de entrega</label><input id="pgDir" name="dir" autocomplete="street-address" required></div>
+          <div class="full"><label for="pgNotas">Referencia o notas (opcional)</label><textarea id="pgNotas" name="notas" rows="2"></textarea></div>
+        </div>
+        <div class="pg-envio" id="pgEnvios" role="radiogroup" aria-label="Método de envío" style="margin-top:.9rem"></div>
+        <p class="pg-nota" id="pgEnvioNota"></p>
+      </section>
+
+      <section class="pg-card" aria-labelledby="pgT3">
+        <h2 id="pgT3">3 · Pago</h2>
+        <div class="pg-aviso" id="pgModoAviso" hidden></div>
+        <label class="pg-ok"><input type="checkbox" id="pgAcepto" required><span>Acepto los <a href="terminos-y-condiciones.html" target="_blank" rel="noopener">términos y condiciones</a>, la <a href="envios-y-devoluciones.html" target="_blank" rel="noopener">política de envíos, devoluciones y garantía</a> y la <a href="politica-de-privacidad.html" target="_blank" rel="noopener">política de privacidad</a>.</span></label>
+        <div class="pg-msg" id="pgError" role="alert" aria-live="assertive"></div>
+        <button class="pg-btn" id="pgPagar" type="submit">💳 Pagar con tarjeta <span id="pgPagarTotal"></span></button>
+        <div id="pp-button"></div>
+        <p class="pg-nota" id="pgPagoNota">El pago lo procesa PayPhone. Ecuclima no recibe ni guarda los datos de tu tarjeta.</p>
+      </section>
+    </form>
+
+    <aside class="pg-resumen" aria-label="Resumen del pedido">
+      <div class="pg-card">
+        <h2>Tu pedido</h2>
+        <div id="pgLineas"></div>
+        <div id="pgTotales" style="margin-top:.6rem"></div>
+        <p class="pg-nota">El envío se cobra por aparte y depende del lugar de entrega y del peso del producto. Precios y stock sujetos a disponibilidad. Para conseguir descuentos adicionales, contáctate directamente con el vendedor. <a href="ofertas.html">Seguir viendo ofertas</a></p>
+      </div>
+    </aside>
+  </div>
+</div></main>
+
+<footer>
+  <p><strong>ECUCLIMA</strong> — Refrigeración industrial en Ecuador</p>
+  <p>Conocoto, Quito | Lunes a viernes de 8:30 a 17:30 | Emergencias 24/7</p>
+  <p style="margin-top:1rem"><a href="mailto:info@ecuclima.com">info@ecuclima.com</a> | <a href="tel:+593959805696">+593 95 980 5696</a> | <a href="https://www.linkedin.com/company/81553973/" target="_blank" rel="noopener me" onclick="if(typeof gtag==='function')gtag('event','click_linkedin',{pagina:location.pathname})">LinkedIn</a> | <a href="https://www.facebook.com/profile.php?id=61580520650635" target="_blank" rel="noopener me" onclick="if(typeof gtag==='function')gtag('event','click_facebook',{pagina:location.pathname})">Facebook</a> | <a href="https://www.instagram.com/ecuclimamarco/" target="_blank" rel="noopener me" onclick="if(typeof gtag==='function')gtag('event','click_instagram',{pagina:location.pathname})">Instagram</a> | <a href="https://www.tiktok.com/@ecuclima_2025_ec" target="_blank" rel="noopener me" onclick="if(typeof gtag==='function')gtag('event','click_tiktok',{pagina:location.pathname})">TikTok</a></p>
+  <p style="margin-top:2rem;font-size:0.875rem;opacity:.7">&copy; 2026 Ecuclima Refrigeración Industrial &middot; Marco Rojas. Todos los derechos reservados.</p>
+</footer>
+
+
+
+<script src="ofertas-datos.js"></script>
+<script src="ofertas-config.js"></script>
+<script src="pago-config.js"></script>
+<script>
+(function () {
+  'use strict';
+  var DATOS = window.OFERTAS_DATOS || [], CFG = window.OFERTAS_CONFIG || { descuentoGeneral: 0, descuentos: {} }, PG = window.PAGO_CONFIG || {};
+  
+  var LS_PEDIDO = 'ecuclima_ofertas_pedido_v1', LS_PEND = 'ecuclima_pago_pendiente_v1';
+  var $ = function (id) { return document.getElementById(id); };
+  var porId = {}; DATOS.forEach(function (it) { porId[it.id] = it; });
+  function leer(k) { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch (e) { return null; } }
+  function guardar(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  /* Los datos del cliente que se guardan en este navegador (pedido pendiente y resultado) se borran a las 24 horas. */
+  (function purgar() {
+    try {
+      var ahora = Date.now(), limite = 24 * 3600 * 1000, i, k, v, pe = leer(LS_PEND);
+      if (pe && (!pe.creado || ahora - Date.parse(pe.creado) > limite)) localStorage.removeItem(LS_PEND);
+      for (i = localStorage.length - 1; i >= 0; i--) { k = localStorage.key(i); if (k && k.indexOf('ecuclima_pago_resultado_') === 0) { v = leer(k); if (!v || !v.ts || ahora - v.ts > limite) localStorage.removeItem(k); } }
+    } catch (e) {}
+  })();
+  function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function pct(it) { var d = CFG.descuentos && CFG.descuentos[it.id]; return typeof d === 'number' ? d : (CFG.descuentoGeneral || 0); }
+  function precio(it) { return Math.round(it.p * (1 - pct(it)) * 100) / 100; }
+  function cent(x) { return Math.round(x * 100); }
+  function usd(c) { return '$' + (c / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+
+  var pedido = leer(LS_PEDIDO) || {};
+  var m = location.search.match(/[?&]add=([^&]+)/);
+  if (m) {
+    var aid = ''; try { aid = decodeURIComponent(m[1]); } catch (e) {}
+    if (porId[aid] && porId[aid].s > 0 && !pedido[aid]) pedido[aid] = 1;
+    guardar(LS_PEDIDO, pedido);
+    try { history.replaceState(null, '', location.pathname); } catch (e) {}
+  }
+  function lineas() {
+    return Object.keys(pedido).filter(function (id) { return porId[id] && porId[id].s > 0 && pedido[id] > 0; })
+      .map(function (id) { return { it: porId[id], q: Math.min(pedido[id], porId[id].s) }; });
+  }
+  var envios = (PG.metodosEnvio || []);
+  function envioSel() { var r = document.querySelector('input[name="envio"]:checked'); return r ? envios.filter(function (e) { return e.id === r.value; })[0] : null; }
+  function totales() {
+    var base = 0; lineas().forEach(function (l) { base += cent(precio(l.it)) * l.q; });
+    var e = envioSel(); if (e && e.costo > 0) base += cent(e.costo);
+    var iva = Math.round(base * (PG.ivaTasa || 0));
+    return { base: base, iva: iva, total: base + iva };
+  }
+
+  function pintar() {
+    var ls = lineas();
+    $('pgVacio').hidden = ls.length > 0; $('pgGrid').hidden = ls.length === 0;
+    if (!ls.length) return;
+    $('pgLineas').innerHTML = ls.map(function (l) {
+      return '<div class="pg-linea"><img src="' + esc(l.it.f) + '" alt=""><div><h3>' + esc(l.it.n) + '</h3><div class="c">' + esc(l.it.ec) + ' · ' + usd(cent(precio(l.it))) + ' c/u</div>' +
+        '<div class="fila"><div class="pg-step"><button type="button" data-id="' + esc(l.it.id) + '" data-d="-1" aria-label="Quitar uno">−</button><span>' + l.q + '</span><button type="button" data-id="' + esc(l.it.id) + '" data-d="1" aria-label="Agregar uno">+</button></div><span class="t">' + usd(cent(precio(l.it)) * l.q) + '</span></div></div></div>';
+    }).join('');
+    var t = totales(), e = envioSel();
+    $('pgTotales').innerHTML =
+      '<div class="pg-tot"><span>Subtotal (sin IVA)</span><span>' + usd(t.base) + '</span></div>' +
+      '<div class="pg-tot"><span>IVA ' + Math.round((PG.ivaTasa || 0) * 100) + ' %</span><span>' + usd(t.iva) + '</span></div>' +
+      '<div class="pg-tot"><span>Envío</span><span>' + (e && e.costo > 0 ? usd(cent(e.costo)) : 'se cotiza y se cobra por aparte') + '</span></div>' +
+      '<div class="pg-tot g"><span>Total a pagar ahora</span><span>' + usd(t.total) + '</span></div>';
+    $('pgPagarTotal').textContent = '· ' + usd(t.total);
+  }
+  $('pgLineas').addEventListener('click', function (ev) {
+    var b = ev.target.closest('button[data-id]'); if (!b) return;
+    var id = b.getAttribute('data-id'), d = +b.getAttribute('data-d'), it = porId[id], q = (pedido[id] || 0) + d;
+    if (q > it.s) q = it.s;
+    if (q <= 0) delete pedido[id]; else pedido[id] = q;
+    guardar(LS_PEDIDO, pedido); pintar();
+  });
+
+  /* ---------- métodos de envío ---------- */
+  $('pgEnvios').innerHTML = envios.map(function (e, i) {
+    return '<label><input type="radio" name="envio" value="' + esc(e.id) + '"' + (i === 0 ? ' checked' : '') + '><span>' + esc(e.nombre) + (e.nota ? '<small>' + esc(e.nota) + '</small>' : '') + '</span></label>';
+  }).join('');
+  $('pgEnvioNota').textContent = 'El envío no está incluido en el pago: se cobra por aparte y su costo depende del lugar de entrega y del peso del producto. La oficina te confirma por WhatsApp el valor del envío a tu ciudad antes de despachar.';
+  $('pgEnvios').addEventListener('change', pintar);
+
+  /* ---------- aviso de modo ---------- */
+  var modoAviso = $('pgModoAviso');
+   if (PG.modo === 'sandbox') { modoAviso.hidden = false; modoAviso.textContent = 'MODO DE PRUEBAS del sitio. Para que PayPhone no cobre dinero real, la aplicación de PayPhone también debe estar en modo de pruebas.'; }
+
+  /* ---------- validación ---------- */
+  function cedulaOk(c) {
+    if (!/^\d{10}$/.test(c)) return false;
+    var p = +c.slice(0, 2); if (p < 1 || (p > 24 && p !== 30)) return false;
+    if (+c[2] > 5) return false;
+    var s = 0, i, d;
+    for (i = 0; i < 9; i++) { d = +c[i] * (i % 2 === 0 ? 2 : 1); if (d > 9) d -= 9; s += d; }
+    return ((10 - (s % 10)) % 10) === +c[9];
+  }
+  function marcar(id, malo) { var el = $(id); if (el) el.classList.toggle('malo', !!malo); return !malo; }
+  function validar() {
+    var v = function (id) { return ($(id).value || '').trim(); };
+    var tipo = v('pgTipoDoc'), doc = v('pgDoc').replace(/\s/g, ''), tel = v('pgTel').replace(/[\s()-]/g, '');
+    var docOk = tipo === 'cedula' ? cedulaOk(doc) : tipo === 'ruc' ? /^\d{13}$/.test(doc) : doc.length >= 5;
+    var checks = [
+      ['pgNombre', v('pgNombre').length >= 3, 'Escribe tu nombre completo o la razón social.'],
+      ['pgDoc', docOk, tipo === 'cedula' ? 'La cédula no es válida (10 dígitos).' : tipo === 'ruc' ? 'El RUC debe tener 13 dígitos.' : 'Escribe el número de pasaporte.'],
+      ['pgEmail', /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v('pgEmail')), 'Escribe un correo válido.'],
+      ['pgTel', /^\+?\d{8,15}$/.test(tel), 'Escribe un teléfono válido (solo números).'],
+      ['pgCiudad', v('pgCiudad').length >= 3, 'Indica la ciudad y la provincia.'],
+      ['pgDir', v('pgDir').length >= 6, 'Escribe la dirección de entrega.']
+    ];
+    var primero = null;
+    checks.forEach(function (c) { var ok = marcar(c[0], !c[1]); if (!ok && !primero) primero = c; });
+    if (primero) { $(primero[0]).focus(); return primero[2]; }
+    if (!envioSel()) return 'Elige un método de envío.';
+    if (!$('pgAcepto').checked) return 'Debes aceptar los términos, la política de envíos, devoluciones y garantía y la política de privacidad.';
+    return '';
+  }
+
+  /* ---------- pago ---------- */
+  function resumenRef(ls) { return ('Ecuclima web: ' + ls.map(function (l) { return l.it.ec + 'x' + l.q; }).join(', ')).slice(0, 100); }
+  function nuevoId() { return ('EC' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6)).toUpperCase().slice(0, 40); }
+  function falloPago(msg) {
+    $('pgError').innerHTML = esc(msg) + ' Puedes escribirnos por <a href="https://wa.me/' + esc(PG.telefonoWa || '593959805696') + '" target="_blank" rel="noopener">WhatsApp</a> para cerrar tu compra.';
+    $('pgPagar').disabled = false;
+  }
+  function cargarPayPhone(ok) {
+    if (window.PPaymentButtonBox) return ok();
+    var l = document.createElement('link'); l.rel = 'stylesheet'; l.href = 'https://cdn.payphonetodoesposible.com/box/v2.0/payphone-payment-box.css'; document.head.appendChild(l);
+    var s = document.createElement('script'); s.type = 'module'; s.src = 'https://cdn.payphonetodoesposible.com/box/v2.0/payphone-payment-box.js';
+    s.onload = function () { var n = 0; (function esperar() { if (window.PPaymentButtonBox) return ok(); if (++n > 50) return falloPago('No pudimos cargar la caja de pago.'); setTimeout(esperar, 100); })(); };
+    s.onerror = function () { falloPago('No pudimos cargar la caja de pago.'); };
+    document.head.appendChild(s);
+  }
+  $('pgForm').addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    $('pgError').textContent = '';
+    var err = validar(); if (err) { $('pgError').textContent = err; return; }
+    var ls = lineas(), t = totales(), e = envioSel(), v = function (id) { return ($(id).value || '').trim(); };
+    if (!ls.length || !t.total) { $('pgError').textContent = 'Tu pedido está vacío.'; return; }
+    var tx = nuevoId();
+    guardar(LS_PEND, {
+      tx: tx, creado: new Date().toISOString(), modo: PG.modo,
+      cliente: { nombre: v('pgNombre'), tipoDoc: v('pgTipoDoc'), doc: v('pgDoc'), email: v('pgEmail'), tel: v('pgTel'), ciudad: v('pgCiudad'), dir: v('pgDir'), notas: v('pgNotas') },
+      envio: { id: e.id, nombre: e.nombre },
+      lineas: ls.map(function (l) { return { id: l.it.id, ec: l.it.ec, n: l.it.n, q: l.q, p: precio(l.it) }; }),
+      base: t.base, iva: t.iva, total: t.total
+    });
+    $('pgPagar').disabled = true;
+    
+    if (!PG.token || !PG.storeId) return falloPago('El pago en línea todavía no está activado.');
+    $('pgPagar').hidden = true;
+    $('pgPagoNota').textContent = 'Completa el pago en la caja de PayPhone. Tienes 10 minutos.';
+    cargarPayPhone(function () {
+      try {
+        new window.PPaymentButtonBox({
+          token: PG.token, storeId: PG.storeId, clientTransactionId: tx,
+          amount: t.total, amountWithoutTax: 0, amountWithTax: t.base, tax: t.iva, service: 0, tip: 0,
+          currency: PG.moneda || 'USD', reference: resumenRef(ls), lang: 'es', timeZone: -5
+        }).render('pp-button');
+      } catch (er) { $('pgPagar').hidden = false; falloPago('No pudimos abrir la caja de pago.'); }
+    });
+  });
+  
+
+  pintar();
+})();
+</script>
+</body>
+</html>
