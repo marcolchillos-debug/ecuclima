@@ -1,4 +1,15 @@
 User-agent: *
 Allow: /
 
+# Rastreadores de IA que recogen paginas para ENTRENAR modelos: sin permiso.
+# No se bloquea a Google ni a los asistentes que consultan la pagina cuando alguien pregunta.
+User-agent: GPTBot
+User-agent: CCBot
+User-agent: anthropic-ai
+User-agent: ClaudeBot
+User-agent: Bytespider
+User-agent: Meta-ExternalAgent
+User-agent: Applebot-Extended
+Disallow: /
+
 Sitemap: https://ecuclima.com/sitemap.xml
