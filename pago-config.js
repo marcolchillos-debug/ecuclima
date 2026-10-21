@@ -1,6 +1,6 @@
 window.PAGO_CONFIG = {
-  "modo": "sandbox",
-  "token": "psBmcSYn41bSDt_rOe7KB0za8HX22w21W17sQtEAp3UQKuF_-_J-Bif1dugbji0odZx5BQUDy_vIfab7a2ww-Pnjax-7oyYDCfRO7dQl9hUtV4zakPEUQGmMJoY7I4ZXISY_xULwlDCJpnUc4v1SAvtVvhW13j0WBU8DUIy_AV8AV8Pa5QlJJLIEIUZTYjaBMm5VOEe-hfV7bXjwRXUJZLZhwv_jbJp1Ih7NXEgzKZbR7B1fxeiltVHI7dghX1rryP8Py1my0Xnv_XRpz3cOhF-JGrGyW3jaKREH6Keky5HltGb2VdAIBGyMR7Xp3jEzpESB3A",
+  "modo": "produccion",
+  "token": "Vxcw6LxxL7e44bc_ja228SWoyZ_6kgW6sevzaJvSbcs_qrUBhFlUczhbrVaTQ5avHi2nkge3LumbTd4vlFuhC2Aweom1vHjCxkG26iaBglCqpM4sHSdSMwZyXJ0sBjpf3hL7iA8pPixZNeZA4iqEo_XUIeFa4zuwfWEW7B3asuY2OkrTBSorpcxeJNrFH3tCDU7c7kKXh4WNdTePFzTg6rL2nMgxY6bDg98c0XQXM_OSNZ4Dzih_cM9qxdTU1nv7NAANhNT3SdKHwj_K4c9wD3avG6KnAhDLiX4qQkv3c3qK7c82DcIhuSMYI7N78noyC9zS-A",
   "storeId": "a3a0560e-9ed3-4915-959c-85fd14d5cc44",
   "moneda": "USD",
   "ivaTasa": 0.15,
