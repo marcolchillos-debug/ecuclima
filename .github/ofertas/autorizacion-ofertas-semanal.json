@@ -1,0 +1,12 @@
+{
+  "activa": true,
+  "autorizado_por": "Marco Rojas",
+  "fecha": "2026-10-22",
+  "como": "Dicho por Marco en el chat de Claude el 2026-10-22: «es importante tener publicado el stock real, pon las alarmas de publicación». Escrito por Claude a pedido suyo.",
+  "alcance": "Publicar solo, cada día, los cambios seguros de stock y de precio (PVP hasta ±10 %) de los productos que ya están en la página de Ofertas. Nada más: no agrega ni quita productos, no cambia textos, fotos ni descuentos.",
+  "limites": [
+    "Solo toca ofertas-datos.js, ofertas-precios.js y ofertas-feed.tsv (commit solo de esos tres archivos).",
+    "El stock que sube más de 2 unidades, el PVP que cambia más de 10 %, un PVP que dejaría la oferta bajo el precio de compra y los cambios masivos (más del 30 % de los productos) NO se publican solos: quedan en el informe para Marco.",
+    "Vence a los 90 días: hay que renovarla."
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "_comentario": "Nombres de campos de la base de inventario. El servidor, la base y las credenciales NO estan aqui: llegan por el secreto OFERTAS_SECRETOS.",
+  "layout": "ITEMS",
+  "limite": 3000,
+  "reintentos_login": 6,
+  "campos": {
+    "codigo": "Codigo Ecuclima",
+    "clasificacion": "Clasificacion",
+    "web_alterno": "AptoWeb_PROP",
+    "baja": "DADO DE BAJA",
+    "nombre": "Descripcion ECUCLIMA",
+    "nombre_alterno": "Descripcion PROVEEDOR",
+    "descripcion_venta": "DescripcionVenta_PROP",
+    "descripcion_catalogo": "DescripcionCatalogo_PROP",
+    "descripcion_completa": "Descripcion Completa",
+    "marca": "Marca",
+    "marca_alterno": "Marca_PROP",
+    "modelo": "Modelo",
+    "modelo_alterno": "Modelo_PROP",
+    "numero_parte": "Numero de Parte US",
+    "dimensiones": "Dimensiones",
+    "especificaciones": "Especificaciones_PROP",
+    "especificaciones_alterno": "caracteristicas especificaciones",
+    "precio": "PVP",
+    "stock": "EN INVENTARIO",
+    "fotos": [
+      "Foto(1)",
+      "Foto(2)",
+      "Foto(3)",
+      "Foto(4)",
+      "Foto(5)"
+    ],
+    "webno": "WebNO_PROP",
+    "ocultar_stock": "OcultarWebStock_PROP"
+  }
+}

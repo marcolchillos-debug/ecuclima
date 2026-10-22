@@ -1,0 +1,71 @@
+name: Ofertas - revision diaria de stock y precios
+
+# Lee en FileMaker (solo lectura) el stock y el PVP de lo publicado en ecuclima.com/ofertas.html y publica los cambios seguros.
+# Corre en la nube de GitHub: no depende de ninguna PC. El codigo esta en .github/ofertas/ (ver LEEME.md alli).
+# Los secretos (acceso a FileMaker y al correo de avisos) estan en Settings > Secrets and variables > Actions > OFERTAS_SECRETOS.
+# Mientras ese secreto no exista, este flujo no hace nada.
+
+on:
+  schedule:
+    - cron: '30 12 * * 1-6'     # 07:30 de Ecuador (UTC-5, sin horario de verano), de lunes a sabado
+  workflow_dispatch:
+    inputs:
+      accion:
+        description: 'Que hacer'
+        type: choice
+        default: publicar
+        options:
+          - publicar
+          - solo_mirar
+          - probar_correo
+
+permissions:
+  contents: write     # guardar los 3 archivos de ofertas y el estado de los avisos
+  pages: write        # pedir la construccion de GitHub Pages despues de publicar
+
+concurrency:
+  group: ofertas-diaria
+  cancel-in-progress: false
+
+jobs:
+  ofertas:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      OFERTAS_ACTIONS: '1'
+      TZ: America/Guayaquil
+      PYTHONUTF8: '1'
+      OFERTAS_SECRETOS: ${{ secrets.OFERTAS_SECRETOS }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Traer el codigo
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/ofertas
+          persist-credentials: false
+
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Preparar secretos
+        id: sec
+        run: python .github/ofertas/preparar_secretos.py
+
+      - name: Revisar y publicar
+        if: steps.sec.outputs.activo == 'true'
+        working-directory: .github/ofertas
+        env:
+          ACCION: ${{ github.event.inputs.accion || 'publicar' }}
+        run: |
+          case "$ACCION" in
+            solo_mirar)    python -m catalogo.ofertas_semanal ;;
+            probar_correo) python -m catalogo.ofertas_semanal --probar-correo ;;
+            *)             python -m catalogo.ofertas_semanal --publicar --correo ;;
+          esac
