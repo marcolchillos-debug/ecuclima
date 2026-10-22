@@ -1,7 +1,7 @@
 # Ofertas de Ecuclima: revisión diaria en la nube
 
 Este directorio es el código de la revisión diaria de **stock y precios** de la página de ofertas (`ecuclima.com/ofertas.html`).
-Corre en GitHub Actions (`.github/workflows/ofertas-diaria.yml`), de lunes a sábado a las 07:30 de Ecuador. No depende de ninguna computadora.
+Corre en GitHub Actions (`.github/workflows/ofertas-diaria.yml`), todas las noches a las 22:07 de Ecuador, para que los datos estén listos cuando Google Merchant Center lee el archivo de productos (a las 0:00). No depende de ninguna computadora.
 
 ## Qué hace
 

@@ -7,7 +7,7 @@ ofertas-precios.js y ofertas-feed.tsv (el que lee Google Merchant Center).
 No toca ningun otro archivo del sitio. No gasta tokens de Claude.
 
 DONDE CORRE. Tres maneras, el mismo programa:
-  - EN LA NUBE (la que vale desde el 2026-10-22): GitHub Actions, .github/workflows/ofertas-diaria.yml, 07:30 de Ecuador, lunes a sabado. No depende de
+  - EN LA NUBE (la que vale desde el 2026-10-22): GitHub Actions, .github/workflows/ofertas-diaria.yml, 22:07 de Ecuador, todas las noches (Google Merchant Center lee el archivo a las 0:00). No depende de
     ninguna PC: Marco pidio que el automatismo no dependa de la portatil, que pasa apagada. El sitio se lee y se publica por la API de GitHub
     (origen "github", sin git ni carpeta del sitio), el acceso a FileMaker y al correo llega por el secreto OFERTAS_SECRETOS, y el estado entre corridas
     (avisos ya enviados) se guarda en .github/ofertas/estado/ del mismo repositorio. Se activa con la variable OFERTAS_ACTIONS=1 (la pone el flujo).

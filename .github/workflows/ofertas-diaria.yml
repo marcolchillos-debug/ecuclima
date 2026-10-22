@@ -7,7 +7,7 @@ name: Ofertas - revision diaria de stock y precios
 
 on:
   schedule:
-    - cron: '30 12 * * 1-6'     # 07:30 de Ecuador (UTC-5, sin horario de verano), de lunes a sabado
+    - cron: '7 3 * * *'         # 22:07 de Ecuador (UTC-5, sin horario de verano), todas las noches: queda listo antes de que Google lea el archivo a las 0:00
   workflow_dispatch:
     inputs:
       accion:
