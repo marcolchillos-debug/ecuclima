@@ -5,6 +5,7 @@ window.PAGO_CONFIG = {
   "moneda": "USD",
   "ivaTasa": 0.15,
   "urlRespuesta": "pago-resultado.html",
+  "avisosUrl": "",
   "telefonoWa": "593959805696",
   "metodosEnvio": [
     {
