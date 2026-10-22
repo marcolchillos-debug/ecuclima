@@ -10,3 +10,6 @@ credenciales.json
 
 # Maquetas y borradores de trabajo: no se publican en el sitio.
 _*.html
+
+# Borrador de la pagina de ofertas y sus herramientas: llevan claves del servicio de avisos y precios de compra. Nunca se publica.
+_borrador-ventas/
