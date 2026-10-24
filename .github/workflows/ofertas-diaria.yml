@@ -1,13 +1,12 @@
 name: Ofertas - revision diaria de stock y precios
 
+# RESERVA, SIN HORARIO. Desde el 2026-10-24 la revision diaria corre en la PC de la oficina (tarea Ecuclima-Ofertas-Diaria, todas las noches a las 22:07),
+# porque asi lo pidio Marco y porque los horarios de GitHub se atrasan horas (la corrida de las 22:07 salio a las 03:27) y Google lee el archivo a las 0:00.
+# Este flujo solo se corre a mano (Actions > Run workflow) si algun dia la oficina no puede. Mientras no exista el secreto OFERTAS_SECRETOS no hace nada.
 # Lee en FileMaker (solo lectura) el stock y el PVP de lo publicado en ecuclima.com/ofertas.html y publica los cambios seguros.
-# Corre en la nube de GitHub: no depende de ninguna PC. El codigo esta en .github/ofertas/ (ver LEEME.md alli).
-# Los secretos (acceso a FileMaker y al correo de avisos) estan en Settings > Secrets and variables > Actions > OFERTAS_SECRETOS.
-# Mientras ese secreto no exista, este flujo no hace nada.
+# El codigo esta en .github/ofertas/ (ver LEEME.md alli). Los secretos (FileMaker y correo) irian en Settings > Secrets and variables > Actions > OFERTAS_SECRETOS.
 
 on:
-  schedule:
-    - cron: '7 3 * * *'         # 22:07 de Ecuador (UTC-5, sin horario de verano), todas las noches: queda listo antes de que Google lea el archivo a las 0:00
   workflow_dispatch:
     inputs:
       accion:

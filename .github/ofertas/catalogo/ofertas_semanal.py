@@ -7,12 +7,14 @@ ofertas-precios.js y ofertas-feed.tsv (el que lee Google Merchant Center).
 No toca ningun otro archivo del sitio. No gasta tokens de Claude.
 
 DONDE CORRE. Tres maneras, el mismo programa:
-  - EN LA NUBE (la que vale desde el 2026-10-22): GitHub Actions, .github/workflows/ofertas-diaria.yml, 22:07 de Ecuador, todas las noches (Google Merchant Center lee el archivo a las 0:00). No depende de
-    ninguna PC: Marco pidio que el automatismo no dependa de la portatil, que pasa apagada. El sitio se lee y se publica por la API de GitHub
-    (origen "github", sin git ni carpeta del sitio), el acceso a FileMaker y al correo llega por el secreto OFERTAS_SECRETOS, y el estado entre corridas
-    (avisos ya enviados) se guarda en .github/ofertas/estado/ del mismo repositorio. Se activa con la variable OFERTAS_ACTIONS=1 (la pone el flujo).
-  - EN LA OFICINA (pc-casa): datos\\ofertas-job.json con origen "github", token en un archivo y envio de correo por el modulo de esa PC. Quedo como
-    opcion; hoy no se usa.
+  - EN LA OFICINA (pc-casa, host mr_pc; la que vale desde el 2026-10-22): tarea de Windows «Ecuclima-Ofertas-Diaria», TODAS LAS NOCHES A LAS 22:07
+    (Google Merchant Center lee el archivo de productos a las 0:00, hora de Ecuador, y debe encontrarlo al dia). Marco pidio que las alarmas y el comando
+    vivan en esa PC porque siempre esta encendida; la portatil pasa apagada. Configuracion: datos\\ofertas-job.json con "sitio_dir" = un clon ralo y propio
+    del repositorio del sitio (solo los 4 archivos de ofertas; se publica con git por una llave de despliegue SSH de ese unico repositorio), las credenciales
+    de FileMaker en credenciales.json junto al paquete y el envio de correo por el modulo send_email.py de esa PC. Archivos: catalogo-sync\\oficina\\.
+  - EN LA NUBE (GitHub Actions, .github/workflows/ofertas-diaria.yml): alternativa de reserva, SIN horario y sin secreto; solo se corre a mano. El sitio se lee
+    y se publica por la API de GitHub (origen "github"), el acceso a FileMaker y al correo llega por el secreto OFERTAS_SECRETOS y el estado entre corridas
+    se guarda en .github/ofertas/estado/. Se activa con la variable OFERTAS_ACTIONS=1 (la pone el flujo).
   - EN LA PORTATIL (sin ninguna de las dos): carpeta local del sitio + git. Solo para ensayar y para las tareas manuales.
 
     python -m catalogo.ofertas_semanal              mira y deja un informe. NO cambia nada del sitio
@@ -153,18 +155,21 @@ def _secretos():
 
 # ---------------------------------------------------------------- de donde se lee el sitio y como se publica
 class SitioLocal(object):
-    """La carpeta del sitio en la portatil: lee los archivos y publica con git."""
+    """Una carpeta del sitio con git. En la portatil es la carpeta de trabajo de Marco. En la oficina (JOB["sitio_dir"]) es un clon ralo y propio de este
+    programa, que se publica por una llave de despliegue SSH y que siempre se deja igual que GitHub."""
     nombre = "local"
 
     def __init__(self):
-        self.dir = fm.CONFIG["rutas"]["sitio"]
+        self.dir = JOB.get("sitio_dir") or fm.CONFIG["rutas"]["sitio"]
+        self.clon_oficina = bool(JOB.get("sitio_dir"))
         self.ventas = os.path.join(self.dir, "_borrador-ventas")
+        self.git_exe = JOB.get("git") or "git"
 
     def trabajo(self):
-        return os.path.join(self.ventas, "semanal")
+        return JOB.get("trabajo") or os.path.join(self.ventas, "semanal")
 
     def generador(self):
-        return os.path.join(self.ventas, "generar_feed.js")
+        return JOB.get("generador_feed") or os.path.join(self.ventas, "generar_feed.js")
 
     def leer(self, nombre):
         return _leer(os.path.join(self.dir, nombre))
@@ -174,7 +179,12 @@ class SitioLocal(object):
         return _leer(ruta) if os.path.exists(ruta) else None
 
     def _git(self, *args, check=True):
-        p = subprocess.run(["git", "-C", self.dir] + list(args), capture_output=True, text=True, encoding="utf-8", errors="replace")
+        try:
+            # sin entrada (stdin) y con limite de tiempo: una red caida no debe dejar la tarea colgada
+            p = subprocess.run([self.git_exe, "-C", self.dir] + list(args), capture_output=True, text=True, encoding="utf-8", errors="replace",
+                               stdin=subprocess.DEVNULL, timeout=300)
+        except subprocess.TimeoutExpired:
+            raise RuntimeError("git %s no respondio en 5 minutos (red o GitHub)." % " ".join(args))
         if check and p.returncode != 0:
             raise RuntimeError("git %s fallo: %s" % (" ".join(args), (p.stderr or p.stdout).strip()[:400]))
         return p.stdout.strip()
@@ -209,7 +219,21 @@ class SitioLocal(object):
         ruta_msg = os.path.join(DATOS, "mensaje-commit-ofertas.txt")
         _escribir(ruta_msg, mensaje)
         self._git("commit", "-F", ruta_msg)
-        self._git("push")
+        try:
+            self._git("push")
+        except RuntimeError:
+            if not self.clon_oficina:
+                raise
+            # alguien publico en medio: se acomoda encima de lo nuevo y se reintenta una vez
+            try:
+                self._git("pull", "--rebase")
+                self._git("push")
+            except RuntimeError:
+                # este clon es solo de este programa: se deja igual que GitHub para que la proxima corrida no quede trabada
+                self._git("rebase", "--abort", check=False)
+                self._git("fetch", "origin", check=False)
+                self._git("reset", "--hard", "origin/" + (JOB.get("rama") or "main"), check=False)
+                raise
         return self._git("rev-parse", "--short", "HEAD")
 
     def solicitar_build(self):
@@ -888,7 +912,7 @@ def aviso_pendiente():
     if not nuevos:
         return ""
     _almacen().escribir("aviso_pendiente.json", json.dumps({"hasta": max(r["ts"] for r in nuevos)}), transitorio=True)
-    lineas = ["Hola Sabrina:", "",
+    lineas = ["Hola equipo:", "",
               "Esto es lo que se ha hecho y publicado en la página de Ofertas (ecuclima.com/ofertas.html) desde el último aviso:", ""]
     for r in nuevos:
         lineas.append("• %s — %s" % (r["ts"].replace("T", " ")[:16], r["texto"]))
@@ -921,6 +945,14 @@ def avisar_a_sabrina():
     return "NO se pudo enviar el aviso a Sabrina (%s); queda pendiente para la próxima corrida" % det
 
 
+_RX_COSTO = re.compile(r"(precio de compra(?: de FileMaker)?)\s*\(\$\s*[0-9][0-9.,]*\)", re.I)
+
+
+def _sin_costos(texto):
+    """Quita la cifra del precio de compra (dato interno) de lo que va por correo a una bandeja compartida (info@); el informe de Marco la conserva."""
+    return _RX_COSTO.sub(r"\1", texto)
+
+
 def _alertas_para_marco(res, marcas, aut, error=None, token_vence=None, publicacion_ok=None):
     """Lo que necesita la atencion de Marco; se manda solo si cambio desde el ultimo correo (no se repite todos los dias)."""
     cosas = []
@@ -932,11 +964,11 @@ def _alertas_para_marco(res, marcas, aut, error=None, token_vence=None, publicac
         rev = [r for r in res if r["revisar"]]
         if rev:
             cosas.append("Para revisar (no se publicaron solos): %d producto(s)." % len(rev))
-            cosas += ["  - %s %s: %s" % (r["ec"], r["nombre"][:40], " ".join(r["revisar"])[:200]) for r in rev[:15]]
+            cosas += ["  - %s %s: %s" % (r["ec"], r["nombre"][:40], _sin_costos(" ".join(r["revisar"]))[:200]) for r in rev[:15]]
         al = [r for r in res if r["alertas"] and r["s_nuevo"] > 0]
         if al:
             cosas.append("Avisos de FileMaker sobre productos a la venta: %d." % len(al))
-            cosas += ["  - %s %s: %s" % (r["ec"], r["nombre"][:40], " ".join(r["alertas"])[:200]) for r in al[:15]]
+            cosas += ["  - %s %s: %s" % (r["ec"], r["nombre"][:40], _sin_costos(" ".join(r["alertas"]))[:200]) for r in al[:15]]
     if token_vence:
         try:
             q = (datetime.date.fromisoformat(token_vence[:10]) - datetime.date.today()).days
@@ -957,13 +989,13 @@ def avisar_a_marco(cosas, adjuntos=None):
     if not cosas:
         return "nada para Marco"
     if (JOB.get("drive") or {}).get("destino"):
-        donde = "\n\nEl informe completo está en la carpeta Ofertas-informes de tu Google Drive (ultimo-informe.html)."
+        donde = "\n\nEl informe completo está en la carpeta Ofertas-informes del Google Drive de Marco (ultimo-informe.html)."
     elif adjuntos:
         donde = "\n\nEl informe completo va adjunto a este correo."
     else:
         donde = ""
-    cuerpo = ("Marco:\n\nLa revisión diaria de stock y precios de la página de Ofertas necesita tu atención:\n\n" + "\n".join(cosas) + donde +
-              "\n\nAviso automático del sistema de ofertas de Ecuclima, preparado por Claude por encargo tuyo.")
+    cuerpo = ("Hola equipo:\n\nLa revisión diaria de stock y precios de la página de Ofertas necesita atención:\n\n" + "\n".join(cosas) + donde +
+              "\n\nAviso automático del sistema de ofertas de Ecuclima, preparado por Claude por encargo de Marco.")
     # el mismo aviso no se repite, salvo una vez por semana como recordatorio
     firma = hashlib.sha1(("%d-%02d|" % datetime.date.today().isocalendar()[:2] + cuerpo).encode("utf-8")).hexdigest()
     if _json_estado("alerta_estado.json").get("firma") == firma:
@@ -1017,6 +1049,8 @@ def correr(preparar=False, aplicar=False, publicar_ya=False, simular=False, avis
             aplicar = False        # el simulacro no toca la carpeta del sitio
         else:
             sitio.antes_de_leer()  # lo ultimo que haya en GitHub, antes de leer lo publicado
+    if getattr(sitio, "clon_oficina", False) and not (publicar_ya and not simular):
+        sitio.antes_de_leer()      # el clon de la oficina es solo de este programa: siempre se pone al dia antes de leer
     modo = "publicar" if publicar_ya else "aplicar" if aplicar else "preparar" if preparar else "solo mirar"
     leidos = {a: sitio.leer(a) for a in ARCHIVOS}
     texto = leidos["ofertas-datos.js"]
@@ -1068,7 +1102,7 @@ def correr(preparar=False, aplicar=False, publicar_ya=False, simular=False, avis
         if g.returncode != 0:
             raise RuntimeError("No se pudo armar el archivo de Google: %s" % (g.stderr or g.stdout).strip()[:300])
         os.remove(os.path.join(carpeta, "ofertas-config.js"))
-        if sitio.nombre == "local":
+        if sitio.nombre == "local" and not getattr(sitio, "clon_oficina", False):
             # Para que una reconstruccion manual (construir_ofertas.js) no vuelva atras: deja el estado aceptado
             _escribir(os.path.join(sitio.ventas, "fm-ofertas.json"), json.dumps({
                 "generado": ahora.isoformat(timespec="seconds"),
@@ -1135,7 +1169,7 @@ def correr(preparar=False, aplicar=False, publicar_ya=False, simular=False, avis
     if correo:
         print("  correo a Sabrina: %s" % avisar_a_sabrina())
         cosas = _alertas_para_marco(res, marcas, aut, token_vence=getattr(sitio, "vence", None), publicacion_ok=publicacion_ok)
-        print("  correo a Marco: %s" % avisar_a_marco(cosas, adjuntos=[("informe-ofertas-%s.html" % _hoy(), html)] if NUBE else None))
+        print("  correo a Marco: %s" % avisar_a_marco(cosas, adjuntos=[("informe-ofertas-%s.html" % _hoy(), _sin_costos(html))] if NUBE else None))
     if NUBE:
         latido()
     if not simular:
@@ -1196,7 +1230,7 @@ if __name__ == "__main__":
         sys.exit(0 if ok else 1)
     if "--probar-correo" in a:
         ok, det = enviar_correo(_destinos("marco"), "Ofertas de Ecuclima: prueba del correo automático",
-                                "Marco:\n\nEsta es una prueba del correo automático del sistema de ofertas. Si lo lees, los avisos funcionan.\n\nClaude")
+                                "Hola equipo:\n\nEsta es una prueba del correo automático del sistema de ofertas de Ecuclima (no hay nada que hacer). Si lo leen, los avisos funcionan.\n\nClaude")
         print(("OK: correo de prueba enviado" if ok else "FALLÓ: " + det))
         sys.exit(0 if ok else 1)
     if not NUBE:

@@ -1,7 +1,11 @@
-# Ofertas de Ecuclima: revisión diaria en la nube
+# Ofertas de Ecuclima: revisión diaria (copia de RESERVA en la nube)
 
-Este directorio es el código de la revisión diaria de **stock y precios** de la página de ofertas (`ecuclima.com/ofertas.html`).
-Corre en GitHub Actions (`.github/workflows/ofertas-diaria.yml`), todas las noches a las 22:07 de Ecuador, para que los datos estén listos cuando Google Merchant Center lee el archivo de productos (a las 0:00). No depende de ninguna computadora.
+**Desde el 2026-10-24 esta revisión corre todas las noches a las 22:07 en la PC de la oficina** (tarea `Ecuclima-Ofertas-Diaria`),
+porque Marco pidió que la alarma y el comando vivan allá y porque los horarios de GitHub se atrasan horas. Esta copia en GitHub Actions
+(`.github/workflows/ofertas-diaria.yml`) **ya no tiene horario**: solo se corre a mano (pestaña *Actions* → *Run workflow*) si algún día la oficina no puede, y
+mientras no exista el secreto `OFERTAS_SECRETOS` no hace nada.
+
+Este directorio es el código de la revisión diaria de **stock y precios** de la página de ofertas (`ecuclima.com/ofertas.html`). Google Merchant Center lee el archivo de productos a las 0:00 (hora de Ecuador).
 
 ## Qué hace
 
@@ -36,11 +40,11 @@ El flujo necesita **un solo secreto** del repositorio, `OFERTAS_SECRETOS` (Setti
 ```
 
 Sin `smtp` el flujo publica igual pero no manda correos. Los valores no están en este repositorio ni se ven en el registro de GitHub.
-Lo arma y lo copia al portapapeles el script `ACTIVAR-OFERTAS-EN-LA-NUBE.bat` que Marco corre en su computadora; nunca pasa por ningún chat.
+Se arma con `nube\armar_secreto.py` (copia el secreto al portapapeles sin mostrarlo); nunca pasa por ningún chat. Hoy no hace falta: la oficina publica por su propia llave.
 
 ## Probarlo o apagarlo
 
 - **Correr ahora:** pestaña *Actions* → *Ofertas - revision diaria de stock y precios* → *Run workflow* → elegir `solo_mirar` (no cambia nada),
   `probar_correo` o `publicar`.
 - **Apagarlo:** pestaña *Actions* → ese flujo → menú `···` → *Disable workflow*. O borrar el secreto `OFERTAS_SECRETOS` (el flujo queda sin hacer nada).
-- GitHub apaga los flujos programados de un repositorio público tras 60 días sin actividad. Por eso la corrida deja una marca semanal en `estado/latido.json`.
+- Sin horario, ya no aplica el apagado automático de GitHub por 60 días sin actividad.
