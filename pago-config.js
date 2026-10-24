@@ -11,14 +11,14 @@ window.PAGO_CONFIG = {
     {
       "id": "servientrega",
       "nombre": "Servientrega",
-      "costo": 0,
-      "nota": "Entrega en 2 días hábiles. Se cobra por aparte según el lugar de entrega y el peso del producto"
+      "costo": 20,
+      "nota": "Entrega en 2 días hábiles. Envío fijo de US$ 20 a todo el país (más IVA)"
     },
     {
       "id": "transporte-carga",
       "nombre": "Compañía de transporte y carga",
-      "costo": 0,
-      "nota": "Entrega en 3 días hábiles. Se cobra por aparte según el lugar de entrega y el peso del producto"
+      "costo": 20,
+      "nota": "Entrega en 3 días hábiles. Envío fijo de US$ 20 a todo el país (más IVA)"
     }
   ]
 };

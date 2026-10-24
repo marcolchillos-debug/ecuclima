@@ -311,7 +311,7 @@ html,body{overflow-x:clip;max-width:100vw}*{min-width:0}img,table,iframe{max-wid
     if (pend) {
       var c = pend.cliente;
       t += 'Total pagado: ' + usd(pend.total) + ' (incluye IVA)\nCliente: ' + c.nombre + ' · ' + c.tipoDoc + ' ' + c.doc + ' · ' + c.tel + ' · ' + c.email +
-        '\nEntrega: ' + c.ciudad + ', ' + c.dir + (c.notas ? ' (' + c.notas + ')' : '') + '\nEnvío: ' + pend.envio.nombre + '\nProductos:\n';
+        '\nEntrega: ' + c.ciudad + ', ' + c.dir + (c.notas ? ' (' + c.notas + ')' : '') + '\nEnvío: ' + pend.envio.nombre + (pend.env ? ' (tarifa fija ' + usd(pend.env) + ' + IVA)' : '') + '\nProductos:\n';
       pend.lineas.forEach(function (l) { t += '• ' + l.q + ' x ' + l.n + ' (' + l.ec + ')\n'; });
     }
     return t;
@@ -320,7 +320,7 @@ html,body{overflow-x:clip;max-width:100vw}*{min-width:0}img,table,iframe{max-wid
     if (!pend) return '';
     var f = pend.lineas.map(function (l) { return '<tr><td>' + (Number(l.q) || 0) + ' × ' + esc(l.n) + ' <span class="rs-ref">(' + esc(l.ec) + ')</span></td><td>' + usd(Math.round(l.p * 100) * l.q) + '</td></tr>'; }).join('');
     return '<table class="rs-tabla"><tbody>' + f +
-      '<tr><td>Subtotal (sin IVA)</td><td>' + usd(pend.base) + '</td></tr><tr><td>IVA</td><td>' + usd(pend.iva) + '</td></tr>' +
+      (pend.env ? '<tr><td>Envío (tarifa fija)</td><td>' + usd(pend.env) + '</td></tr>' : '') + '<tr><td>Subtotal (sin IVA)</td><td>' + usd(pend.base) + '</td></tr><tr><td>IVA</td><td>' + usd(pend.iva) + '</td></tr>' +
       '<tr class="g"><td>Total pagado</td><td>' + usd(pend.total) + '</td></tr></tbody></table>';
   }
   function pintar(tipo, res) {

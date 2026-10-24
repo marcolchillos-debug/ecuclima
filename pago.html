@@ -335,7 +335,7 @@ html,body{overflow-x:clip;max-width:100vw}*{min-width:0}img,table,iframe{max-wid
         <h2>Tu pedido</h2>
         <div id="pgLineas"></div>
         <div id="pgTotales" style="margin-top:.6rem"></div>
-        <p class="pg-nota">El envío se cobra por aparte y depende del lugar de entrega y del peso del producto. Precios y stock sujetos a disponibilidad. Para conseguir descuentos adicionales, contáctate directamente con el vendedor. <a href="ofertas.html">Seguir viendo ofertas</a></p>
+        <p class="pg-nota">El envío tiene una tarifa fija de US$ 20 por pedido a todo el país, más IVA, y se suma al total antes de pagar. Precios y stock sujetos a disponibilidad. Para conseguir descuentos adicionales, contáctate directamente con el vendedor. <a href="ofertas.html">Seguir viendo ofertas</a></p>
       </div>
     </aside>
   </div>
@@ -393,10 +393,10 @@ html,body{overflow-x:clip;max-width:100vw}*{min-width:0}img,table,iframe{max-wid
   var envios = (PG.metodosEnvio || []);
   function envioSel() { var r = document.querySelector('input[name="envio"]:checked'); return r ? envios.filter(function (e) { return e.id === r.value; })[0] : null; }
   function totales() {
-    var base = 0; lineas().forEach(function (l) { base += cent(precio(l.it)) * l.q; });
-    var e = envioSel(); if (e && e.costo > 0) base += cent(e.costo);
+    var prod = 0; lineas().forEach(function (l) { prod += cent(precio(l.it)) * l.q; });
+    var e = envioSel(), env = (e && e.costo > 0) ? cent(e.costo) : 0, base = prod + env;
     var iva = Math.round(base * (PG.ivaTasa || 0));
-    return { base: base, iva: iva, total: base + iva };
+    return { prod: prod, env: env, base: base, iva: iva, total: base + iva };
   }
 
   function pintar() {
@@ -409,9 +409,9 @@ html,body{overflow-x:clip;max-width:100vw}*{min-width:0}img,table,iframe{max-wid
     }).join('');
     var t = totales(), e = envioSel();
     $('pgTotales').innerHTML =
-      '<div class="pg-tot"><span>Subtotal (sin IVA)</span><span>' + usd(t.base) + '</span></div>' +
+      '<div class="pg-tot"><span>Productos (sin IVA)</span><span>' + usd(t.prod) + '</span></div>' +
+      '<div class="pg-tot"><span>Envío (tarifa fija, sin IVA)</span><span>' + (t.env > 0 ? usd(t.env) : 'se cotiza y se cobra por aparte') + '</span></div>' +
       '<div class="pg-tot"><span>IVA ' + Math.round((PG.ivaTasa || 0) * 100) + ' %</span><span>' + usd(t.iva) + '</span></div>' +
-      '<div class="pg-tot"><span>Envío</span><span>' + (e && e.costo > 0 ? usd(cent(e.costo)) : 'se cotiza y se cobra por aparte') + '</span></div>' +
       '<div class="pg-tot g"><span>Total a pagar ahora</span><span>' + usd(t.total) + '</span></div>';
     $('pgPagarTotal').textContent = '· ' + usd(t.total);
   }
@@ -427,7 +427,7 @@ html,body{overflow-x:clip;max-width:100vw}*{min-width:0}img,table,iframe{max-wid
   $('pgEnvios').innerHTML = envios.map(function (e, i) {
     return '<label><input type="radio" name="envio" value="' + esc(e.id) + '"' + (i === 0 ? ' checked' : '') + '><span>' + esc(e.nombre) + (e.nota ? '<small>' + esc(e.nota) + '</small>' : '') + '</span></label>';
   }).join('');
-  $('pgEnvioNota').textContent = 'El envío no está incluido en el pago: se cobra por aparte y su costo depende del lugar de entrega y del peso del producto. La oficina te confirma por WhatsApp el valor del envío a tu ciudad antes de despachar.';
+  $('pgEnvioNota').textContent = 'El envío tiene una tarifa fija de US$ 20 por pedido a todo el país (más IVA) y se paga junto con tus productos. Despachamos en menos de 24 horas.';
   $('pgEnvios').addEventListener('change', pintar);
 
   /* ---------- aviso de modo ---------- */
@@ -489,9 +489,9 @@ html,body{overflow-x:clip;max-width:100vw}*{min-width:0}img,table,iframe{max-wid
     guardar(LS_PEND, {
       tx: tx, creado: new Date().toISOString(), modo: PG.modo,
       cliente: { nombre: v('pgNombre'), tipoDoc: v('pgTipoDoc'), doc: v('pgDoc'), email: v('pgEmail'), tel: v('pgTel'), ciudad: v('pgCiudad'), dir: v('pgDir'), notas: v('pgNotas') },
-      envio: { id: e.id, nombre: e.nombre },
+      envio: { id: e.id, nombre: e.nombre, costo: t.env },
       lineas: ls.map(function (l) { return { id: l.it.id, ec: l.it.ec, n: l.it.n, q: l.q, p: precio(l.it) }; }),
-      base: t.base, iva: t.iva, total: t.total
+      prod: t.prod, env: t.env, base: t.base, iva: t.iva, total: t.total
     });
     $('pgPagar').disabled = true;
     
