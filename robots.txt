@@ -13,3 +13,4 @@ User-agent: Applebot-Extended
 Disallow: /
 
 Sitemap: https://ecuclima.com/sitemap.xml
+Sitemap: https://ecuclima.com/sitemap-repuestos.xml

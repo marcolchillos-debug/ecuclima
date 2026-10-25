@@ -1366,7 +1366,7 @@ if (!f) {
     || (f.marca === "EcuclimaTechvac" && !/^(sodeca|teren controls)$/i.test(fabricante));
   document.getElementById("insigniaAut").hidden = !autorizada;
   document.getElementById("tDesc").setAttribute("content", f.nombre + ". " + f.categoria + " con stock en Ecuador. " + (autorizada ? "Distribuidor autorizado Ecuclima." : "Envío a todo Ecuador desde Quito."));
-  document.getElementById("tCanon").setAttribute("href", "https://ecuclima.com/producto.html?id=" + id);
+  document.getElementById("tCanon").setAttribute("href", "https://ecuclima.com/repuestos/" + id + ".html");
   document.getElementById("migaCat").textContent = f.categoria;
   const marcaLogoEl = document.getElementById("marcaLogo");
   if (f.marcaLogo) { marcaLogoEl.src = f.marcaLogo; marcaLogoEl.style.display = ""; }
@@ -1467,6 +1467,16 @@ if (!f) {
     else if (f.stock) { stockBox.className = "stock hay"; stockBox.textContent = "✓ Disponible (" + f.stock + ")"; }
     else { stockBox.className = "stock pedido"; stockBox.textContent = "⏳ Consultar stock"; }
   }
+
+  // Analitica (GA4 view_item): sin precio publico no se manda value ni price.
+  try {
+    if (typeof gtag === "function") {
+      var itGA = { item_id: codEc || f.sku, item_name: f.nombre, item_brand: f.marca, item_category: f.categoria, quantity: 1 };
+      var datosGA = { currency: "USD", items: [itGA] };
+      if (f.precio && !ocultarPrecio) { itGA.price = f.precio; datosGA.value = f.precio; }
+      gtag("event", "view_item", datosGA);
+    }
+  } catch (e) {}
 
   // Descuento a instaladores/distribuidores registrados: solo en EcuclimaTechvac.
   if (f.marca === "EcuclimaTechvac" && !f.sinDescuento) {

@@ -1667,7 +1667,7 @@ function pintar(){
         ? '<span class="stock pedido">Consultar stock</span>'
         : '<span class="stock hay">' + ((porMedida(p) || p.so) ? 'En stock' : p.s + ' en stock') + '</span>';
     }
-    const fichaUrl = p.id && p.id.indexOf("gl-") === 0 ? "grandluck-" + p.id.slice(3) + ".html" : "producto.html?id=" + p.id;
+    const fichaUrl = p.id && p.id.indexOf("gl-") === 0 ? "grandluck-" + p.id.slice(3) + ".html" : "repuestos/" + p.id + ".html";
     /* Enlace real (no onclick): asi Google y el teclado pueden seguir cada ficha; la tarjeta entera sigue clicable por el ::after del enlace. */
     const titulo = p.id ? '<a href="' + fichaUrl + '">' + p.n + '</a>' : p.n;
     const boton = (ocultarPrecio || enOferta) ? "Cotizar por WhatsApp" : "Consultar";
