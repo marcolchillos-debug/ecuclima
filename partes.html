@@ -149,6 +149,17 @@ nav a.nav-wa:hover{color:#1EBE5A;opacity:1}
 .btn-consulta{width:100%;padding:0.7rem;background:#FF8000;color:#fff;border:0;border-radius:7px;font-weight:600;font-size:0.875rem;cursor:pointer;font-family:inherit;transition:background 0.25s}
 .btn-consulta:hover{background:#E67000}
 .parte-foto{position:relative}
+.parte{position:relative}.parte-pie{flex-wrap:wrap}
+.parte h3 a{color:inherit;text-decoration:none}
+.parte h3 a::after{content:"";position:absolute;inset:0;z-index:1;border-radius:12px}
+.parte h3 a:focus-visible::after{outline:2px solid #FF8000;outline-offset:-2px}
+.parte .btn-consulta,.parte .btn-comprar{position:relative;z-index:2}
+.precio-antes{font-size:0.875rem;color:#5a6b80;margin:-0.3rem 0 0.8rem}
+.precio-antes b{color:#d92d20}
+.btn-comprar{display:block;width:100%;padding:0.7rem 0.4rem;background:#FF8000;color:#fff;border-radius:7px;font-weight:700;font-size:0.875rem;text-align:center;text-decoration:none;margin-bottom:0.5rem;font-family:inherit;transition:background 0.25s}
+.btn-comprar:hover{background:#E67000}
+.btn-consulta.sec{background:#fff;color:#004080;border:1.5px solid #c9d3e0}
+.btn-consulta.sec:hover{background:#f4f7fa}
 .cod-foto{position:absolute;top:8px;left:8px;background:rgba(0,64,128,.92);color:#fff;font-size:0.875rem;font-weight:700;letter-spacing:0.04em;padding:0.25rem 0.5rem;border-radius:5px;z-index:2}
 .cod-info{display:block;color:#5a6b80;font-size:0.875rem;font-weight:600;letter-spacing:0.04em;margin:0.15rem 0 0.35rem}
 .esp-barra{border:2px dashed #FF8000;background:#fffaf5}
@@ -307,6 +318,7 @@ html,body{overflow-x:clip;max-width:100vw}*{min-width:0}img,table,iframe{max-wid
 </div>
 
 <script src="techvac-config.js"></script>
+<script src="ofertas-config.js"></script><script src="ofertas-precios.js"></script><script src="pago-config.js"></script>
 <script>
 const PRODUCTOS_TODOS = [
   {n:"E2V35 CAREL Válvula de expansión electrónica E2V35BS100",c:"Válvulas CAREL",p:252.90,iva:true,s:2,f:"e2v35-carel.jpg",id:"e2v35-carel", oculto:1},
@@ -1629,11 +1641,20 @@ function pintar(){
     "Piso techo EcuclimaTechvac", "Bomba de calor EcuclimaTechvac",
     "Solo frío EcuclimaTechvac", "Mini VRF EcuclimaTechvac", "Accesorios EcuclimaTechvac"
   ];
+  const pagoActivo = !!(window.PAGO_CONFIG && window.PAGO_CONFIG.modo && window.PAGO_CONFIG.modo !== "apagado");
   document.getElementById("rejilla").innerHTML = lista.map(p => {
     const bajoPedido = p.p === null;
-    const ocultarPrecio = CON_PRECIO.indexOf(p.c) === -1;
+    /* Ofertas de baja rotacion (ofertas.html): si la pieza esta en la lista, la tarjeta muestra el mismo precio de oferta que su ficha. */
+    const ofLista = (window.OFERTAS_PRECIOS && typeof window.OFERTAS_PRECIOS[p.id] === "number") ? window.OFERTAS_PRECIOS[p.id] : 0;
+    const ofDesc = (function () { var c = window.OFERTAS_CONFIG || {}; var d = c.descuentos && c.descuentos[p.id]; return typeof d === "number" ? d : (c.descuentoGeneral || 0); })();
+    const enOferta = ofLista > 0 && p.s > 0;
+    const ofPrecio = enOferta ? Math.round(ofLista * (1 - ofDesc) * 100) / 100 : 0;
+    const ocultarPrecio = CON_PRECIO.indexOf(p.c) === -1 && !enOferta;
     let precio, stock;
-    if (ocultarPrecio) {
+    if (enOferta) {
+      precio = '<div class="precio">$' + ofPrecio.toFixed(2) + '<small>+ IVA</small></div>';
+      stock = '<span class="stock hay">' + ((porMedida(p) || p.so) ? 'En stock' : p.s + ' en stock') + '</span>';
+    } else if (ocultarPrecio) {
       precio = '';
       stock = bajoPedido
         ? '<span class="stock pedido" style="font-size:0.95rem;padding:0.4rem 0.8rem">Consultar stock</span>'
@@ -1647,19 +1668,22 @@ function pintar(){
         : '<span class="stock hay">' + ((porMedida(p) || p.so) ? 'En stock' : p.s + ' en stock') + '</span>';
     }
     const fichaUrl = p.id && p.id.indexOf("gl-") === 0 ? "grandluck-" + p.id.slice(3) + ".html" : "producto.html?id=" + p.id;
-    const abre = p.id ? " onclick=\"location.href='" + fichaUrl + "'\" style=\"cursor:pointer\"" : "";
-    const boton = ocultarPrecio ? "Cotizar por WhatsApp" : "Consultar";
+    /* Enlace real (no onclick): asi Google y el teclado pueden seguir cada ficha; la tarjeta entera sigue clicable por el ::after del enlace. */
+    const titulo = p.id ? '<a href="' + fichaUrl + '">' + p.n + '</a>' : p.n;
+    const boton = (ocultarPrecio || enOferta) ? "Cotizar por WhatsApp" : "Consultar";
+    const antes = enOferta ? '<p class="precio-antes">Precio de lista <s>$' + ofLista.toFixed(2) + '</s> · <b>−' + Math.round(ofDesc * 100) + '%</b></p>' : '';
+    const comprar = (enOferta && pagoActivo) ? '<a class="btn-comprar" href="pago.html?add=' + encodeURIComponent(p.id) + '">Comprar ahora</a>' : '';
     const cod = codigoDe(p);
-    return '<article class="parte"' + abre + '>' +
+    return '<article class="parte">' +
       '<div class="parte-foto">' +
         (cod ? '<span class="cod-foto">' + cod + '</span>' : '') +
         (p.f ? '<img src="img/productos/' + p.f + '" alt="' + escAttr(p.n) + '" loading="lazy" onerror="this.style.display=\'none\'">' : '<span class="falta-foto">Falta foto</span>') + '</div>' +
       '<div class="parte-cuerpo">' +
         '<p class="parte-cat">' + p.c + '</p>' +
-        '<h3>' + p.n + '</h3>' +
+        '<h3>' + titulo + '</h3>' +
         (cod ? '<span class="cod-info">Código ' + cod + '</span>' : '') +
-        '<div class="parte-pie">' + precio + stock + '</div>' +
-        '<button class="btn-consulta" data-n="' + escAttr(p.n) + '" data-cod="' + cod + '" onclick="event.stopPropagation()">' + boton + '</button>' +
+        '<div class="parte-pie">' + precio + stock + '</div>' + antes + comprar +
+        '<button class="btn-consulta' + (comprar ? ' sec' : '') + '" data-n="' + escAttr(p.n) + '" data-cod="' + cod + '" onclick="event.stopPropagation()">' + boton + '</button>' +
       '</div></article>';
   }).join("") + barraEspecial(document.getElementById("q").value);
 

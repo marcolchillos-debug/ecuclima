@@ -89,7 +89,7 @@ h1{font-size:1.5rem;color:#1a2b42;font-weight:700;line-height:1.3;margin-bottom:
 .sku{font-size:0.875rem;color:#8a94a3;margin-bottom:1.2rem}
 .sku strong{color:#4a5568}
 .insignias{display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:1.3rem}
-.insignia{font-size:0.875rem;font-weight:600;color:#1b6b34;background:#e6f4ea;padding:.35rem .7rem;border-radius:20px;display:inline-flex;align-items:center;gap:.3rem}
+.insignia{font-size:0.875rem;font-weight:600;color:#1b6b34;background:#e6f4ea;padding:.35rem .7rem;border-radius:20px;display:inline-flex;align-items:center;gap:.3rem}.insignia[hidden]{display:none}
 .precio-caja{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:1.4rem;padding:1.1rem 1.3rem;background:#f8f9fa;border-radius:12px;border-left:3px solid #FF8000}
 .instalador-cta{display:none;align-items:center;gap:.6rem;margin-bottom:1.4rem;padding:.85rem 1.1rem;background:#fff4e8;border:1.5px dashed #FF8000;border-radius:12px;text-decoration:none;color:#8a4600;font-weight:600;font-size:.92rem;transition:background .15s}
 .instalador-cta:hover{background:#ffe8cf}
@@ -237,7 +237,7 @@ html,body{overflow-x:clip;max-width:100vw}img,table{max-width:100%}
       <h1 id="pNombre"></h1>
       <p class="sku">SKU: <strong id="pSku"></strong></p>
       <div class="insignias">
-        <span class="insignia">✓ Distribuidor autorizado</span>
+        <span class="insignia" id="insigniaAut" hidden>✓ Distribuidor autorizado</span>
         <span class="insignia">✓ Envío a todo Ecuador</span>
         <span class="insignia">✓ Pieza correcta garantizada</span>
       </div>
@@ -1359,7 +1359,13 @@ if (!f) {
   document.querySelector("main").innerHTML = "<p style='padding:3rem 0;text-align:center;color:#8a94a3'>No encontramos esa ficha de producto. <a href='partes.html' style='color:#004080;font-weight:600'>Ver catálogo completo</a></p>";
 } else {
   document.getElementById("tTitle").textContent = f.nombre + " — " + f.marca + " | Ecuclima";
-  document.getElementById("tDesc").setAttribute("content", f.nombre + ". " + f.categoria + " con stock en Ecuador. Distribuidor autorizado Ecuclima.");
+  /* marcas-autorizadas (Marco, 2026-10-24): "autorizado" solo para SWEP, Bitzer, Grandluck, Trane y Carel.
+     La linea EcuclimaTechvac cuenta como Trane (HVAC), salvo los Sodeca y Teren Controls. */
+  const fabricante = ((f.especificaciones || []).filter(function (e) { return e[0] === "Fabricante"; })[0] || [])[1] || "";
+  const autorizada = /^(swep|bitzer|grandluck|trane|carel|\(trane\) servicefirst oem)$/.test(String(f.marca || "").trim().toLowerCase())
+    || (f.marca === "EcuclimaTechvac" && !/^(sodeca|teren controls)$/i.test(fabricante));
+  document.getElementById("insigniaAut").hidden = !autorizada;
+  document.getElementById("tDesc").setAttribute("content", f.nombre + ". " + f.categoria + " con stock en Ecuador. " + (autorizada ? "Distribuidor autorizado Ecuclima." : "Envío a todo Ecuador desde Quito."));
   document.getElementById("tCanon").setAttribute("href", "https://ecuclima.com/producto.html?id=" + id);
   document.getElementById("migaCat").textContent = f.categoria;
   const marcaLogoEl = document.getElementById("marcaLogo");
