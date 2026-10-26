@@ -5,7 +5,7 @@ window.PAGO_CONFIG = {
   "moneda": "USD",
   "ivaTasa": 0.15,
   "urlRespuesta": "pago-resultado.html",
-  "avisosUrl": "",
+  "avisosUrl": "https://email.ecuclima.com/avisos/confirmar.php",
   "telefonoWa": "593959805696",
   "metodosEnvio": [
     {
