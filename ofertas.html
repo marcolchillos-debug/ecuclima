@@ -760,7 +760,7 @@ function toggleMenu(){ document.getElementById("navMenu").classList.toggle("acti
     if (q > tope) { toast('Solo hay ' + tope + ' en stock de este repuesto.'); q = tope; }
     if (q <= 0) delete pedido[id]; else pedido[id] = q;
     guardarLS(LS_PEDIDO, pedido);
-    if (delta > 0 && q > 0) { ev('ofertas_agregar', { item_id: it.ec, item_name: it.n, precio: precio(it) }); var f = $('ofFab'); f.classList.remove('pop'); void f.offsetWidth; f.classList.add('pop'); }
+    if (delta > 0 && q > 0) { ev('ofertas_agregar', { item_id: it.ec, item_name: it.n, precio: precio(it) }); ev('add_to_cart', { currency: 'USD', value: precio(it) * delta, items: [{ item_id: it.ec, item_name: it.n, item_brand: it.m, item_category: it.c, price: precio(it), quantity: delta }] }); var f = $('ofFab'); f.classList.remove('pop'); void f.offsetWidth; f.classList.add('pop'); }
     pintar(); pintarPedido();
     if (!$('ofModal').classList.contains('on')) { /* sin ruido */ } else { detalle(id, true); }
   }
@@ -773,6 +773,7 @@ function toggleMenu(){ document.getElementById("navMenu").classList.toggle("acti
   function detalle(id, reabrir) {
     var it = porId[id]; if (!it) return;
     var st = stockInfo(it), q = pedido[id] || 0, disp = it.s > 0;
+    if (!reabrir) ev('view_item', { currency: 'USD', value: precio(it), items: [{ item_id: it.ec, item_name: it.n, item_brand: it.m, item_category: it.c, price: precio(it), quantity: 1 }] });
     var gal = (it.g && it.g.length ? it.g : [it.f]);
     var th = gal.length > 1 ? '<div class="of-th">' + gal.map(function (u, i) { return '<button type="button" class="' + (i === 0 ? 'on' : '') + '" data-act="foto" data-v="' + esc(u) + '" aria-label="Foto ' + (i + 1) + '"><img src="' + esc(u) + '" alt=""></button>'; }).join('') + '</div>' : '';
     var esp = (it.e || []).length ? '<table class="of-esp">' + it.e.map(function (r) { return '<tr><td>' + esc(r[0]) + '</td><td>' + esc(r[1]) + '</td></tr>'; }).join('') + '</table>' : '';

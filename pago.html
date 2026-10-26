@@ -361,6 +361,9 @@ html,body{overflow-x:clip;max-width:100vw}*{min-width:0}img,table,iframe{max-wid
   
   var LS_PEDIDO = 'ecuclima_ofertas_pedido_v1', LS_PEND = 'ecuclima_pago_pendiente_v1';
   var $ = function (id) { return document.getElementById(id); };
+  /* analitica (GA4): nunca debe romper la compra; sin datos personales */
+  function gaEv(nombre, datos) { try { if (typeof gtag === 'function') gtag('event', nombre, datos || {}); } catch (e) {} }
+  function itemGA(it, q) { return { item_id: it.ec, item_name: it.n, item_brand: it.m, item_category: it.c, price: precio(it), quantity: q }; }
   var porId = {}; DATOS.forEach(function (it) { porId[it.id] = it; });
   function leer(k) { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch (e) { return null; } }
   function guardar(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
@@ -382,7 +385,7 @@ html,body{overflow-x:clip;max-width:100vw}*{min-width:0}img,table,iframe{max-wid
   var m = location.search.match(/[?&]add=([^&]+)/);
   if (m) {
     var aid = ''; try { aid = decodeURIComponent(m[1]); } catch (e) {}
-    if (porId[aid] && porId[aid].s > 0 && !pedido[aid]) pedido[aid] = 1;
+    if (porId[aid] && porId[aid].s > 0 && !pedido[aid]) { pedido[aid] = 1; try { gaEv('add_to_cart', { currency: 'USD', value: precio(porId[aid]), items: [itemGA(porId[aid], 1)] }); } catch (e) {} }
     guardar(LS_PEDIDO, pedido);
     try { history.replaceState(null, '', location.pathname); } catch (e) {}
   }
@@ -494,6 +497,7 @@ html,body{overflow-x:clip;max-width:100vw}*{min-width:0}img,table,iframe{max-wid
       prod: t.prod, env: t.env, base: t.base, iva: t.iva, total: t.total
     });
     $('pgPagar').disabled = true;
+    try { gaEv('add_payment_info', { currency: 'USD', value: t.prod / 100, payment_type: 'PayPhone', items: ls.map(function (l) { return itemGA(l.it, l.q); }) }); } catch (e) {}
     
     if (!PG.token || !PG.storeId) return falloPago('El pago en línea todavía no está activado.');
     $('pgPagar').hidden = true;
@@ -510,6 +514,18 @@ html,body{overflow-x:clip;max-width:100vw}*{min-width:0}img,table,iframe{max-wid
   });
   
 
+  /* analitica: llego al pago con productos en el pedido (una vez por pedido y por sesion) */
+  try {
+    var ls0 = lineas();
+    if (ls0.length) {
+      var firma = ls0.map(function (l) { return l.it.id + 'x' + l.q; }).join(',');
+      var ya0 = ''; try { ya0 = sessionStorage.getItem('ecuclima_ga_bc') || ''; } catch (e) {}
+      if (ya0 !== firma) {
+        try { sessionStorage.setItem('ecuclima_ga_bc', firma); } catch (e) {}
+        gaEv('begin_checkout', { currency: 'USD', value: totales().prod / 100, items: ls0.map(function (l) { return itemGA(l.it, l.q); }) });
+      }
+    }
+  } catch (e) {}
   pintar();
 })();
 </script>
