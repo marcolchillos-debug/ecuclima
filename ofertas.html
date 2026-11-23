@@ -681,7 +681,11 @@ function toggleMenu(){ document.getElementById("navMenu").classList.toggle("acti
     }
     sel.value = estado.cat;
     var d = '';
-    [[0, 'Cualquier descuento'], [20, '−20% o más'], [30, '−30% o más'], [40, '−40% o más']].forEach(function (x) {
+    /* Solo los escalones de descuento que algun producto alcanza; con un descuento parejo (5 % desde 2026-11-23) no se muestra ninguno. */
+    var maxDesc = DATOS.reduce(function (m, it) { return Math.max(m, pctTxt(it)); }, 0);
+    if (estado.desde > maxDesc) estado.desde = 0;
+    var escalones = [[0, 'Cualquier descuento'], [20, '−20% o más'], [30, '−30% o más'], [40, '−40% o más']].filter(function (x) { return x[0] === 0 || x[0] <= maxDesc; });
+    if (escalones.length > 1) escalones.forEach(function (x) {
       d += '<button class="of-chip' + (estado.desde === x[0] ? ' on' : '') + '" data-act="desde" data-v="' + x[0] + '">' + x[1] + '</button>';
     });
     $('ofDesc').innerHTML = d;
