@@ -33,7 +33,7 @@ const filas = DATOS.map((it) => {
     id: it.ec,
     title: titulo.slice(0, 150),
     description: limpio(it.d || (limpio(it.m + ' ' + it.n) + '. Repuesto disponible en Quito, Ecuador.')).slice(0, 4900),
-    link: BASE + it.u,
+    link: BASE + 'repuestos/' + it.id + '.html',   // la ficha estatica trae la foto, og:image y los datos con imagen (2026-11-23); producto.html?id= la pinta con JavaScript
     image_link: absoluta(imagenes[0]),
     additional_image_link: imagenes.slice(1, 10).map(absoluta).join(','),
     availability: it.s > 0 ? 'in_stock' : 'out_of_stock',
